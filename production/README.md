@@ -11,6 +11,10 @@
 5. `DAILY-REVIEW-TEMPLATE.md`：每日提交什么证据、如何验收。
 6. `PRODUCTION-OPERATING-SYSTEM.md`：七天生产节奏、Agent 团队、阶段 Gate 和交付闭环。
 
+## 成员启动
+
+首次接手任务，请先阅读 [START-HERE-FOR-MEMBERS.md](START-HERE-FOR-MEMBERS.md)，按角色创建独立分支并使用其中的启动指令。当前任务包状态为 DESIGN BRIEF，先完成研究、技术探针和白盒，不直接批量生产高成本资产。
+
 ## 当前团队事实
 
 - 总设计师：负责设计与控制，不操作新版造世界编辑器。

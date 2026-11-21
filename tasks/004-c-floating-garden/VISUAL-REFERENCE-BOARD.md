@@ -17,9 +17,11 @@
 **玩家感受：** 花园漂浮在云海之间，岛屿底部也有结构和生命，而不是简单悬浮方块。
 
 参考图：
-- Sky 官方云海区域：[Prairie](https://www.thatskygame.com/f=png/https://a.storyblok.com/f/108104/4800x2700/90a0601dba/2_prairie_7d7846757a.jpeg)
-- Sky 官方岛屿环境：[Isle](https://www.thatskygame.com/f=webp/https://a.storyblok.com/f/108104/4800x2700/4056a54ce0/1_isle_3bd558e155.jpeg)
-- Sky 官方区域：[Vault](https://www.thatskygame.com/f=png/https://a.storyblok.com/f/108104/4800x2700/049b988cf1/6_vault_113ed76ed9.jpeg)
+![Sky Prairie cloud and island reference](https://www.thatskygame.com/f=png/https://a.storyblok.com/f/108104/4800x2700/90a0601dba/2_prairie_7d7846757a.jpeg)
+
+![Sky Isle environment reference](https://www.thatskygame.com/f=webp/https://a.storyblok.com/f/108104/4800x2700/4056a54ce0/1_isle_3bd558e155.jpeg)
+
+来源：[Sky 官方网站](https://thatskygame.com/)
 
 学习：
 - 云层前中远景和岛屿尺度关系。
@@ -36,9 +38,11 @@
 **玩家感受：** 花朵不仅是装饰，而是世界的主地标、路线节点，甚至可以成为玩家站立和观察的空间。
 
 参考图：
-- Ori 官方媒体截图：[Ori and the Will of the Wisps 01](https://ori-prod.azureedge.net/wp-content/uploads/2021/08/screenshot_wotw_01-1024x576.png)
-- Ori 官方媒体截图：[E3 2019 environment](https://ori-prod.azureedge.net/wp-content/uploads/2021/08/screenshot_wotw_E32019_01-1024x576.jpg)
-- Ori 官方环境壁纸：[Spirit Tree](https://ori-prod.azureedge.net/wp-content/uploads/2021/08/WotW_WallpaperSpiritTree_1920x1080-1024x576.jpg)
+![Ori environment screenshot](https://ori-prod.azureedge.net/wp-content/uploads/2021/08/screenshot_wotw_01-1024x576.png)
+
+![Ori Spirit Tree environment reference](https://ori-prod.azureedge.net/wp-content/uploads/2021/08/WotW_WallpaperSpiritTree_1920x1080-1024x576.jpg)
+
+来源：[Ori 官方媒体页](https://www.orithegame.com/media/)
 
 学习：
 - 植物主地标的剪影、颜色和环境关系。
@@ -55,9 +59,11 @@
 **玩家感受：** 根系既像植物结构，也像自然桥梁和隐藏通道。
 
 参考图：
-- Ori 官方环境截图：[Ori environment 02](https://ori-prod.azureedge.net/wp-content/uploads/2021/08/screenshot_wotw_02-1024x576.png)
-- Ori 官方环境截图：[Ori environment 04](https://ori-prod.azureedge.net/wp-content/uploads/2021/08/screenshot_wotw_04-1024x576.png)
-- Sky 官方岛屿环境：[Isle](https://www.thatskygame.com/f=webp/https://a.storyblok.com/f/108104/4800x2700/4056a54ce0/1_isle_3bd558e155.jpeg)
+![Ori environment 02](https://ori-prod.azureedge.net/wp-content/uploads/2021/08/screenshot_wotw_02-1024x576.png)
+
+![Ori environment 04](https://ori-prod.azureedge.net/wp-content/uploads/2021/08/screenshot_wotw_04-1024x576.png)
+
+来源：[Ori 官方媒体页](https://www.orithegame.com/media/)
 
 学习：
 - 根系的粗细、分叉、弯曲和连接关系。
@@ -74,8 +80,11 @@
 **玩家感受：** 温室是花园的核心目的地，它的建筑方向和植物生长方向共同制造空间异常。
 
 参考图：
-- Tiny Glade 官方建筑截图：[Architecture reference](https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2198150/ss_ed8d49e1bdc02b0c8caadb66e06b6d6ad6218c1f.1920x1080.jpg)
-- Monument Valley 开发者官方设计图：[Monument Valley](https://images.ctfassets.net/ve81k805bx04/2BaYj2l8S0kwyKmMkcWyOy/c8ddbd7aa3825519f49b5a3fea8e185c/iPad_01.png?w=1200)
+![Tiny Glade architecture reference](https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2198150/ss_ed8d49e1bdc02b0c8caadb66e06b6d6ad6218c1f.1920x1080.jpg)
+
+![Monument Valley official design image](https://images.ctfassets.net/ve81k805bx04/2BaYj2l8S0kwyKmMkcWyOy/c8ddbd7aa3825519f49b5a3fea8e185c/iPad_01.png?w=1200)
+
+来源：[Tiny Glade 官方 Steam 页面](https://store.steampowered.com/app/2198150/Tiny_Glade/) · [ustwo 官方文章](https://ustwo.com/blog/monument-valley-out-now/)
 
 学习：
 - 建筑轮廓和结构如何一眼读懂。
@@ -92,9 +101,11 @@
 **玩家感受：** 平台不是随意漂浮的方块，而是连接不同高度层的空间结构。
 
 参考图：
-- The Last Campfire 官方 Press Kit：[Puzzle environment 0](https://thelastcampfiregame.com/images/presskit/0.png)
-- The Last Campfire 官方 Press Kit：[Puzzle environment 2](https://thelastcampfiregame.com/images/presskit/2.png)
-- Monument Valley 官方设计文章：[Monument Valley](https://ustwo.com/blog/monument-valley-out-now/)
+![The Last Campfire puzzle scene](https://thelastcampfiregame.com/images/presskit/0.png)
+
+![The Last Campfire puzzle environment](https://thelastcampfiregame.com/images/presskit/2.png)
+
+来源：[The Last Campfire 官方 Press Kit](https://thelastcampfiregame.com/press-kit.html)
 
 学习：
 - 机关与空间连接的关系。
@@ -111,9 +122,11 @@
 **玩家感受：** 玩家抵达高处后，终于看懂之前探索过的空间结构，并获得明显的视野奖励。
 
 参考图：
-- Sky 官方日落环境：[Dawn/Cloud environment](https://www.thatskygame.com/f=png/https://a.storyblok.com/f/108104/2560x1440/7226d91fbf/dobl_sunset-wallpaper_s2560x1440_2403.png)
-- Sky 官方云海区域：[Prairie](https://www.thatskygame.com/f=png/https://a.storyblok.com/f/108104/4800x2700/90a0601dba/2_prairie_7d7846757a.jpeg)
-- Journey 艺术总监作品档案：[Journey art direction](https://mattnava.com/Journey-1)
+![Sky sunset cloud environment](https://www.thatskygame.com/f=png/https://a.storyblok.com/f/108104/2560x1440/7226d91fbf/dobl_sunset-wallpaper_s2560x1440_2403.png)
+
+![Sky Prairie vista](https://www.thatskygame.com/f=png/https://a.storyblok.com/f/108104/4800x2700/90a0601dba/2_prairie_7d7846757a.jpeg)
+
+来源：[Sky 官方网站](https://thatskygame.com/) · [Journey 艺术总监档案](https://mattnava.com/Journey-1)
 
 学习：
 - 远景留白、地标轮廓和光线方向。

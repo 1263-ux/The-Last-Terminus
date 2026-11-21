@@ -1,14 +1,9 @@
 # Task Packages｜任务包索引
 
-## 当前任务包
-
-| ID | 负责人 | 任务 | 状态 |
+| ID | Owner | 任务 | 状态 |
 |---|---|---|---|
-| A-01 | 成员 A | 列车公共空间、世界连接与云海尽头 | DESIGN_REVIEW |
+| A-01 | A | 列车公共空间、世界连接与云海尽头 | DESIGN BRIEF |
+| B-01 | B | 书桌站《桌面以下》 | DESIGN BRIEF |
+| C-01 | C | 失重花园 | DESIGN BRIEF |
 
-## 使用规则
-
-1. 先读任务包 README 和 TASK。
-2. 再读 Agent Team、空间设计、美术、资产、编辑器、参考和验收文件。
-3. DESIGN_REVIEW 阶段允许补充设计与技术探针，不允许擅自批量生产 Tripo 模型。
-4. 总设计师确认视觉方向和资产需求后，任务进入 READY。
+所有任务均遵循 `production/PRODUCTION-OPERATING-SYSTEM.md`。DESIGN BRIEF 表示可以开始研究、方案比较和白盒验证；关键 Tripo 批量生成须等待设计方向和白盒通过。

@@ -87,7 +87,9 @@
 2. `production/TEAM-ROLES.md`
 3. `production/EXECUTION-PROTOCOL.md`
 4. `production/INTEGRATION-CONTRACT.md`
-5. 对应的 `tasks/` 下具体任务包（任务包尚未创建时，不得自行假定具体制作范围）
+5. `production/COORDINATION-PROTOCOL.md`
+6. 对应的 `tasks/` 下具体任务包
+7. 当前阶段的 `production/prompts/DAY-XX-*.md`（首次初始化只使用 `production/prompts/00-BOOTSTRAP.md`）
 
 执行原则：
 - 总设计师负责设计决策和验收；A/B/C 对各自生产模块负责。
@@ -95,7 +97,7 @@
 - 每个场景/二进制文件必须有唯一主要负责人。
 - Git 用于版本管理；GLB/WPRE 用于资产交接；二者不能替代对项目迁移和场景依赖的实际验证。
 - 不得假定 WPRE 等同完整工程或完整场景；必须检查导入后层级、材质、碰撞、交互和引用。
-- 任务必须先有明确输入、参考、步骤、降级方案和验收标准，才进入 READY。
+- 任务包定义目标和边界；阶段提示词定义本轮重点，不得把每一步实现细节写死。
 - 每日 Review 必须提供真实编辑器截图、录屏或可重新打开的交付文件。
 
 ## 9. 任务包入口与状态
@@ -113,3 +115,11 @@
 
 ## 11. 成员启动入口
 首次开始执行时，先阅读 `production/START-HERE-FOR-MEMBERS.md`。该文件包含仓库获取方式、A/B/C 启动指令、首日交付清单和 Git 分支约定。
+
+
+## 12. 阶段提示词使用
+- 仓库初始化后，不要长期使用一条巨型主提示词。
+- 每个阶段只加载当前阶段的 Day Prompt。
+- Gate 未通过时继续使用当前阶段提示词进行 REVISE，不得机械跳到下一阶段。
+- 阻塞局部化：完成最小验证、记录证据、提出降级并继续其他独立任务。
+- 每阶段报告放在 `reports/day-XX/OWNER/`，并附 Commit、截图/录屏和交接信息。

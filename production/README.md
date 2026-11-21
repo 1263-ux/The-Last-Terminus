@@ -26,3 +26,8 @@
 ## 当前阶段
 
 当前已建立 A-01、B 书桌站、C 失重花园任务包。具体执行以各任务包和 Production Operating System 为准；任务包定义体验目标与验收，Agent 自主探索实现。
+
+
+## 阶段提示词与协作
+- [阶段提示词系统](prompts/README.md)：初始化只用 00-BOOTSTRAP，制作阶段使用 DAY-01 至 DAY-07。
+- [跨团队协作协议](COORDINATION-PROTOCOL.md)：接口交接、成果共享、文件所有权和阻塞局部化。

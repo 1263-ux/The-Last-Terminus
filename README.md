@@ -68,7 +68,7 @@
 5. [每日 Review 模板](production/DAILY-REVIEW-TEMPLATE.md)
 6. [资产登记模板](production/ASSET-MANIFEST-TEMPLATE.csv)
 
-**当前阶段：** 先建立生产规则；具体 A/B/C 任务包将在设计 Review 后单独编写，不把尚未确认的执行细节写成既定事实。
+**当前阶段：** A/B/C 任务包已建立；执行使用阶段提示词系统，按 Day 1–Day 7 的 Gate 推进。任务包定义体验目标与质量边界，Agent 自主探索实现。
 
 
 ## 任务包
@@ -82,3 +82,10 @@
 - [一周冲刺生产操作系统](production/PRODUCTION-OPERATING-SYSTEM.md)
 - [B：书桌站任务包](tasks/003-b-desk-world/README.md)
 - [C：失重花园任务包](tasks/004-c-floating-garden/README.md)
+
+
+## 阶段执行与跨团队协作
+
+- [首次仓库初始化（Git 地址与 A/B/C 分支）](production/START-HERE-FOR-MEMBERS.md)
+- [按阶段使用提示词（Day 1–Day 7）](production/prompts/README.md)
+- [跨团队协作、交接与阻塞处理](production/COORDINATION-PROTOCOL.md)

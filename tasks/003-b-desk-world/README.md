@@ -10,6 +10,6 @@ Owner：成员 B | World Type：Playable | Status：DESIGN BRIEF
 
 阅读：根目录 AGENTS、docs/00/01/05/06、production/PRODUCTION-OPERATING-SYSTEM，以及本目录全部文件。
 
-文件：TASK.md、DESIGN-DIRECTION.md、AGENT-TEAM.md、REFERENCES.md、ASSET-BRIEFS.md、GATES-AND-ACCEPTANCE.md。
+文件：TASK.md、DESIGN-DIRECTION.md、AGENT-TEAM.md、REFERENCES.md、VISUAL-REFERENCE-BOARD.md、ASSET-BRIEFS.md、GATES-AND-ACCEPTANCE.md。
 
 Tripo：B 提出关键资产需求，附参考视图和提示词草案；总设计师负责实际生成；B 负责 Blender 检查、导入、场景适配和反馈。

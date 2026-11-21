@@ -17,9 +17,11 @@
 **玩家感受：** 像走进由巨书、书脊和书页构成的峡谷；一眼理解自己处于微缩尺度。
 
 参考图：
-- Grounded 官方庭院全景：[Welcome to the Backyard](https://media.obsidian.net/images/grounded/groundedGame/welcome-to-the-backyard.jpg)
-- Grounded 官方树木区域：[The Oak Tree](https://media.obsidian.net/images/grounded/groundedGame/backyard/the-oak-tree.jpg)
-- Grounded 官方草地：[The Grasslands](https://media.obsidian.net/images/grounded/groundedGame/backyard/the-grasslands.jpg)
+![Grounded backyard scale reference](https://media.obsidian.net/images/grounded/groundedGame/welcome-to-the-backyard.jpg)
+
+![Grounded oak tree scale reference](https://media.obsidian.net/images/grounded/groundedGame/backyard/the-oak-tree.jpg)
+
+来源：[Grounded 官方页面](https://grounded.obsidian.net/game)
 
 学习：
 - 用巨大前景物件建立尺度反差。
@@ -35,9 +37,11 @@
 **玩家感受：** 尺子是一个熟悉的日常物件，但在微缩尺度下成为真正改变通行方式的桥。
 
 参考图：
-- The Last Campfire 官方 Press Kit：[Puzzle environment image 0](https://thelastcampfiregame.com/images/presskit/0.png)
-- The Last Campfire 官方 Press Kit：[Puzzle environment image 1](https://thelastcampfiregame.com/images/presskit/1.png)
-- Grounded 官方野外结构：[The Picnic Table](https://media.obsidian.net/images/grounded/groundedGame/backyard/the-picnic-table.jpg)
+![The Last Campfire puzzle environment](https://thelastcampfiregame.com/images/presskit/0.png)
+
+![Grounded picnic table scale reference](https://media.obsidian.net/images/grounded/groundedGame/backyard/the-picnic-table.jpg)
+
+来源：[The Last Campfire 官方 Press Kit](https://thelastcampfiregame.com/press-kit.html) · [Grounded 官方页面](https://grounded.obsidian.net/game)
 
 学习：
 - 机关与环境路线之间的关系。
@@ -54,9 +58,11 @@
 **玩家感受：** 文具盒不是一个普通容器，而是微缩居民生活的街区、入口和建筑边界。
 
 参考图：
-- Tiny Glade 官方商店截图：[Architecture and handcrafted detail](https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2198150/ss_ed8d49e1bdc02b0c8caadb66e06b6d6ad6218c1f.1920x1080.jpg)
-- Tiny Glade 官方商店页面：[Tiny Glade](https://store.steampowered.com/app/2198150/Tiny_Glade/)
-- Grounded 官方基地图：[Shroombrick Base](https://media.obsidian.net/images/grounded/groundedGame/bases/grounded-shroombrick-base.jpg)
+![Tiny Glade handcrafted architecture](https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2198150/ss_ed8d49e1bdc02b0c8caadb66e06b6d6ad6218c1f.1920x1080.jpg)
+
+![Grounded base architecture](https://media.obsidian.net/images/grounded/groundedGame/bases/grounded-shroombrick-base.jpg)
+
+来源：[Tiny Glade 官方 Steam 页面](https://store.steampowered.com/app/2198150/Tiny_Glade/) · [Grounded 官方页面](https://grounded.obsidian.net/game)
 
 学习：
 - 建筑模块的比例、入口、窗洞、屋檐和灯光。
@@ -73,8 +79,9 @@
 **玩家感受：** 巨大陶瓷杯、杯柄和杯垫构成一个远处港口，水面和船只让世界显得更大。
 
 参考图：
-- Grounded 官方池塘：[The Koi Pond](https://media.obsidian.net/images/grounded/groundedGame/backyard/the-koi-pond.jpg)
-- Grounded 官方沙地/水域环境：[The Crab Sandbox](https://media.obsidian.net/images/grounded/groundedGame/backyard/the-crab-sandbox.jpg)
+![Grounded Koi Pond water edge reference](https://media.obsidian.net/images/grounded/groundedGame/backyard/the-koi-pond.jpg)
+
+来源：[Grounded 官方页面](https://grounded.obsidian.net/game)
 
 学习：
 - 水岸、码头和远景之间的层次。
@@ -91,8 +98,9 @@
 **玩家感受：** 桌布或布料褶皱像山丘、沟壑和柔软坡道，提供与书本硬质结构不同的触感。
 
 参考图：
-- Tiny Glade 官方草地与植物细节：[Tiny Glade](https://store.steampowered.com/app/2198150/Tiny_Glade/)
-- Grounded 官方植被环境：[The Hedge](https://media.obsidian.net/images/grounded/groundedGame/backyard/the-hedge.jpg)
+![Grounded Hedge vegetation reference](https://media.obsidian.net/images/grounded/groundedGame/backyard/the-hedge.jpg)
+
+来源：[Grounded 官方页面](https://grounded.obsidian.net/game)
 
 学习：
 - 软质形体如何形成自然坡度。
@@ -109,8 +117,9 @@
 **玩家感受：** 台灯是这个微缩世界的太阳；它决定方向、时间和温暖感。
 
 参考图：
-- Grounded 官方全景：[Welcome to the Backyard](https://media.obsidian.net/images/grounded/groundedGame/welcome-to-the-backyard.jpg)
-- Grounded 官方树冠环境：[The Oak Tree](https://media.obsidian.net/images/grounded/groundedGame/backyard/the-oak-tree.jpg)
+![Grounded backyard lighting reference](https://media.obsidian.net/images/grounded/groundedGame/welcome-to-the-backyard.jpg)
+
+来源：[Grounded 官方页面](https://grounded.obsidian.net/game)
 
 学习：
 - 强主光如何塑造巨物轮廓和空间层次。

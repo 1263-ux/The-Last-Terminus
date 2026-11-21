@@ -2,83 +2,45 @@
 
 > 一列穿越不同尺度与空间法则的天空列车；一段由三个世界组成、从初次探索走向云海尽头的旅程。
 
-本仓库用于保存《天空列车的最后一站》的核心世界观、叙事设定、三个世界的设计基线，以及供设计 Agent、造世界编辑器操作者和集成负责人共同遵循的制作约定。
+## 项目范围
+- **核心载体：** 连接不同世界的天空列车。
+- **世界 01：** 书桌站《桌面以下》：微缩尺度、日常物件用途重构、环境谜题。
+- **世界 02：** 失重花园：空间错位、垂直探索、路线发现。
+- **世界 03：** 云海尽头：纯展示、观景、旅程收束。
+- **制作目标：** 一周冲刺，交付一段完整、独特、可体验的短旅程，不追求完整开放世界。
 
-## 项目当前定位
+## 项目设计文档
+1. [项目核心](docs/00-PROJECT-CORE.md)
+2. [World Bible](docs/01-WORLD-BIBLE.md)
+3. [列车设定](docs/02-TRAIN-DESIGN.md)
+4. [书桌站](docs/worlds/01-DESK-WORLD.md)
+5. [失重花园](docs/worlds/02-FLOATING-GARDEN.md)
+6. [云海尽头](docs/worlds/03-LAST-TERMINUS.md)
+7. [旅程结构](docs/04-JOURNEY-STRUCTURE.md)
+8. [统一美术与声音](docs/05-ART-AND-AUDIO.md)
+9. [一周范围](docs/06-ONE-WEEK-SCOPE.md)
+10. [决策与开放问题](docs/07-DECISIONS-AND-OPEN-QUESTIONS.md)
+11. [参考项目](docs/08-REFERENCES.md)
 
-- **作品名：**《天空列车的最后一站》（The Last Terminus）
-- **核心载体：** 一列连接不同世界的天空列车。
-- **本次范围：** 一节共享列车空间 + 两个可玩世界 + 一个纯展示终点世界。
-- **世界 01：** 书桌站《桌面以下》/ 微缩世界，以日常物件改造和环境解谜为核心。
-- **世界 02：** 失重花园，以空间方向、垂直探索和路线发现为核心。
-- **世界 03：** 云海尽头 / 最后一站，以环境奇观、观景和旅程收束为核心，纯展示。
-- **制作约束：** 一周冲刺；不以完整开放世界或复杂系统为目标。
-- **创作工具：** 抖音新版「造世界 AI 编辑器」。具体工程、资产导入、交接和发布能力以团队实测为准。
-
-## 重要状态约定
-
-本仓库区分三种内容：
-
-- **已确认：** 用户明确选择或反复确认的项目决策。
-- **设计提案：** 当前建议方案，可在评审中调整，不能被 Agent 擅自写成既定事实。
-- **待验证：** 需要通过造世界编辑器实际操作、试玩或官方文档确认的事项。
-
-列车起源、云隙的本体、列车为何停靠、最终站的真相目前均属于**开放设定**，不得自行编造为正式世界观。
-
-## 从这里开始
-
-1. [项目总览与核心概念](docs/00-PROJECT-CORE.md)
-2. [世界观规则与开放悬念](docs/01-WORLD-BIBLE.md)
-3. [天空列车设定](docs/02-TRAIN-DESIGN.md)
-4. [世界 01：书桌站《桌面以下》](docs/worlds/01-DESK-WORLD.md)
-5. [世界 02：失重花园](docs/worlds/02-FLOATING-GARDEN.md)
-6. [世界 03：云海尽头](docs/worlds/03-LAST-TERMINUS.md)
-7. [旅程叙事与体验节奏](docs/04-JOURNEY-STRUCTURE.md)
-8. [统一美术与声音方向](docs/05-ART-AND-AUDIO.md)
-9. [一周制作范围与验收](docs/06-ONE-WEEK-SCOPE.md)
-10. [Agent 执行约定](AGENTS.md)
-
-## 本仓库不负责什么
-
-- 不把《崩坏：星穹铁道》的角色、剧情、世界、视觉资产或文案搬入项目。
-- 不把《梦境邮局》作为本项目站点或本轮制作内容；该 Idea 已暂停/放弃。
-- 不提前扩展第四、第五个世界。
-- 不将概念图等同于可导入、可运行的生产资产。
-- 不假定造世界编辑器支持未实测的场景合并、多人实时协作、脚本、载具或跨账号迁移能力。
-
-## 当前核心判断
-
-三个世界承担不同的体验职责：
-
-- **书桌站：让玩家参与。** 通过观察、物件改造和多解谜题，亲自改变一个微缩世界。
-- **失重花园：让玩家惊奇。** 通过方向错位、垂直空间和路线发现，体验不同的空间法则。
-- **云海尽头：让玩家记住。** 通过列车抵达、宏大环境、观景和音乐，完成旅程的情绪收束。
-
-这三个世界不是三个独立作品的拼盘，而是同一趟旅程中的三个不同章节。
-
-
-## 生产体系与任务包
-
-团队生产规范已集中放入 `production/`：
-
-1. [团队角色与责任边界](production/TEAM-ROLES.md)
-2. [Agent 执行协议](production/EXECUTION-PROTOCOL.md)
-3. [Git、GLB、WPRE 与集成约定](production/INTEGRATION-CONTRACT.md)
-4. [可执行任务包模板](production/TASK-PACKAGE-TEMPLATE.md)
-5. [每日 Review 模板](production/DAILY-REVIEW-TEMPLATE.md)
-6. [资产登记模板](production/ASSET-MANIFEST-TEMPLATE.csv)
-
-**当前阶段：** 先建立生产规则；具体 A/B/C 任务包将在设计 Review 后单独编写，不把尚未确认的执行细节写成既定事实。
-
+## 生产与执行入口
+- [首次初始化入口](production/START-HERE-FOR-MEMBERS.md)
+- [阶段提示词系统](production/prompts/README.md)
+- [七天生产操作系统](production/PRODUCTION-OPERATING-SYSTEM.md)
+- [跨团队协作协议](production/COORDINATION-PROTOCOL.md)
+- [团队职责](production/TEAM-ROLES.md)
+- [Agent 执行协议](production/EXECUTION-PROTOCOL.md)
+- [Git/GLB/WPRE 集成约定](production/INTEGRATION-CONTRACT.md)
 
 ## 任务包
+- [A：列车、世界连接与云海尽头](tasks/002-a-train-core/README.md)
+- [B：书桌站《桌面以下》](tasks/003-b-desk-world/README.md)
+- [C：失重花园](tasks/004-c-floating-garden/README.md)
 
-- [A-01：列车公共空间、世界连接与云海尽头](tasks/002-a-train-core/README.md)
+## 重要原则
+**方向明确，边界清楚，参考充分，结果开放，验证严格。**
 
-任务包定义体验目标、设计意图、参考方法和验收结果；具体实现由 Agent 根据工具能力探索，不预先规定每个模型、坐标和操作步骤。
+任务包定义玩家体验、设计意图、范围和验收结果；Agent 自主研究、组织团队、提出方案、制作原型和迭代。不要把一条永久提示词或大量 Markdown 细节当成执行本身。
 
+状态区分：CONFIRMED / PROPOSED / TO-VERIFY / OUT-OF-SCOPE。列车起源、云隙本体和终点真相仍是开放设定。
 
-## 生产执行总纲
-- [一周冲刺生产操作系统](production/PRODUCTION-OPERATING-SYSTEM.md)
-- [B：书桌站任务包](tasks/003-b-desk-world/README.md)
-- [C：失重花园任务包](tasks/004-c-floating-garden/README.md)
+本仓库目前保存设计、任务包、生产规范和报告，不等于已包含造世界编辑器的完整原生工程。原生工程纳入 Git 前必须先完成保存恢复、目录、依赖和二进制冲突验证。

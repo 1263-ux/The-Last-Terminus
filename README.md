@@ -55,3 +55,17 @@
 - **云海尽头：让玩家记住。** 通过列车抵达、宏大环境、观景和音乐，完成旅程的情绪收束。
 
 这三个世界不是三个独立作品的拼盘，而是同一趟旅程中的三个不同章节。
+
+
+## 生产体系与任务包
+
+团队生产规范已集中放入 `production/`：
+
+1. [团队角色与责任边界](production/TEAM-ROLES.md)
+2. [Agent 执行协议](production/EXECUTION-PROTOCOL.md)
+3. [Git、GLB、WPRE 与集成约定](production/INTEGRATION-CONTRACT.md)
+4. [可执行任务包模板](production/TASK-PACKAGE-TEMPLATE.md)
+5. [每日 Review 模板](production/DAILY-REVIEW-TEMPLATE.md)
+6. [资产登记模板](production/ASSET-MANIFEST-TEMPLATE.csv)
+
+**当前阶段：** 先建立生产规则；具体 A/B/C 任务包将在设计 Review 后单独编写，不把尚未确认的执行细节写成既定事实。

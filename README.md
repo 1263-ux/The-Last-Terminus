@@ -89,3 +89,9 @@
 - [首次仓库初始化（Git 地址与 A/B/C 分支）](production/START-HERE-FOR-MEMBERS.md)
 - [按阶段使用提示词（Day 1–Day 7）](production/prompts/README.md)
 - [跨团队协作、交接与阻塞处理](production/COORDINATION-PROTOCOL.md)
+
+
+## 三份成员启动提示词
+- [A｜列车与集成](production/prompts/ROLE-A-TRAIN-INTEGRATION.md)
+- [B｜书桌站](production/prompts/ROLE-B-DESK-WORLD.md)
+- [C｜失重花园](production/prompts/ROLE-C-FLOATING-GARDEN.md)

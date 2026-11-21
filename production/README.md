@@ -31,3 +31,11 @@
 ## 阶段提示词与协作
 - [阶段提示词系统](prompts/README.md)：初始化只用 00-BOOTSTRAP，制作阶段使用 DAY-01 至 DAY-07。
 - [跨团队协作协议](COORDINATION-PROTOCOL.md)：接口交接、成果共享、文件所有权和阻塞局部化。
+
+
+## 三份成员专属启动提示词
+- [A｜列车与集成](prompts/ROLE-A-TRAIN-INTEGRATION.md)
+- [B｜书桌站](prompts/ROLE-B-DESK-WORLD.md)
+- [C｜失重花园](prompts/ROLE-C-FLOATING-GARDEN.md)
+
+每位成员只使用自己的 ROLE Prompt 初始化并启动 Day 1；之后按 Gate 加载对应阶段提示词。

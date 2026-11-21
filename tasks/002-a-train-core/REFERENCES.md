@@ -94,3 +94,55 @@
 5. 哪些内容不能照搬？
 
 最有价值的交付是带标注的参考图、短视频时间点和一段简洁的设计判断。
+
+
+## 8. 视觉参考图入口
+
+以下图片来自作品官方 Press Kit、开发者作品集或官方商店页面，仅用于内部视觉研究。不要将截图直接用作游戏贴图、模型纹理或宣传素材。
+
+### Spiritfarer｜移动家园布局
+
+![Spiritfarer boat layout reference](https://thunderlotusgames.com/wp-content/uploads/2023/10/Spiritfarer-SCREENSHOTS-03-576x324.jpg)
+
+观察船上不同建筑如何组织、上下层如何形成可读轮廓，以及玩家如何在移动家园中生活。转化时只学习空间组织和旅程归属感，不复制其手绘风格或具体建筑。
+
+来源：[Thunder Lotus 官方 Press Kit](https://thunderlotusgames.com/press-kits/spiritfarer-press-kit/)
+
+### Tiny Glade｜建筑模块与细节密度
+
+![Tiny Glade architecture reference](https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2198150/ss_83248b45f1431127f94ab7bcfc246e5efb26848e.1920x1080.jpg)
+
+观察墙体、窗、拱、屋顶和小型结构如何自然衔接，以及少量细节如何让建筑显得精致。转化时关注模块之间的连接关系，不复制城堡主题。
+
+来源：[Tiny Glade 官方 Steam 页面](https://store.steampowered.com/app/2198150/Tiny_Glade/)
+
+### Sky: Children of the Light｜云海与浮岛
+
+![Sky cloud environment reference](https://image.api.playstation.com/vulcan/ap/rnd/202212/0123/OvK0ASazDM3Bs7iydn0AfdbN.png)
+
+观察云海的前中远景、浮岛尺度、天空留白和地标亮度。转化时重点研究空间层次和光线，不复制角色、建筑和飞行玩法。
+
+来源：[PlayStation 官方游戏页面](https://store.playstation.com/ja-jp/product/UP7529-CUSA31531_00-1928488316481260)
+
+### Journey｜远景地标与终点情绪
+
+Matt Nava 是《Journey》的艺术总监。其个人项目档案包含环境概念、最终关卡、色彩和灯光案例。
+
+- [Journey 项目与环境艺术图集](https://mattnava.com/Journey-1)
+- [高山区域参考图](https://freight.cargo.site/t/original/i/d32fcc877b771bd5b1227121f90cfd01c0f2ab990c7205b66bb496d35cd2b44c/High-Mountain1.jpg)
+- [终点/山顶区域参考图](https://freight.cargo.site/t/original/i/5534b77d023fa0c892aa301906e47c4ff662a7aa2fbb497d72e428d90d4db940/SummitLevel.jpg)
+
+观察远处目标如何引导玩家、终点如何通过色彩和开阔视野形成奖励。不要复制沙漠、角色或具体构图。
+
+### A Short Hike｜路线探索与观景奖励
+
+- [开发者官方制作分享与截图](https://blog.playstation.com/2021/08/05/crafting-a-tiny-open-world-a-look-behind-the-scenes-at-the-creation-of-a-short-hike/)
+- [GDC Postmortem](https://www.youtube.com/watch?v=ZW8gWgpptI8)
+
+重点观察主路线、可选支路、地标可见性和高处视野。把这些方法转化为云海尽头的短路线，不要复制其像素美术风格。
+
+### Sky｜声音设计参考
+
+- [FMOD 对 Sky 音频团队的访谈](https://www.fmod.com/blog/sky-children-of-the-light-interview)
+
+重点研究声音如何讲述环境、云层接触声如何强化空间想象，以及音乐如何根据玩家位置/状态变化。只借鉴设计方法，不复制音乐或音效。

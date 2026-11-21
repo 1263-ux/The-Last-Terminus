@@ -9,6 +9,7 @@
 3. `INTEGRATION-CONTRACT.md`：Git、GLB、WPRE、场景交接和集成边界。
 4. `TASK-PACKAGE-TEMPLATE.md`：每个具体任务如何写成可执行任务包。
 5. `DAILY-REVIEW-TEMPLATE.md`：每日提交什么证据、如何验收。
+6. `PRODUCTION-OPERATING-SYSTEM.md`：七天生产节奏、Agent 团队、阶段 Gate 和交付闭环。
 
 ## 当前团队事实
 
@@ -20,4 +21,4 @@
 
 ## 当前阶段
 
-本目录先建立生产地基。具体 A/B/C 制作任务包、资产参考板、模型提示词和逐日任务尚未在本次提交中预设，下一阶段由总设计师逐项设计并评审。
+当前已建立 A-01、B 书桌站、C 失重花园任务包。具体执行以各任务包和 Production Operating System 为准；任务包定义体验目标与验收，Agent 自主探索实现。

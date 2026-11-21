@@ -76,3 +76,9 @@
 - [A-01：列车公共空间、世界连接与云海尽头](tasks/002-a-train-core/README.md)
 
 任务包定义体验目标、设计意图、参考方法和验收结果；具体实现由 Agent 根据工具能力探索，不预先规定每个模型、坐标和操作步骤。
+
+
+## 生产执行总纲
+- [一周冲刺生产操作系统](production/PRODUCTION-OPERATING-SYSTEM.md)
+- [B：书桌站任务包](tasks/003-b-desk-world/README.md)
+- [C：失重花园任务包](tasks/004-c-floating-garden/README.md)

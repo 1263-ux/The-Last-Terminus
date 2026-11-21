@@ -87,7 +87,7 @@
 2. `production/TEAM-ROLES.md`
 3. `production/EXECUTION-PROTOCOL.md`
 4. `production/INTEGRATION-CONTRACT.md`
-5. 对应的 `production/task-packages/` 下具体任务包（任务包尚未创建时，不得自行假定具体制作范围）
+5. 对应的 `tasks/` 下具体任务包（任务包尚未创建时，不得自行假定具体制作范围）
 
 执行原则：
 - 总设计师负责设计决策和验收；A/B/C 对各自生产模块负责。
@@ -105,3 +105,7 @@
 - 任务包状态为 DRAFT / DESIGN_REVIEW 时，只能进行设计审查和技术探针，不得批量生产高成本资产。
 - 任务包标记 READY 后，才可以按其 Gate 正式生产。
 - 总设计师负责 Tripo 关键模型生成；成员负责提供资产规格、参考视图需求、提示词和导入验收，除非某个具体任务另有明确授权。
+
+
+## 10. 一周冲刺与阶段 Gate
+所有成员必须遵循 `production/PRODUCTION-OPERATING-SYSTEM.md` 的 Day 1–Day 7 时间表、每日检查点、阶段交付物和 Gate 验收状态。任务包只定义体验目标和质量边界，Agent 可自主探索实现。没有真实编辑器证据，不得将阶段标记为通过。

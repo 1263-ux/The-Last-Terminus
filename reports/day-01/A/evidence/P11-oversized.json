@@ -1,0 +1,286 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": {
+    "oversizedCount": 21,
+    "items": [
+      {
+        "path": "/previewGameRoot/A_终点站灰盒v3/Model/T_Platform",
+        "size": [
+          8,
+          0,
+          35
+        ],
+        "center": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "path": "/previewGameRoot/A_终点站灰盒v3/Model/T_ArcadeDeck",
+        "size": [
+          4,
+          0,
+          48
+        ],
+        "center": [
+          0,
+          0,
+          45
+        ]
+      },
+      {
+        "path": "/previewGameRoot/A_终点站灰盒v3/Model/T_Ramp",
+        "size": [
+          4,
+          0,
+          40
+        ],
+        "center": [
+          0,
+          0,
+          89
+        ]
+      },
+      {
+        "path": "/previewGameRoot/A_终点站灰盒v3/Model/T_RampParapetL",
+        "size": [
+          0,
+          1,
+          40
+        ],
+        "center": [
+          2,
+          1,
+          89
+        ]
+      },
+      {
+        "path": "/previewGameRoot/A_终点站灰盒v3/Model/T_RampParapetR",
+        "size": [
+          0,
+          1,
+          40
+        ],
+        "center": [
+          -2,
+          1,
+          89
+        ]
+      },
+      {
+        "path": "/previewGameRoot/A_终点站灰盒v3/Model/T_CloudNear",
+        "size": [
+          120,
+          1,
+          120
+        ],
+        "center": [
+          0,
+          -4,
+          152
+        ]
+      },
+      {
+        "path": "/previewGameRoot/A_终点站灰盒v3/Model/T_CloudMid",
+        "size": [
+          200,
+          1,
+          200
+        ],
+        "center": [
+          0,
+          12,
+          202
+        ]
+      },
+      {
+        "path": "/previewGameRoot/A_终点站灰盒v3/Model/T_CloudFar",
+        "size": [
+          320,
+          1,
+          320
+        ],
+        "center": [
+          0,
+          40,
+          282
+        ]
+      },
+      {
+        "path": "/previewGameRoot/A_终点站灰盒v3/Model/T_Platform",
+        "size": [
+          8,
+          0,
+          35
+        ],
+        "center": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "path": "/previewGameRoot/A_终点站灰盒v3/Model/T_ArcadeDeck",
+        "size": [
+          4,
+          0,
+          48
+        ],
+        "center": [
+          0,
+          0,
+          45
+        ]
+      },
+      {
+        "path": "/previewGameRoot/A_终点站灰盒v3/Model/T_Ramp",
+        "size": [
+          4,
+          0,
+          40
+        ],
+        "center": [
+          0,
+          0,
+          89
+        ]
+      },
+      {
+        "path": "/previewGameRoot/A_终点站灰盒v3/Model/T_RampParapetL",
+        "size": [
+          0,
+          1,
+          40
+        ],
+        "center": [
+          2,
+          1,
+          89
+        ]
+      },
+      {
+        "path": "/previewGameRoot/A_终点站灰盒v3/Model/T_RampParapetR",
+        "size": [
+          0,
+          1,
+          40
+        ],
+        "center": [
+          -2,
+          1,
+          89
+        ]
+      },
+      {
+        "path": "/previewGameRoot/A_终点站灰盒v3/Model/T_CloudNear",
+        "size": [
+          120,
+          1,
+          120
+        ],
+        "center": [
+          0,
+          -4,
+          152
+        ]
+      },
+      {
+        "path": "/previewGameRoot/A_终点站灰盒v3/Model/T_CloudMid",
+        "size": [
+          200,
+          1,
+          200
+        ],
+        "center": [
+          0,
+          12,
+          202
+        ]
+      },
+      {
+        "path": "/previewGameRoot/A_终点站灰盒v3/Model/T_CloudFar",
+        "size": [
+          320,
+          1,
+          320
+        ],
+        "center": [
+          0,
+          40,
+          282
+        ]
+      },
+      {
+        "path": "/previewGameRoot/A_终点站灰盒v3/Model/T_Platform",
+        "size": [
+          8,
+          0,
+          35
+        ],
+        "center": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "path": "/previewGameRoot/A_终点站灰盒v3/Model/T_ArcadeDeck",
+        "size": [
+          4,
+          0,
+          48
+        ],
+        "center": [
+          0,
+          0,
+          45
+        ]
+      },
+      {
+        "path": "/previewGameRoot/A_终点站灰盒v3/Model/T_Ramp",
+        "size": [
+          4,
+          0,
+          40
+        ],
+        "center": [
+          0,
+          0,
+          89
+        ]
+      },
+      {
+        "path": "/previewGameRoot/A_终点站灰盒v3/Model/T_RampParapetL",
+        "size": [
+          0,
+          1,
+          40
+        ],
+        "center": [
+          2,
+          1,
+          89
+        ]
+      },
+      {
+        "path": "/previewGameRoot/A_终点站灰盒v3/Model/T_RampParapetR",
+        "size": [
+          0,
+          1,
+          40
+        ],
+        "center": [
+          -2,
+          1,
+          89
+        ]
+      }
+    ]
+  },
+  "startFrame": 17333,
+  "endFrame": 17333,
+  "durationMs": 9,
+  "mode": "native-puerts"
+}

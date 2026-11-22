@@ -1,0 +1,6 @@
+﻿{
+  "ok": true,
+  "resultType": "string",
+  "result": "target=A_终点站v3 pos=0.0,0.0,0.0 childCount=10",
+  "bindingKey": "global"
+}

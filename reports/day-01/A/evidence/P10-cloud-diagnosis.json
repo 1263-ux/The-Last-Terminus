@@ -1,0 +1,85 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": [
+    {
+      "name": "T_CloudNear",
+      "found": true,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "boundsSize": [
+        120,
+        1,
+        120
+      ],
+      "boundsCenterY": -4
+    },
+    {
+      "name": "T_CloudMid",
+      "found": true,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "boundsSize": [
+        200,
+        1,
+        200
+      ],
+      "boundsCenterY": 12
+    },
+    {
+      "name": "T_CloudFar",
+      "found": true,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "boundsSize": [
+        320,
+        1,
+        320
+      ],
+      "boundsCenterY": 40
+    },
+    {
+      "name": "T_Platform",
+      "found": true,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "boundsSize": [
+        8,
+        0,
+        35
+      ],
+      "boundsCenterY": -0.2
+    },
+    {
+      "name": "T_ArcadeDeck",
+      "found": true,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "boundsSize": [
+        4,
+        0,
+        48
+      ],
+      "boundsCenterY": -0.2
+    }
+  ],
+  "startFrame": 7422,
+  "endFrame": 7422,
+  "durationMs": 13,
+  "mode": "native-puerts"
+}

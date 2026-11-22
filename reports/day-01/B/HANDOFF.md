@@ -124,6 +124,8 @@ Exit（书桌 → 列车）
 | **C-14** | **`scene remove` 只接受位置参数** | `scene remove -667818639` ✅；`scene remove --args '{"rootIDs":[...]}'` 会**静默失败**（返回 CHECK/无输出）。删除必须用位置参数形式，负号数字直接写。 |
 | **C-15** | **编辑器卡死可用实例级重启恢复** | `instance stop` → 等 10 s → `instance start --project <projectRoot> --mode foreground --startup-timeout 180`。本轮用了 3 次，每次都干净恢复。注意 `instance stop` 返回 `{"stopping":true,"stopped":false}` 是正常的。 |
 | **C-16** | **`runtime screenshot --object` 的 `instanceId` 每次重启都会变** | 必须每次 `runtime snapshot` 重新取，不能缓存。`snapshot` 里用正则 `"instanceId":"(-?\d+)","name":"(WB_[A-Z_]+)"` 提取最快。 |
+| **C-17** | **可以直接读相机 transform（本轮最有用的技巧）** ★ | `runtime lua eval --file x.lua --global`。`--global` 下**没有** `UnityEngine`，但有 **`CS`**。要点：① 查对象用 `CS.UnityEngine.GameObject.FindGameObjectsWithTag("MainCamera")`（`FindObjectsOfType` 在这条桥上不可用）；② **数组必须用 `cams:get_Item(0)`**，`cams[0]` 是 nil；③ `GetComponent` 必须传 `typeof(CS.UnityEngine.Camera)`，传类表会报 `invalid arguments`。完整脚本见 `lua/get_cam.lua`。 |
+| **C-18** | **第三人称相机在玩家"身后且下方"** | 实测 `TPCameraAvatar` 位置比玩家脚下低约 **1.08 m**，前向带 **18° 俯角**。后果：① 任何顶面平齐玩家脚底的整块地面板都会**把相机包在下面，挡死视野**；② 放在地面高度（y=玩家脚）的远景道具会**落到画面顶部之外**。摆位公式：`y = camY − tan(pitch) × 水平距离`。**这条对 C 的地形/平台尤其重要。** |
 
 ### ② B 对"两个世界玩法差异"的自我界定（请 C 审查是否越界）
 

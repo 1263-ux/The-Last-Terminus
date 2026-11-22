@@ -66,11 +66,27 @@ def write_glb(path, verts, faces, colors, name):
     colors = np.asarray(colors, dtype=np.float32)
 
     # Smooth per-vertex normals: accumulate face normals, then normalise.
+    #
+    # WINDING MATTERS. The engine's default raster state culls back faces using
+    # normal direction. The box() helper emits faces whose winding produces
+    # INWARD normals, so a naive accumulate renders every surface back-face and
+    # the object becomes invisible while still casting a shadow. We therefore
+    # flip the accumulated normals to point OUTWARD from the mesh centroid.
     normals = np.zeros_like(verts)
     tri = verts[faces]                       # (n,3,3)
     fn = np.cross(tri[:, 1] - tri[:, 0], tri[:, 2] - tri[:, 0])
     for k in range(3):
         np.add.at(normals, faces[:, k], fn)
+
+    # Orientation check against the centroid: if the summed normal points at the
+    # centre rather than away from it, the winding (and thus the normals) are
+    # inverted. Flip the whole set once, consistently.
+    centroid = verts.mean(axis=0)
+    outward = verts - centroid
+    agree = np.sum(np.einsum('ij,ij->i', normals, outward))
+    if agree < 0:
+        normals = -normals
+
     ln = np.linalg.norm(normals, axis=1, keepdims=True)
     ln[ln < 1e-12] = 1.0
     normals = (normals / ln).astype(np.float32)

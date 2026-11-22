@@ -20,7 +20,7 @@
 | T-06 | **移动平台组件** | **组件表里不存在** | [实测不支持] |
 | T-07 | 程序驱动平台 + 载人 | 平台可上升，玩家被带走 | [已验证] |
 | T-08 | **GLB 材质 / 分层配色** | **已解决：必须写 shader `_BaseColor`，`material.color` 无效** | [已验证·已解] |
-| T-08b | 带贴图 GLB 进场景 | **我的最小带贴图 GLB 导入失败；去贴图即成功** | [信号明确·待真机复测] |
+| T-08b | 带贴图 GLB 是否保留贴图 | **贴图保留**（KTX2 内嵌，`_BaseTex` 有效）；之前手写 PNG GLB 的失败是格式问题 | [已验证·已推翻旧结论] |
 | T-09 | 场景保存 / 关闭重开 | 白盒与可走性都保留 | [已验证] |
 | T-10 | 运行时世界边界 | `[0,255]`，越界对象被销毁 | [已验证] |
 | T-11 | `prefab attach` 语义 | **追加而非替换**，会留重复副本 | [已验证] |
@@ -282,52 +282,93 @@ scripts/garden_layer_tint.lua
 | `material.color` / `appearanceData` 无效 | 不要在这两个入口上浪费时间 |
 | `appearanceData` 重新 attach 会丢 | 不要依赖组件做持久视觉配置 |
 | 持久化必须用 Lua 脚本 | 运行时手改不跨轮次 |
-| **贴图是否保留仍未验证** | 只测了纯色，**带贴图的 GLB 是下一个必须测的项** |
+| **贴图同样保留（但须 KTX2）** | T-08b 已验证：`_BaseTex` 采样有效；裸 PNG GLB 进不了场景 |
 
-**残留风险**：`_BaseTex` 属性存在，说明 shader 支持贴图，但**没有验证导入的 GLB 贴图实际是否被采样**。Day 4 的 Tripo 模型如果依赖贴图细节，必须先补这个探针。已记入 `BLOCKERS.md` 的 R-06。
+**残留风险（已大幅收敛）**：T-08b 用编辑器自己的 Three.js 导出器验证了 albedo 贴图保留。仍未验证的是 **Tripo 实际导出格式**、`normal/ORM/emissive` 多通道贴图、以及透明+贴图组合。见 T-08b 与 R-06。
 
 ---
 
-## T-08b｜带贴图 GLB 是否保留贴图 [部分验证·有明确信号]
+## T-08b｜带贴图 GLB 是否保留贴图 [已验证·贴图确实保留] ✅
 
-**为什么要测**：T-08 只修好了**纯色**。Day 4 的 Tripo 模型如果依赖贴图细节，必须先知道贴图会不会被吞掉。
+> **状态更新（轮 8）**：Day 1 曾判定"有负面信号"，本轮用**真实导出器**复测后推翻。
+> 之前的失败是我手写 GLB 的构造问题，不是编辑器的能力限制。
 
-### 做法
+### 为什么要测
 
-用 Python 手写一个最小带贴图 GLB（24 顶点立方体 + 256×256 红蓝棋盘 PNG，`baseColorTexture` 指向内嵌 bufferView），
-`resource model import` 导入 → `check` 通过（`modelType: 1, nodeCount: 1`）→ `archive` 成功拿到 URI。
+T-08 只修好了**纯色**。Day 4 的 Tripo 模型如果依赖贴图细节，必须先知道贴图会不会被吞掉。`SPATIAL §11` 也把"半透明玻璃 / 带贴图 GLB"列为 Day 4 前置。
 
-### 结果（这是一个真实信号，不是"没测出结论"）
+### Day 1 的失败记录（保留，因为它是真实的）
+
+用 Python 手写一个最小带贴图 GLB（24 顶点立方体 + 256×256 PNG 棋盘，`baseColorTexture` → 内嵌 bufferView）：
 
 | 步骤 | 结果 |
 |---|---|
-| GLB 导入 + check + archive | **通过**（贴图随包被打包，没有在导入阶段报错） |
-| `prefab attach` 到已有 WPrefab | 通过 |
-| `prefab build` + `result archive` | 通过 |
-| **`scene import` 到主场景** | **失败** —— `节点导入失败，脚本已保留，可重试导入（阶段：runtime）` |
+| `resource model import` + `check` + `archive` | 通过 |
+| `prefab attach` → `build` → `result archive` | 通过 |
+| **`scene import`** | **失败**：`节点导入失败，脚本已保留，可重试导入（阶段：runtime）` |
 
-**关键对照**：把带贴图节点从 prefab 里删掉、重新 build/archive 后，同一场景**立刻导入成功**（`c-import-base-02`）。
+**关键对照**：把该节点从 prefab 删掉后同一场景立刻导入成功。所以失败确实由那个贴图节点引起。
 
-也就是说：**失败是带贴图节点引起的，不是场景或流程问题。** 同一个 prefab、同一台机器、同一个 request 流程，去掉贴图节点就能进，带上就进不去。
+当时的诚实边界写的是"我手写 GLB 的结果，不等于所有带贴图 GLB 都失败"——**这个保留是对的**。
 
-### 含义
+### 本轮复测：改用编辑器自己的 Three.js 作者管线
 
-1. **不能假定"Tripo 导出的带贴图 GLB 能直接进场景"**。这条在 Day 4 之前必须由总设计师/我一起处理。
-2. 当前可用的安全路线是：**几何承重 + `_BaseColor` 上色 + 分件材质**，不依赖贴图。这条路线已在白盒上完整验证（T-08）。
-3. 尚未定位失败的具体原因（是 bufferView 布局、mimeType、还是编辑器对贴图 GLB 的额外约束）。**我手写的是最小 GLB，可能是我的构造有问题，不排除标准的 Blender/Tripo 导出能正常导入。**
+没有 Blender，但编辑器的 Three.js authoring 就是真实导出器。写 `tex-probe` 模块：
+用 `CanvasTexture` 画 256×256 红/蓝棋盘 + 白十字（便于判 UV 方向），
+贴到一个 3×3×3 立方体上；旁边放一个纯绿无贴图方块作对照。
 
-### 诚实边界
+`model check` → `resource archive` → 导出的 `model.glb` **35,468 字节**
+（对比手写 PNG 版 2,916 字节）。解析 GLB JSON 块：
 
-这条结论的强度是"**我的最小带贴图 GLB 进不了场景**"，不等于"所有带贴图 GLB 都进不了"。要下后者结论，必须用**一个真实导出器（Blender 或 Tripo）产出的带贴图 GLB** 再测一次。已列入 Day 2 待办。
+```
+images: 1
+textures: 1
+materials: ['MAT_checker_albedo', None]
+baseColorTexture: [{'index': 0}, None]
+image details: [{'mimeType': 'image/ktx2', 'bufferView': 0}]
+```
 
-### 对 Day 4 的直接影响
+**编辑器导出器把 PNG 转成了 KTX2 压缩纹理并内嵌** —— 这正是它自己的标准产物格式。
 
-| 如果…… | 那么 Tripo 模型应该…… |
+### 结果：全链路通过
+
+| 步骤 | 结果 |
 |---|---|
-| 真实导出的带贴图 GLB 能进 | 正常走贴图流程，细节靠贴图 |
-| 真实导出的带贴图 GLB 也进不去 | **必须改为分件 + `_BaseColor`**，花瓣/花心/茎/根分成独立 Model，靠几何和纯色表达层次，不靠贴图 |
+| `prefab attach` / `build` / `result archive` | 通过 |
+| **`scene import`** | **通过**（`c-import-tex2`，`rootIDs: [-2081342714]`） |
+| `runtime start` | 通过 |
 
-这条必须在 Day 4 前定，否则关键美术会返工。
+**运行时材质检查**：
+
+```
+__optimized_merged_material_0  EnvLit_AI_Mat  _BaseTex = 256x256  ← 棋盘
+__optimized_merged_material_1  EnvLit_AI_Mat  _BaseTex = null      ← 纯绿对照
+```
+
+**视觉确认**（截图 `42-texture-glb-retained.png`）：红蓝棋盘与白十字完整显示，UV 方向正确；旁边对照方块是纯色。贴图**确实被 `EnvLit_AI_Mat` 的 `_BaseTex` 采样**。
+
+### 根因回溯
+
+手写 GLB 用的是 `image/png` + 裸 `bufferView`；真实导出器用 `image/ktx2`。
+编辑器在 runtime 阶段的导入器很可能只接受 KTX2（GPU 压缩纹理），
+遇到 PNG 就失败。**这是格式兼容问题，不是"不支持贴图"**。
+
+### 对 Day 4 的结论（已可定）
+
+1. ✅ **Tripo 模型可以依赖贴图细节**，不必退回"纯几何 + `_BaseColor`"的降级方案。
+2. ⚠️ 但必须确认 **Tripo 导出的贴图格式**。若 Tripo 给的是 PNG/JPEG 贴图，
+   需要先过一道转换（编辑器 Three.js authoring 会自动转 KTX2，
+   或让总设计师在导出时指定），**不能直接把裸 PNG GLB 塞进场景**。
+3. 之前在 `HANDOFF.md`、`BLOCKERS.md`、T-08 里写的"带贴图 GLB 未测 / 可能不保留"
+   全部以本节为准更新。
+
+### 仍未验证
+
+| 项 | 说明 |
+|---|---|
+| Tripo 实际导出格式 | 本轮用的是编辑器 Three.js 导出器，不是 Tripo。需总设计师提供一份 Tripo 产物做最终确认 |
+| 法线 / ORM / 自发光贴图 | 本轮只测了 `map`（albedo）。多通道贴图是否同样保留未测 |
+| 透明材质 + 贴图组合 | 玻璃类资产（`ASSET-CARDS.md §0.2`）仍需单独测 |
 
 ---
 
@@ -783,7 +824,8 @@ Day 2 必须解决的三条：
 | **GLB 导出会镜像 X 轴** | **已确认** | 源码 `+X` → 运行时 `−X`；外部脚本必须用实测坐标（T-16） |
 | 原生移动平台组件 | **不存在** | |
 | AI 地形生成浮空岛 | **不支持** | |
-| GLB 贴图在运行时保留 | **有明确负面信号** | 最小带贴图 GLB 进不了场景（T-08b） |
+| GLB 贴图（KTX2）在运行时保留 | **可用** | `_BaseTex` 采样有效，albedo 贴图与 UV 正确（T-08b） |
+| 裸 PNG 贴图 GLB | **不可用** | runtime 阶段导入失败；需先转 KTX2（T-08b） |
 | PCG 参考图确认 | **CLI 无可用格式** | |
 | Trigger 驱动玩法 | **可用** | 6 个回调成对触发；能写 transform、能复位玩家、Update+Time 计时器可用（T-13）。灯光/声音仍未验 |
 | 触发式平台降级方案 | **成立** | Trigger + Lua 写 transform，不需原生移动平台组件 |

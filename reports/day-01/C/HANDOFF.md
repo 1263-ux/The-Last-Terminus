@@ -113,7 +113,14 @@ mr.sharedMaterial.SetColor("_BaseColor", new CS.UnityEngine.Color(r, g, b, 1));
 
 我的脚本在 `ai-sessions/workspace_ihycinrp/wprefabs/garden-whitebox/scripts/garden_layer_tint.lua`，可以直接拿来改造。
 
-**残留风险**：只验证了纯色。**带贴图的 GLB 是否保留贴图未测**，这是 Day 4 前必须补的项。如果贴图不保留，就改成「几何承重 + `_BaseColor` 上色」，不依赖贴图。
+**贴图结论已更新（轮 8，T-08b）**：用编辑器自己的 Three.js 作者管线生成 KTX2 贴图 GLB，
+`scene import` 通过、运行时 `_BaseTex` 采样有效，红蓝棋盘与 UV 完整可见
+（截图 `42-texture-glb-retained.png`）。**贴图可以依赖，不必退回纯色 + `_BaseColor` 的降级方案。**
+
+唯一要注意的是**格式**：之前手写 `image/png` 的 GLB 在 runtime 阶段导入失败，
+真实导出器用的是 `image/ktx2`。Tripo 产物若带贴图，先确认格式或过一道编辑器 authoring 转换。
+仍未验证：多通道贴图（normal/ORM/emissive）、透明+贴图组合、Tripo 实际导出格式。
+这一条同样给 A/B——书桌站/终点站若用贴图资产，别直接塞裸 PNG GLB。
 
 **2｜可走面的碰撞必须实测，不能靠几何判断**
 

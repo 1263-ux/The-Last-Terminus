@@ -306,6 +306,18 @@ GLB → resource model import --glb → resource model check → resource archiv
 
 ---
 
+## 6.5 白盒（不依赖 B/C 的独立产出）
+
+| 白盒 | 结果 | 关键发现 |
+|---|---|---|
+| 列车 Hub（3.8×14×2.35 m，Scheme 2 中央炉岛） | 已建成、可走 | **相机有碰撞避让**（请求 6 m → 车厢内 1.60 m，开阔地 5.98 m），车厢无需加宽 |
+| 云海尽头（L3 鲸骨拱廊，133 m 路线） | 已建成、可走 | **「廊即路径」成立**，但**「遮挡—释放」在当前比例下不成立**（肋在 8 m 高，视线通透） |
+
+两个白盒各产出一条会改变后续设计的结论，详见
+`HUB-WHITEBOX.md`、`CAMERA-REPORT.md`、`TERMINUS-WHITEBOX.md`。
+
+---
+
 ## 7. Gate D1 自检（不代替总设计师评审）
 
 按 `production/prompts/DAY-01-ORIENTATION-RESEARCH-PROBES.md` 的 Gate D1 条件自检：
@@ -357,4 +369,5 @@ GLB → resource model import --glb → resource model check → resource archiv
 | `research/REFERENCES-ANALYSIS.md` | 参考研究与 Hub/终点方案 | 完成 |
 | `HUB-WHITEBOX.md` | 列车 Hub 灰盒实测记录 | 完成（相机结论已修正） |
 | `CAMERA-REPORT.md` | 相机避让 A/B 实测 + 对 Hub 设计的影响 | 完成 |
-| `evidence/` | 截图、回执、读回 JSON | 9.0 MB |
+| `TERMINUS-WHITEBOX.md` | 云海尽头灰盒 + 「遮挡—释放」证伪 | 完成 |
+| `evidence/` | 截图、回执、读回 JSON | 10.9 MB |

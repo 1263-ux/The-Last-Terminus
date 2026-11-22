@@ -1,0 +1,508 @@
+﻿[
+  {
+    "file": "01f7909d-8ea8-4abe-bd66-7f55adb0ae52.glb",
+    "path": "C:\\Users\\XiongCong\\AppData\\Roaming\\AI World Creator\\asset-cache\\files\\01f7909d-8ea8-4abe-bd66-7f55adb0ae52.glb",
+    "bytes": 5744224,
+    "glb_version": 2,
+    "declared_length": 5744224,
+    "actual_length": 5744224,
+    "generator": "Khronos glTF Blender I/O v4.0.43",
+    "gltf_version": "2.0",
+    "counts": {
+      "nodes": 1,
+      "meshes": 1,
+      "primitives": 1,
+      "materials": 1,
+      "textures": 2,
+      "images": 2,
+      "animations": 0,
+      "skins": 0,
+      "cameras": 0
+    },
+    "triangles": 2000,
+    "vertices": 2621,
+    "bbox_min": [
+      -0.9693,
+      0,
+      -0.9395
+    ],
+    "bbox_max": [
+      0.9059,
+      1.3199,
+      0.9467
+    ],
+    "size_xyz": [
+      1.8753,
+      1.3199,
+      1.8863
+    ],
+    "hierarchy": [
+      "- model  [mesh:model_mesh]"
+    ],
+    "materials": [
+      {
+        "name": "model_mat",
+        "baseColorFactor": null,
+        "baseColorTexture": 0,
+        "metallic": null,
+        "roughness": null,
+        "normalTexture": null,
+        "doubleSided": true,
+        "alphaMode": "OPAQUE",
+        "emissive": null
+      }
+    ],
+    "images": [
+      {
+        "name": "base_color",
+        "mime": "image/png",
+        "embedded_bytes": 1628881
+      },
+      {
+        "name": "Image_1",
+        "mime": "image/png",
+        "embedded_bytes": 1145369
+      }
+    ],
+    "animations": [],
+    "extensionsUsed": []
+  },
+  {
+    "file": "0c81fefd-6adc-40d5-95bc-ae7efbb83db3.glb",
+    "path": "C:\\Users\\XiongCong\\AppData\\Roaming\\AI World Creator\\asset-cache\\files\\0c81fefd-6adc-40d5-95bc-ae7efbb83db3.glb",
+    "bytes": 4186160,
+    "glb_version": 2,
+    "declared_length": 4186160,
+    "actual_length": 4186160,
+    "generator": "glTF-Transform v4.3.0",
+    "gltf_version": "2.0",
+    "counts": {
+      "nodes": 1,
+      "meshes": 1,
+      "primitives": 1,
+      "materials": 1,
+      "textures": 2,
+      "images": 2,
+      "animations": 0,
+      "skins": 0,
+      "cameras": 0
+    },
+    "triangles": 9500,
+    "vertices": 9835,
+    "bbox_min": [
+      -0.4993,
+      0,
+      -0.4222
+    ],
+    "bbox_max": [
+      0.5007,
+      0.7745,
+      0.4218
+    ],
+    "size_xyz": [
+      1.0,
+      0.7745,
+      0.844
+    ],
+    "hierarchy": [
+      "- model  [mesh:model_mesh T=[0, 0, 0] S=[1, 1, 1]]"
+    ],
+    "materials": [
+      {
+        "name": "model_mat",
+        "baseColorFactor": null,
+        "baseColorTexture": 0,
+        "metallic": null,
+        "roughness": null,
+        "normalTexture": null,
+        "doubleSided": true,
+        "alphaMode": "OPAQUE",
+        "emissive": null
+      }
+    ],
+    "images": [
+      {
+        "name": "base_color",
+        "mime": "image/ktx2",
+        "embedded_bytes": 187825
+      },
+      {
+        "name": "Image_1",
+        "mime": "image/ktx2",
+        "embedded_bytes": 128055
+      }
+    ],
+    "animations": [],
+    "extensionsUsed": [
+      "KHR_texture_basisu"
+    ]
+  },
+  {
+    "file": "24ef9bb6-b1ce-4d3d-8b64-63088760ebbf.glb",
+    "path": "C:\\Users\\XiongCong\\AppData\\Roaming\\AI World Creator\\asset-cache\\files\\24ef9bb6-b1ce-4d3d-8b64-63088760ebbf.glb",
+    "bytes": 4575684,
+    "glb_version": 2,
+    "declared_length": 4575684,
+    "actual_length": 4575684,
+    "generator": "Khronos glTF Blender I/O v4.0.43",
+    "gltf_version": "2.0",
+    "counts": {
+      "nodes": 1,
+      "meshes": 1,
+      "primitives": 1,
+      "materials": 1,
+      "textures": 2,
+      "images": 2,
+      "animations": 0,
+      "skins": 0,
+      "cameras": 0
+    },
+    "triangles": 1999,
+    "vertices": 1348,
+    "bbox_min": [
+      -0.916,
+      0,
+      -0.8462
+    ],
+    "bbox_max": [
+      0.9161,
+      1.8848,
+      0.846
+    ],
+    "size_xyz": [
+      1.8321,
+      1.8848,
+      1.6923
+    ],
+    "hierarchy": [
+      "- model  [mesh:model_mesh]"
+    ],
+    "materials": [
+      {
+        "name": "model_mat",
+        "baseColorFactor": null,
+        "baseColorTexture": 0,
+        "metallic": null,
+        "roughness": null,
+        "normalTexture": null,
+        "doubleSided": true,
+        "alphaMode": "OPAQUE",
+        "emissive": null
+      }
+    ],
+    "images": [
+      {
+        "name": "base_color",
+        "mime": "image/png",
+        "embedded_bytes": 1150749
+      },
+      {
+        "name": "Image_1",
+        "mime": "image/png",
+        "embedded_bytes": 1079944
+      }
+    ],
+    "animations": [],
+    "extensionsUsed": []
+  },
+  {
+    "file": "2d84de77-ee75-41b8-ba6a-c6a4c675feec.glb",
+    "path": "C:\\Users\\XiongCong\\AppData\\Roaming\\AI World Creator\\asset-cache\\files\\2d84de77-ee75-41b8-ba6a-c6a4c675feec.glb",
+    "bytes": 560992,
+    "glb_version": 2,
+    "declared_length": 560992,
+    "actual_length": 560992,
+    "generator": "glTF-Transform v4.3.0",
+    "gltf_version": "2.0",
+    "counts": {
+      "nodes": 1,
+      "meshes": 1,
+      "primitives": 1,
+      "materials": 1,
+      "textures": 3,
+      "images": 3,
+      "animations": 0,
+      "skins": 0,
+      "cameras": 0
+    },
+    "triangles": 14558,
+    "vertices": 8680,
+    "bbox_min": [
+      -0.4955,
+      -0.1974,
+      -0.5
+    ],
+    "bbox_max": [
+      0.4955,
+      0.1974,
+      0.5
+    ],
+    "size_xyz": [
+      0.9911,
+      0.3948,
+      1.0
+    ],
+    "hierarchy": [
+      "- tripo_node_ef5aaefa-0fe2-4aeb-9fff-1a4473d428ba  [mesh:tripo_mesh_ef5aaefa-0fe2-4aeb-9fff-1a4473d428ba]"
+    ],
+    "materials": [
+      {
+        "name": "tripo_node_ef5aaefa-0fe2-4aeb-9fff-1a4473d428ba_material",
+        "baseColorFactor": null,
+        "baseColorTexture": 0,
+        "metallic": null,
+        "roughness": null,
+        "normalTexture": 1,
+        "doubleSided": true,
+        "alphaMode": "OPAQUE",
+        "emissive": null
+      }
+    ],
+    "images": [
+      {
+        "name": "tripo_normal_772071ad-04da-4f58-8644-8a891a06289e",
+        "mime": "image/ktx2",
+        "embedded_bytes": 29266
+      },
+      {
+        "name": "tripo_base_color_772071ad-04da-4f58-8644-8a891a06289e",
+        "mime": "image/ktx2",
+        "embedded_bytes": 106598
+      },
+      {
+        "name": "tripo_node_ef5aaefa-0fe2-4aeb-9fff-1a4473d428ba_metallic-tripo_node_ef5aaefa-0fe2-4aeb-9fff-1a4473d428ba_roughness",
+        "mime": "image/ktx2",
+        "embedded_bytes": 57854
+      }
+    ],
+    "animations": [],
+    "extensionsUsed": [
+      "KHR_texture_basisu"
+    ]
+  },
+  {
+    "file": "6c71d0d6-b0a7-48b9-b23c-1b29bc2a94bf.glb",
+    "path": "C:\\Users\\XiongCong\\AppData\\Roaming\\AI World Creator\\asset-cache\\files\\6c71d0d6-b0a7-48b9-b23c-1b29bc2a94bf.glb",
+    "bytes": 693688,
+    "glb_version": 2,
+    "declared_length": 693688,
+    "actual_length": 693688,
+    "generator": "Khronos glTF Blender I/O v4.4.56",
+    "gltf_version": "2.0",
+    "counts": {
+      "nodes": 2,
+      "meshes": 2,
+      "primitives": 2,
+      "materials": 2,
+      "textures": 2,
+      "images": 2,
+      "animations": 0,
+      "skins": 0,
+      "cameras": 0
+    },
+    "triangles": 4729,
+    "vertices": 8929,
+    "bbox_min": [
+      -0.3293,
+      -0.0147,
+      -0.3944
+    ],
+    "bbox_max": [
+      0.3293,
+      0.9853,
+      0.2797
+    ],
+    "size_xyz": [
+      0.6585,
+      1.0,
+      0.6741
+    ],
+    "hierarchy": [
+      "- Leaves  [mesh:Mesh.002 T=[0, 0, 0] S=[1, 1, 1]]",
+      "- Trunk  [mesh:Mesh.003 T=[0, 0, 0] S=[1, 1, 1]]"
+    ],
+    "materials": [
+      {
+        "name": "03 - Default",
+        "baseColorFactor": null,
+        "baseColorTexture": 0,
+        "metallic": null,
+        "roughness": 0.858578622341156,
+        "normalTexture": null,
+        "doubleSided": true,
+        "alphaMode": "BLEND",
+        "emissive": null
+      },
+      {
+        "name": "02 - Default",
+        "baseColorFactor": null,
+        "baseColorTexture": 1,
+        "metallic": null,
+        "roughness": 0.858578622341156,
+        "normalTexture": null,
+        "doubleSided": true,
+        "alphaMode": "OPAQUE",
+        "emissive": null
+      }
+    ],
+    "images": [
+      {
+        "name": "CartoonTree01_tex05_d",
+        "mime": "image/png",
+        "embedded_bytes": 11312
+      },
+      {
+        "name": "CartoonTree01_tex01_d",
+        "mime": "image/png",
+        "embedded_bytes": 78868
+      }
+    ],
+    "animations": [],
+    "extensionsUsed": [
+      "KHR_materials_specular"
+    ]
+  },
+  {
+    "file": "7d3dcb97-bded-4b41-8b74-0b5140bbf53a.glb",
+    "path": "C:\\Users\\XiongCong\\AppData\\Roaming\\AI World Creator\\asset-cache\\files\\7d3dcb97-bded-4b41-8b74-0b5140bbf53a.glb",
+    "bytes": 419960,
+    "glb_version": 2,
+    "declared_length": 419960,
+    "actual_length": 419960,
+    "generator": "glTF-Transform v4.3.0",
+    "gltf_version": "2.0",
+    "counts": {
+      "nodes": 1,
+      "meshes": 1,
+      "primitives": 1,
+      "materials": 1,
+      "textures": 3,
+      "images": 3,
+      "animations": 0,
+      "skins": 0,
+      "cameras": 0
+    },
+    "triangles": 2028,
+    "vertices": 2077,
+    "bbox_min": [
+      -0.5013,
+      0,
+      -0.2512
+    ],
+    "bbox_max": [
+      0.4998,
+      0.243,
+      0.2505
+    ],
+    "size_xyz": [
+      1.0011,
+      0.243,
+      0.5016
+    ],
+    "hierarchy": [
+      "- model  [mesh:model_mesh]"
+    ],
+    "materials": [
+      {
+        "name": "model_mat",
+        "baseColorFactor": null,
+        "baseColorTexture": 0,
+        "metallic": null,
+        "roughness": null,
+        "normalTexture": 1,
+        "doubleSided": true,
+        "alphaMode": "OPAQUE",
+        "emissive": null
+      }
+    ],
+    "images": [
+      {
+        "name": "model_normal",
+        "mime": "image/ktx2",
+        "embedded_bytes": 55516
+      },
+      {
+        "name": "base_color",
+        "mime": "image/ktx2",
+        "embedded_bytes": 160049
+      },
+      {
+        "name": "tripo_model_metallic-tripo_model_roughness",
+        "mime": "image/ktx2",
+        "embedded_bytes": 123862
+      }
+    ],
+    "animations": [],
+    "extensionsUsed": [
+      "KHR_texture_basisu"
+    ]
+  },
+  {
+    "file": "ce4f2ee2-7386-43f0-862f-ef0b9042f110.glb",
+    "path": "C:\\Users\\XiongCong\\AppData\\Roaming\\AI World Creator\\asset-cache\\files\\ce4f2ee2-7386-43f0-862f-ef0b9042f110.glb",
+    "bytes": 7644848,
+    "glb_version": 2,
+    "declared_length": 7644848,
+    "actual_length": 7644848,
+    "generator": "Khronos glTF Blender I/O v4.0.43",
+    "gltf_version": "2.0",
+    "counts": {
+      "nodes": 1,
+      "meshes": 1,
+      "primitives": 1,
+      "materials": 1,
+      "textures": 2,
+      "images": 2,
+      "animations": 0,
+      "skins": 0,
+      "cameras": 0
+    },
+    "triangles": 19997,
+    "vertices": 19937,
+    "bbox_min": [
+      -0.8218,
+      0,
+      -0.9452
+    ],
+    "bbox_max": [
+      0.819,
+      1.8784,
+      0.8321
+    ],
+    "size_xyz": [
+      1.6408,
+      1.8784,
+      1.7773
+    ],
+    "hierarchy": [
+      "- model  [mesh:model_mesh S=[1.4, 1.4, 1.4]]"
+    ],
+    "materials": [
+      {
+        "name": "model_mat",
+        "baseColorFactor": null,
+        "baseColorTexture": 0,
+        "metallic": null,
+        "roughness": null,
+        "normalTexture": null,
+        "doubleSided": true,
+        "alphaMode": "OPAQUE",
+        "emissive": null
+      }
+    ],
+    "images": [
+      {
+        "name": "base_color",
+        "mime": "image/png",
+        "embedded_bytes": 1826344
+      },
+      {
+        "name": "Image_1",
+        "mime": "image/png",
+        "embedded_bytes": 1236041
+      }
+    ],
+    "animations": [],
+    "extensionsUsed": []
+  }
+]

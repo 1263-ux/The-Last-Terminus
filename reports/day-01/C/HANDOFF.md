@@ -161,6 +161,21 @@ Lua 里点号调用把 `v` 当成 `self`，实例方法必须用冒号 `a:Telepo
 
 另一个观测坑：`---@varSync` 注入的是装箱对象，外部 `lua eval` 读回是 `userdata`，看不出值。探针用 `_G` 普通全局表记日志并返回**纯字符串**才可读。
 
+**5｜Lua 绑定也会重复追加**（T-20 发现，B-05 的延伸）
+
+反复 `prefab attach` / 重建后，`runtime targets` 出现 5 个绑定：同一个节点上
+`garden_layer_tint.lua` 有 3 份、`trigger_probe.lua` 有 2 份。
+用 `Where-Object` 取值会拼成两个 ID 的字符串（如 `-10864:... -11182:...`），
+导致 `lua-binding-not-found`。
+
+**正式玩法必须显式指定单个 `bindingKey`，或重建前用 `scripts.unbind` 清理旧绑定。**
+A 的列车到站/离站触发若反复迭代，同样会撞到这个坑。
+
+**6｜动态点光可用**（T-20）：`lightData` 可写（type/color/intensity/range），
+Lua 回调能 `GameObject.Find + GetComponent(typeof(Light))` 把 intensity 0.2→8.0 并改色，
+读回持久生效。backup cue 第二次提示（温室从下方漏光）在技术上已具备。
+仍需 A 的音频能力结论来做第三次提示。
+
 ### 玩法差异声明（避免重复）
 
 | 维度 | 书桌站（B） | 失重花园（C） |

@@ -29,6 +29,7 @@
 | T-17 | 可跨越台阶高度上限 | 实测 ∈ [0.45, 0.50) m，修正了 0.30 m 的保守假设 | [已验证] |
 | T-18 | 可走坡度上限 | 实测 > 50°，45° 设计假设成立；陡坡拖慢水平推进 | [已验证] |
 | T-19 | 多通道贴图 / 透明贴图 | albedo+emissive+BLEND 保留；normal/ORM 运行时丢弃 | [已验证] |
+| T-20 | 动态点光（Lua 驱动） | `lightData` 可写；Lua 回调能把 intensity 0.2→8.0、改色并持久生效 | [已验证] |
 | T-14 | 运行时世界边界外的出生点 | 出生在世界中心，白盒必须放在 `[0,255]` 内 | [已验证] |
 
 ---
@@ -764,6 +765,68 @@ roughness + metalness 按规范合并成一张 `metallicRoughnessTexture`，所�
 
 ---
 
+## T-20｜动态点光与 backup cue 能力闭合 [已验证]
+
+> `SPATIAL §8.6` 的第二次提示是「温室灯光从下方亮起 3 s，照亮根架底面」，
+> 需要一个能被 Lua 回调动态驱动的点光。本轮补上最后一块。
+
+### 做法
+
+1. 读 `lightData` schema：`writable: true`，字段 `type / color / intensity / range / innerSpotAngle / outerSpotAngle`。
+2. 新建节点 `C_LightProbe`，挂 `lightData`：`type=2`（Point）、暖色 `(1, 0.75, 0.3)`、`intensity=0.2`、`range=14`。
+3. `build → archive → scene import → runtime start`。
+
+**运行时确认组件存在且数值与作者源一致**：
+
+```
+present=true, light=true, intensity=0.2, range=14, color=(1, 0.75, 0.3)
+```
+
+### 验证 1：可以被动态改写（JS 侧）
+
+```
+l.intensity = 6.0  → 读回 6.0
+l.color = (0.2,0.9,1) → 读回 r=0.2
+```
+
+### 验证 2：Lua 回调也能驱动（正式玩法要走这条）
+
+在 `trigger_probe.lua` 加 `CueLight()` / `GetLight()`，用
+`GameObject.Find("C_LightProbe")` + `GetComponent(typeof(CS.UnityEngine.Light))`：
+
+```
+BEFORE : intensity=0.20, r=1.00
+CueLight() → "lit:8.0"
+AFTER  : intensity=8.00, r=0.30
+```
+
+**结论**：动态点光可用，且 Lua 侧能直接驱动。至此 `SPATIAL §8.6` backup cue 的技术集合
+（区域触发器 + 计时器 + 一次性触发 + **动态点光**）全部打通。
+仍缺的是**声音触发**（第三次提示）与真正的多 Trigger 去抖。
+
+### 附带发现：Lua 绑定也会被重复追加（B-05 的延伸）
+
+本轮 `runtime targets` 列出 **5 个绑定**：
+
+```
+-10176:...  garden_layer_tint.lua  → previewGameRoot/garden-whitebox/Model
+-10526:...  garden_layer_tint.lua  → previewGameRoot/garden-whitebox/Model
+-10864:...  trigger_probe.lua      → previewGameRoot/garden-whitebox/C_TriggerProbe
+-10888:...  gallery_layer_tint.lua → previewGameRoot/garden-whitebox/Model   (实为 tint)
+-11182:...  trigger_probe.lua      → previewGameRoot/garden-whitebox/C_TriggerProbe
+```
+
+同一个节点上 `garden_layer_tint.lua` 出现 3 次、`trigger_probe.lua` 出现 2 次。
+原因与 B-05 一致：反复 `prefab attach` / 重建会追加绑定，不会替换。
+
+后果：`runtime targets` 返回多个 bindingKey，用 `Where-Object` 取值时会**拼成两个 ID**
+（我第一次就得到 `-10864:... -11182:...` 这种拼接串，导致 `lua-binding-not-found`）。
+正式玩法必须显式指定**单个** bindingKey，或在重建前用 `scripts.unbind` 清理旧绑定。
+
+已写入 `HANDOFF.md` 给 A/B。
+
+---
+
 ## T-14｜出生点与世界坐标 [已验证]
 
 新项目运行时玩家出生在 `(119.74, 77.91, 88.64)`，即**世界中心附近**，不是白盒位置。
@@ -903,6 +966,7 @@ Day 2 必须解决的三条：
 | GLB 贴图（KTX2）在运行时保留 | **可用（部分通道）** | albedo / emissive / 透明 BLEND 保留；**normal / ORM 丢弃**（T-19） |
 | 裸 PNG 贴图 GLB | **不可用** | runtime 阶段导入失败；需先转 KTX2（T-08b） |
 | PCG 参考图确认 | **CLI 无可用格式** | |
-| Trigger 驱动玩法 | **可用** | 6 个回调成对触发；能写 transform、能复位玩家、Update+Time 计时器可用（T-13）。灯光/声音仍未验 |
+| Trigger 驱动玩法 | **可用** | 6 个回调成对触发；能写 transform、能复位玩家、Update+Time 计时器、动态点光（T-13/T-20）。声音触发仍未验 |
 | 触发式平台降级方案 | **成立** | Trigger + Lua 写 transform，不需原生移动平台组件 |
+| 动态点光（Lua 驱动） | **可用** | `lightData` 可写；intensity/颜色可运行时改写（T-20） |
 | 重力方向变化 | 未测 | 本轮不需要，不做 |

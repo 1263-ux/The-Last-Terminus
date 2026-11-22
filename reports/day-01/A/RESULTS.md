@@ -10,9 +10,10 @@
 
 ## 0. 一句话结论
 
-编辑器 1.0.104 的**项目保存与重开、GLB 导入（含贴图/层级/透明度）、WPRE 单文件交接、
+编辑器 1.0.104 的**项目保存与重开、GLB 导入（含贴图/层级/透明度）、WPRE 跨工程交接、
 以及"Trigger + Lua Teleport"世界连接机制**均已实测跑通；
-最大的两个风险是 **GLB 导入会把 X 轴镜像**、以及 **`.wprefab` 不内嵌模型二进制**（依赖外部 URI）。
+Gate 1 要求的「至少完成一次真实资产交接」**已满足**（Probe 06）。
+最大的两个风险是 **GLB 导入会把 X 轴镜像**、以及 **`.wprefab` 依赖外部 URI 导致跨账号失效**（跨账号未验证）。
 
 ---
 
@@ -207,7 +208,30 @@ GLB → resource model import --glb → resource model check → resource archiv
 
 ---
 
-## 6. 交付物
+## 6. Probe 06｜跨工程资产交接（原始需求"至少完成一次真实资产交接"）
+
+按 `GATES-AND-ACCEPTANCE.md` Gate 1 要求「**至少完成一次真实资产交接**」，
+在完成 Probe 03 后补做真实跨工程导入。
+
+**做法：** 新建**独立工程** `Handoff_Test`（`project-eda6f596-...`），
+用 A 工程已归档的同一 `.wprefab` URI 在**另一个工程**中 `scene import`。
+
+| 检查项 | 结果 | 证据 |
+|---|---|---|
+| 跨工程场景导入 | **PASS** | `rootIDs: ["201049467"]` |
+| 层级完整性 | **PASS** | 12 节点父子关系与源工程完全一致 |
+| 模型实际渲染 | **PASS** | `P06-01-cross-project-render.png` |
+| 碰撞体保留 | **PASS** | `BoxCollider isTrigger=true` ×2 + `MeshCollider` ×3 |
+| Lua 脚本绑定保留 | **PASS** | 两条 binding 均 attached（`-2076:...` / `-2090:...`） |
+| 脚本参数保留 | **PASS** | 读回 `20.0\|1.0\|0.0\|90.0`，与源工程一致 |
+| 传送逻辑在新工程生效 | **PASS** | `before=119.74,77.91,88.64 after=20.00,1.00,0.00` |
+
+**结论修正：** 原文把"外部 URI 引用"判为高风险；实测在**同账号 / 同机 / 同版本**下
+跨工程交接**完全可用**。风险降级为"跨账号未验证"（见 `BLOCKERS.md` B-4）。
+
+---
+
+## 7. 交付物
 
 | 文件 | 内容 | 状态 |
 |---|---|---|
@@ -218,4 +242,4 @@ GLB → resource model import --glb → resource model check → resource archiv
 | `HANDOFF.md` | 可直接转发给 B/C | 完成 |
 | `WORLD-INTERFACE-CONTRACT.md` | 公共接口契约 v0.1 | PROPOSED |
 | `research/REFERENCES-ANALYSIS.md` | 参考研究与 Hub/终点方案 | 完成 |
-| `evidence/` | 截图、回执、读回 JSON | 15.2 MB |
+| `evidence/` | 截图、回执、读回 JSON | 7.5 MB |

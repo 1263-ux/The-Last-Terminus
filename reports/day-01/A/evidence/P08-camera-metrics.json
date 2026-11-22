@@ -1,0 +1,24 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": {
+    "cameraWorld": {
+      "x": 1.6705256700515747,
+      "y": 1.0146384239196777,
+      "z": -6.447461128234863
+    },
+    "actorWorld": {
+      "x": 0,
+      "y": 0.0021500224247574806,
+      "z": -5.800000190734863
+    },
+    "cameraHeightAboveActor": 1.01,
+    "horizontalDistance": 1.79,
+    "fieldOfView": 45,
+    "note": "carriage interior ceiling is at y = 2.35 above the floor"
+  },
+  "startFrame": 7676,
+  "endFrame": 7676,
+  "durationMs": 0,
+  "mode": "native-puerts"
+}

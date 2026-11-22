@@ -306,7 +306,43 @@ GLB → resource model import --glb → resource model check → resource archiv
 
 ---
 
-## 7. 交付物
+## 7. Gate D1 自检（不代替总设计师评审）
+
+按 `production/prompts/DAY-01-ORIENTATION-RESEARCH-PROBES.md` 的 Gate D1 条件自检：
+
+| Gate D1 条件 | 自检 | 依据 |
+|---|---|---|
+| 能准确复述项目核心与各自边界 | **是** | `PLAN.md` §2 明确列出非目标；未触碰 B/C 世界 |
+| 两个可玩世界的玩法差异明确 | **不归 A 判定** | 这是 B/C 的交付；A 只评估接口影响 |
+| 关键工具未知与资产依赖被暴露 | **是** | `BLOCKERS.md` 8 条；`RESULTS.md` §3/§4 逐项 |
+| 有下一阶段可执行的白盒方向 | **是** | `HUB-WHITEBOX.md` §6 + 相机约束 |
+
+按 `tasks/002-a-train-core/GATES-AND-ACCEPTANCE.md` Gate 1 自检：
+
+| Gate 1 条件 | 自检 | 依据 |
+|---|---|---|
+| 技术能力区分为已验证 / 失败 / 待验证 | **是** | 全文 PASS/FAIL/NOT TESTED 三态标注 |
+| **至少完成一次真实资产交接** | **是** | Probe 06：跨工程导入，层级/碰撞/脚本/参数/传送全保留 |
+| 有明确的连接方案或降级方案 | **是** | `WORLD-INTERFACE-CONTRACT.md` §5.3 |
+| 没有把未验证能力写成事实 | **尽力** | 见 §8 自查出的三处已纠正错误 |
+
+---
+
+## 8. 本轮自查出的错误（已纠正，保留记录）
+
+诚实记录，避免后续重复踩坑，也避免 Reviewer 以为文档一直是对的：
+
+| # | 错误结论 | 实际情况 | 纠正位置 |
+|---|---|---|---|
+| 1 | 玩家胶囊高 1.6–1.8 m（按视觉比例**推断**） | 实测 **0.90 m 高 / 0.32 m 宽**，是矮胖胶囊 | §1.1、契约 §1、HANDOFF |
+| 2 | GLB 材质颜色与贴图**丢失**（读 `color` 得 0,0,0,0） | 材质完好；该编辑器用 `_BaseColor`/`_BaseTex`，我**查错了属性名** | §3.4 |
+| 3 | `.wprefab` 外部 URI 是**高风险** | 同账号同机跨工程实测**完全可用**，风险降级为"跨账号未验证" | §6、`BLOCKERS.md` B-4 |
+
+> 第 2 条尤其值得记录：如果只看到"读回全是 0"就写进报告，会误导 B/C 去重做全部材质。
+
+---
+
+## 9. 交付物
 
 | 文件 | 内容 | 状态 |
 |---|---|---|
@@ -317,4 +353,5 @@ GLB → resource model import --glb → resource model check → resource archiv
 | `HANDOFF.md` | 可直接转发给 B/C | 完成 |
 | `WORLD-INTERFACE-CONTRACT.md` | 公共接口契约 v0.1 | PROPOSED |
 | `research/REFERENCES-ANALYSIS.md` | 参考研究与 Hub/终点方案 | 完成 |
-| `evidence/` | 截图、回执、读回 JSON | 7.5 MB |
+| `HUB-WHITEBOX.md` | 列车 Hub 灰盒实测记录 + 相机约束 | 完成 |
+| `evidence/` | 截图、回执、读回 JSON | 9.0 MB |

@@ -1,0 +1,18 @@
+﻿{
+  \"report\": \"B1/B2 collision repro\",
+  \"editor\": \"1.0.104\",
+  \"project\": \"project-006822bc-d20b-4e2b-b6ae-b80fc9498688\",
+  \"spawn\": \"119.741669,80.0,88.64061\",
+  \"mode\": \"runtime start (local preview)\",
+  \"attempts\": [
+    {\"n\":1,\"obstacle\":\"native Cube\",\"pos_z\":96,\"scale\":\"6x2x1\",\"player_after_z\":94.36,\"result\":\"BLOCKED\"},
+    {\"n\":2,\"obstacle\":\"native Cube\",\"pos_z\":92.6,\"scale\":\"4x3x1\",\"player_after_z\":95.83,\"result\":\"PENETRATED\"},
+    {\"n\":3,\"obstacle\":\"native Cube\",\"pos_z\":104,\"scale\":\"6x3x1\",\"player_after_z\":107.53,\"result\":\"PENETRATED\"},
+    {\"n\":4,\"obstacle\":\"GLB WB_BREAK_WALL\",\"pos_z\":95,\"scale\":\"30x6x4\",\"player_after_z\":112.33,\"result\":\"PENETRATED\"},
+    {\"n\":5,\"obstacle\":\"GLB WB_BREAK_WALL\",\"pos_z\":101,\"scale\":\"24x4x1\",\"player_after_z\":110.72,\"result\":\"PENETRATED\"}
+  ],
+  \"component_stack_all_obstacles\": \"Transform,MeshFilter,BoxCollider,MeshRenderer\",
+  \"render_layer\": {\"native\": \"shadow only, no body\", \"glb\": \"shadow only, no body\"},
+  \"conclusion\": \"collision is unreliable in this preview; not a size issue, not a GLB-only issue\",
+  \"not_tested\": [\"GUI manual cube\", \"Inspector collider check\", \"Published vs Preview\", \"fresh project\"]
+}

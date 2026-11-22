@@ -28,6 +28,7 @@
 | T-13 | 触发体（Trigger）驱动玩法 | 回调/位移/复位/计时器全通 | [已验证·端到端] |
 | T-17 | 可跨越台阶高度上限 | 实测 ∈ [0.45, 0.50) m，修正了 0.30 m 的保守假设 | [已验证] |
 | T-18 | 可走坡度上限 | 实测 > 50°，45° 设计假设成立；陡坡拖慢水平推进 | [已验证] |
+| T-19 | 多通道贴图 / 透明贴图 | albedo+emissive+BLEND 保留；normal/ORM 运行时丢弃 | [已验证] |
 | T-14 | 运行时世界边界外的出生点 | 出生在世界中心，白盒必须放在 `[0,255]` 内 | [已验证] |
 
 ---
@@ -367,8 +368,10 @@ __optimized_merged_material_1  EnvLit_AI_Mat  _BaseTex = null      ← 纯绿对
 | 项 | 说明 |
 |---|---|
 | Tripo 实际导出格式 | 本轮用的是编辑器 Three.js 导出器，不是 Tripo。需总设计师提供一份 Tripo 产物做最终确认 |
-| 法线 / ORM / 自发光贴图 | 本轮只测了 `map`（albedo）。多通道贴图是否同样保留未测 |
-| 透明材质 + 贴图组合 | 玻璃类资产（`ASSET-CARDS.md §0.2`）仍需单独测 |
+| 法线 / ORM / 自发光贴图 | ✅ T-19 已验证：`emissiveMap` 保留；`normalMap` / `metallicRoughnessTexture` 运行时丢弃 |
+| 透明材质 + 贴图组合 | ✅ T-19 已验证：`alphaMode:BLEND` → `EnvLit_AlphaBlend_AI_Mat`，棋盘半透可见 |
+| Tripo 实际导出格式 | 仍需总设计师提供一份产物确认 KTX2；本轮用的是编辑器 Three.js 导出器 |
+| 贴图+透明+emissive 同材质叠加 | 分别验证过，未做叠加 |
 
 ---
 
@@ -688,6 +691,79 @@ C 的 27% 根桥（30 m）若按此速度会显得拖沓，建议白盒盲测时
 
 ---
 
+## T-19｜多通道贴图与透明贴图 [已验证·有明确取舍]
+
+> 承接 T-08b（只测了 albedo）。本轮补齐 `SPATIAL §11` 与 `ASSET-CARDS §0.3`
+> 里挂着的 `normal / ORM / emissive / 透明+贴图` 四项，直接决定 Day 4 玻璃温室与 Tripo 资产格式。
+
+### 做法
+
+沿用 `tex-probe`，把模块扩成 3 个对象：
+
+| 对象 | 材质 |
+|---|---|
+| `MultiChannelBox` | `map` + `normalMap` + `roughnessMap` + `metalnessMap` + `emissiveMap` |
+| `TransparentTexturedPanel` | `map` + `transparent:true, opacity:0.45`（玻璃温室代理） |
+| `PlainColorBox` | 纯色无贴图对照 |
+
+每个通道用**不同高对比图案**（棋盘+白十字 / 中性法线蓝+斜线 / 左右黑白 / 上下黑白 / 黄点阵），
+便于在画面里分辨到底哪张贴图被采样。
+
+### 导出侧：全部通道都写进了 GLB
+
+`model.glb` 98,352 字节，解析 JSON 块：
+
+```
+images: 4        image mime: ['image/ktx2','image/ktx2','image/ktx2','image/ktx2']
+textures: 4
+MAT_multi_channel  pbr=[baseColorTexture, metallicRoughnessTexture]
+                   extra=[normalTexture, emissiveTexture]   alphaMode=None
+MAT_glass_textured alphaMode=BLEND
+MAT_plain          (无贴图)
+```
+
+roughness + metalness 按规范合并成一张 `metallicRoughnessTexture`，所以 5 个通道 → 4 张图。**导出器全部支持。**
+
+### 运行时侧：只保留 3 个通道
+
+`scene import` 通过 → `runtime start` → 逐通道 `GetTexture`：
+
+| 合并材质 | shader | `_BaseTex` | `_Normalmap` | `_ORM` | `_EmissionTex` | `_Alpha` |
+|---|---|---|---|---|---|---|
+| `merged_material_0`（多通道主体） | `EnvLit_AI_Mat` | **256×256** | `null` | `null` | **256×256** | 1 |
+| `merged_material_1`（玻璃面板） | `EnvLit_AlphaBlend_AI_Mat` | **256×256** | `null` | `null` | `null` | 0 |
+| `merged_material_2`（纯色对照） | `EnvLit_AI_Mat` | `null` | `null` | `null` | `null` | 1 |
+
+**视觉确认**（截图 `43-multichannel-texture-probe.png`）：
+- 主体立方体同时显示红蓝棋盘（albedo）**和黄色圆点（emissive）** → 两个通道都真的在渲染
+- 透明面板：棋盘可见但半透，背景岩锥从后面透出来 → `alphaMode:BLEND` 生效
+- 纯绿方块无贴图
+
+### 结论（Day 4 可用）
+
+| 通道 | 状态 | 建议 |
+|---|---|---|
+| albedo / `map` | ✅ 保留 | 可依赖 |
+| `emissiveMap` | ✅ 保留 | 可依赖（花心发光、温室漏光） |
+| `transparent` / `alphaMode:BLEND` | ✅ 保留，自动映射到 `EnvLit_AlphaBlend_AI_Mat` | 玻璃温室可行；`ASSET-CARDS §0.2` 第 3 条的 `[TO-VERIFY]` 可关闭 |
+| **`normalMap`** | ❌ **运行时丢弃**（GLB 里写了，但 `_Normalmap` 为 null） | **不要依赖法线贴图做细节**，改用真实几何起伏 |
+| **`roughnessMap` / `metalnessMap`（合并为 `_ORM`）** | ❌ **运行时丢弃** | 用材质标量 `_Metallic` / `_Smoothness` 或分件材质表达，别花成本做 ORM 贴图 |
+
+**给总设计师的 Tripo 交付格式结论**：
+- 可以要 **albedo + emissive + 透明**；
+- **不要为法线/ORM 贴图投入生成成本**，它们导出后不会在编辑器里生效；
+- 表面细节靠**真实几何**（花瓣层次、根系分叉、玻璃框架），这也正好符合 `ASSET-CARDS` 的结构要求。
+
+### 仍未验证
+
+| 项 | 说明 |
+|---|---|
+| Tripo 实际导出格式 | 本轮仍是编辑器 Three.js 导出器；需总设计师给一份 Tripo 产物确认 KTX2 |
+| `_Alpha` 的运行方式 | 透明材质 `_Alpha=0`，但面板视觉确实半透；说明不透明度由别处控制，玻璃表现需按真实资产再验 |
+| 贴图 + 透明 + emissive 三者叠加 | 本轮分别验证，未做同材质叠加 |
+
+---
+
 ## T-14｜出生点与世界坐标 [已验证]
 
 新项目运行时玩家出生在 `(119.74, 77.91, 88.64)`，即**世界中心附近**，不是白盒位置。
@@ -824,7 +900,7 @@ Day 2 必须解决的三条：
 | **GLB 导出会镜像 X 轴** | **已确认** | 源码 `+X` → 运行时 `−X`；外部脚本必须用实测坐标（T-16） |
 | 原生移动平台组件 | **不存在** | |
 | AI 地形生成浮空岛 | **不支持** | |
-| GLB 贴图（KTX2）在运行时保留 | **可用** | `_BaseTex` 采样有效，albedo 贴图与 UV 正确（T-08b） |
+| GLB 贴图（KTX2）在运行时保留 | **可用（部分通道）** | albedo / emissive / 透明 BLEND 保留；**normal / ORM 丢弃**（T-19） |
 | 裸 PNG 贴图 GLB | **不可用** | runtime 阶段导入失败；需先转 KTX2（T-08b） |
 | PCG 参考图确认 | **CLI 无可用格式** | |
 | Trigger 驱动玩法 | **可用** | 6 个回调成对触发；能写 transform、能复位玩家、Update+Time 计时器可用（T-13）。灯光/声音仍未验 |

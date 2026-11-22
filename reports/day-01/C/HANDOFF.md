@@ -119,8 +119,17 @@ mr.sharedMaterial.SetColor("_BaseColor", new CS.UnityEngine.Color(r, g, b, 1));
 
 唯一要注意的是**格式**：之前手写 `image/png` 的 GLB 在 runtime 阶段导入失败，
 真实导出器用的是 `image/ktx2`。Tripo 产物若带贴图，先确认格式或过一道编辑器 authoring 转换。
-仍未验证：多通道贴图（normal/ORM/emissive）、透明+贴图组合、Tripo 实际导出格式。
 这一条同样给 A/B——书桌站/终点站若用贴图资产，别直接塞裸 PNG GLB。
+
+**多通道贴图结论（轮 9，T-19）**：把 5 个通道一起导出后逐通道检查，
+**albedo / emissive / `alphaMode:BLEND` 保留**，`normalMap` / `metallicRoughnessTexture(ORM)`
+虽然写进了 GLB，但**运行时 `_Normalmap` 和 `_ORM` 都是 null，被丢弃**
+（截图 `43-multichannel-texture-probe.png`：棋盘+黄点可见、透明面板能透出背景）。
+
+=> **给总设计师 / Tripo 排期**：可以要 albedo + emissive + 透明；
+**不要为法线贴图或 ORM 贴图投入生成成本**，表面质感靠真实几何与分件材质。
+=> 玻璃温室（`GARDEN-002`）可行，但玻璃质感要靠分片、框架、真实厚度，不能靠法线贴图。
+仍未验证：`_Alpha` 的实际控制方式、三通道同材质叠加、Tripo 实际导出格式。
 
 **2｜可走面的碰撞必须实测，不能靠几何判断**
 

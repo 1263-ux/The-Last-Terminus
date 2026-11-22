@@ -1,0 +1,214 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": {
+    "cameraAt": [
+      0,
+      1,
+      11
+    ],
+    "count": 14,
+    "items": [
+      {
+        "name": "V_ArcadeDeck",
+        "size": [
+          3.5,
+          0.3,
+          18
+        ],
+        "center": [
+          0,
+          -0.2,
+          9
+        ],
+        "dist": 2.4
+      },
+      {
+        "name": "V_Rib1_LegL",
+        "size": [
+          0.3,
+          5,
+          0.3
+        ],
+        "center": [
+          1.8,
+          2.5,
+          9
+        ],
+        "dist": 3
+      },
+      {
+        "name": "V_Rib1_LegR",
+        "size": [
+          0.3,
+          5,
+          0.3
+        ],
+        "center": [
+          -1.7,
+          2.5,
+          9
+        ],
+        "dist": 3
+      },
+      {
+        "name": "V_Rib2_LegL",
+        "size": [
+          0.3,
+          5,
+          0.3
+        ],
+        "center": [
+          1.8,
+          2.5,
+          15
+        ],
+        "dist": 4
+      },
+      {
+        "name": "V_Rib2_LegR",
+        "size": [
+          0.3,
+          5,
+          0.3
+        ],
+        "center": [
+          -1.7,
+          2.5,
+          15
+        ],
+        "dist": 4
+      },
+      {
+        "name": "V_Rib0_LegL",
+        "size": [
+          0.3,
+          5,
+          0.3
+        ],
+        "center": [
+          1.8,
+          2.5,
+          3
+        ],
+        "dist": 8.6
+      },
+      {
+        "name": "V_Rib0_LegR",
+        "size": [
+          0.3,
+          5,
+          0.3
+        ],
+        "center": [
+          -1.7,
+          2.5,
+          3
+        ],
+        "dist": 8.6
+      },
+      {
+        "name": "V_Ramp",
+        "size": [
+          4,
+          0.3,
+          40
+        ],
+        "center": [
+          0,
+          -0.2,
+          38
+        ],
+        "dist": 26.6
+      },
+      {
+        "name": "V_CloudNear0",
+        "size": [
+          26,
+          1.6,
+          16
+        ],
+        "center": [
+          16,
+          -3,
+          81.5
+        ],
+        "dist": 71.9
+      },
+      {
+        "name": "V_CloudNear1",
+        "size": [
+          22,
+          1.6,
+          14
+        ],
+        "center": [
+          -12,
+          -3,
+          87.5
+        ],
+        "dist": 77
+      },
+      {
+        "name": "V_CloudNear2",
+        "size": [
+          30,
+          1.6,
+          20
+        ],
+        "center": [
+          2,
+          -3,
+          95.5
+        ],
+        "dist": 84.1
+      },
+      {
+        "name": "V_CloudFar0",
+        "size": [
+          80,
+          2,
+          40
+        ],
+        "center": [
+          70,
+          -16,
+          131.5
+        ],
+        "dist": 139
+      },
+      {
+        "name": "V_CloudFar1",
+        "size": [
+          70,
+          2,
+          34
+        ],
+        "center": [
+          -62,
+          -16,
+          149.5
+        ],
+        "dist": 151.4
+      },
+      {
+        "name": "V_CloudFar2",
+        "size": [
+          100,
+          2,
+          46
+        ],
+        "center": [
+          0,
+          -16,
+          186.5
+        ],
+        "dist": 175.1
+      }
+    ]
+  },
+  "startFrame": 2005,
+  "endFrame": 2005,
+  "durationMs": 4,
+  "mode": "native-puerts"
+}

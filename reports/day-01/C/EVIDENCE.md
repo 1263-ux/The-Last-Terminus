@@ -35,6 +35,17 @@
 | `22-spawn-facing-greenhouse.png` | **R-08 修复后：出生即正对倒悬温室，根系台阶通向它** | R-08 已解决 | 实拍（修复态） |
 | `23-arrived-under-greenhouse.png` | 走完整条根系通道抵达温室下方 | 修复后路线可走 | 实拍 |
 | `24-final-layout-overview.png` | 最终垂直布局：温室层在上、根系层在下、花冠平台在远 | 三层关系 | 实拍 |
+| `25-planC-spawn-view.png` | **方案 C 出生视角**：断桥在正前方，温室在下方 | 目标可见 | 实拍 |
+| `27-planC-at-broken-bridge.png` | **方案 C 关键构图**：玩家站在断口，目标在脚下但过不去 | 路线发现前提 | 实拍 |
+| `28-planC-on-descent.png` | 玩家站在向下根系台阶上，温室屋顶在侧下方 | 下坡可走 | 实拍 |
+| `29-planC-greenhouse-roof.png` | 抵达温室屋顶边缘 | 路线可走 | 实拍 |
+| `30-planC-crown-vista.png` | 爬到顶（护栏过高，问题态） | §5.2 暴露 | 实拍 |
+| `33-planC-stairs-arrival.png` | 真实行走中站在空中台阶上 | 台阶可走 | 实拍 |
+| `34-inverted-cues-broken-bridge.png` | 加倒置线索后断桥视角 | T-16 前后对照 | 实拍 |
+| `35-roof-inversion-cues.png` | **屋顶檐口朝上张开等倒置线索（但台阶挡在正中）** | 问题暴露 | 实拍 |
+| `36-broken-bridge-stairs-relocated.png` | 台阶移到侧面后，断桥构图恢复 | §5.5 修复 | 实拍 |
+| `37-roof-center-clear.png` | **屋顶中心空出来，三个檐口 + 天窗 + 法兰全部可见** | **倒置可读** | 实拍 |
+| `38-relocated-stairs-walking.png` | 用镜像坐标实走上行台阶 | T-16 验证 | 实拍 |
 
 **关于 `06-greenhouse-from-below.png` 的诚实说明**：这一帧本想取得"从下往上看倒悬温室"的关键构图，但玩家在实际下落过程中被拍到了半空（`y` 从 64 掉到 28）。它证明的是**该位置没有可站立面**，不能当作空间方案通过的证据。真正的"倒悬温室从下方可见"还需要 Day 2 补拍。保留这一帧是因为它记录了一个真实的空间缺陷：**从根系层平台到温室层之间目前没有任何可走连接**，这是方案 C 必须解决的问题。
 

@@ -12,6 +12,7 @@ Scale basis [PROPOSED, measured in-engine]:
     A real 30 cm ruler becomes a 30 m span == ~17x player height.
 """
 import json
+import math
 import os
 import struct
 
@@ -172,18 +173,41 @@ METAL   = (0.62, 0.64, 0.68)
 TIN     = (0.55, 0.60, 0.62)
 
 
-def make_desk():
-    """Desk slabs forming a 10 m chasm, anchored so the player stands at z=0
-    on the near slab while the chasm lies AHEAD in +Z.
+def target_box(tx, ty, tz, color, origin=(0, 0, 0)):
+    """Emit a box that lands at EXACT world size (tx,ty,tz) after import.
 
-    Local frame: near slab z in [-6, +22], chasm z in [22, 32], far slab z in
-    [32, 44]. The player spawn camera was measured to look toward +Z, so the
-    player must walk forward into the gap.
-
-    The near slab starts at z=-6 only; the player at z=0 stands safely on it and
-    is never inside geometry (an earlier 40 m slab put the camera inside the
-    desk, which is why nothing was visible).
+    The importer normalises the mesh to ~1 unit then bakes the mesh's longest
+    authored dimension L back on as a uniform scale, so
+        actual = authored * L
+    To hit a target T on the longest axis we need authored_longest = sqrt(T),
+    and every other axis is divided by that same L:
+        authored = (tx/L, ty/L, tz/L)   with L = sqrt(max(tx, tz))
+    Verified in-engine: WB_BOOK_S authored 2.0 gave scale 2.0 -> world 4.0.
     """
+    L = math.sqrt(max(tx, tz))
+    return box(tx / L, ty / L, tz / L, color, origin=origin)
+
+
+def make_desk_near(tx=28.0, tz=28.0, th=0.6):
+    """Near slab ONLY, pre-compensated for the importer's quadratic scale.
+
+    Why separate GLBs: the importer creates ONE collider per imported object and
+    that collider is the mesh's overall bounding box. A single desk GLB holding
+    both slabs therefore got a solid collider bridging the gap - in testing the
+    player walked straight across the "chasm", because the collider filled it.
+    Two GLBs give two colliders, so the gap is genuinely empty.
+    """
+    return merge([target_box(tx, th, tz, WOOD)])
+
+
+def make_desk_far(tx=28.0, tz=12.0, th=0.6):
+    """Far slab ONLY (separate collider, same scale compensation)."""
+    return merge([target_box(tx, th, tz, WOOD)])
+
+
+def make_desk():
+    """Legacy combined desk. Kept for reference; DO NOT use for the chasm -
+    its single collider spans the gap (see make_desk_near)."""
     gap_start, gap_end = 22.0, 32.0
     near = box(28.0, 0.6, (gap_start + 6.0), WOOD, origin=(0, 0, (gap_start - 6.0) / 2))
     far = box(28.0, 0.6, 12.0, WOOD, origin=(0, 0, (gap_end + 6.0)))
@@ -390,6 +414,9 @@ def main():
         print(f'{fname:28s} {name:16s} size(xyz)={[round(x,2) for x in sz]} tris={len(f)}')
 
     emit('WB_DESK.glb', make_desk(), 'WB_DESK')
+    # Split slabs: one collider each, so the chasm is a REAL hole.
+    emit('WB_DESK_NEAR.glb', make_desk_near(), 'WB_DESK_NEAR')
+    emit('WB_DESK_FAR.glb', make_desk_far(), 'WB_DESK_FAR')
     emit('WB_BOOK_A.glb', make_book(9.0, 7.0, 6.0, (0.45, 0.22, 0.20)), 'WB_BOOK_A')
     emit('WB_BOOK_B.glb', make_book(7.5, 5.6, 5.0, (0.20, 0.32, 0.38)), 'WB_BOOK_B')
     # R1: 30 m was far too long for a 10 m chasm (necessarily overhung 20 m).

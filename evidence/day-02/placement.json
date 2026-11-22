@@ -1,0 +1,101 @@
+﻿[
+    {
+        "idx":  1,
+        "name":  "WB_ERASER",
+        "x":  115.742,
+        "y":  80,
+        "z":  91.5,
+        "status":  "committed",
+        "tag":  "1. counterweight, 3 m out"
+    },
+    {
+        "idx":  2,
+        "name":  "WB_PENCIL",
+        "x":  123.742,
+        "y":  80,
+        "z":  91.5,
+        "status":  "committed",
+        "tag":  "2. alt span candidate"
+    },
+    {
+        "idx":  3,
+        "name":  "WB_BOOK_S",
+        "x":  116.742,
+        "y":  80,
+        "z":  95,
+        "status":  "committed",
+        "tag":  "3. canyon terrace L"
+    },
+    {
+        "idx":  4,
+        "name":  "WB_BOOK_S",
+        "x":  122.742,
+        "y":  80,
+        "z":  95,
+        "status":  "committed",
+        "tag":  "4. canyon terrace R"
+    },
+    {
+        "idx":  5,
+        "name":  "WB_DESK",
+        "x":  119.742,
+        "y":  79.4,
+        "z":  94.6,
+        "status":  "committed",
+        "tag":  "5. deck, chasm at z100-110"
+    },
+    {
+        "idx":  6,
+        "name":  "WB_RULER_S",
+        "x":  115.742,
+        "y":  80,
+        "z":  97,
+        "status":  "committed",
+        "tag":  "6. ruler REST (clue pose)"
+    },
+    {
+        "idx":  7,
+        "name":  "WB_RULER_SPAN",
+        "x":  119.742,
+        "y":  80,
+        "z":  104,
+        "status":  "committed",
+        "tag":  "7. ruler SPANNED"
+    },
+    {
+        "idx":  8,
+        "name":  "WB_CASE_S",
+        "x":  119.742,
+        "y":  80,
+        "z":  108,
+        "status":  "committed",
+        "tag":  "8. village = GOAL"
+    },
+    {
+        "idx":  9,
+        "name":  "WB_SIGN",
+        "x":  115.742,
+        "y":  80,
+        "z":  110,
+        "status":  "committed",
+        "tag":  "9. EXIT"
+    },
+    {
+        "idx":  10,
+        "name":  "WB_LAMP",
+        "x":  126.742,
+        "y":  80,
+        "z":  111,
+        "status":  "committed",
+        "tag":  "10. far landmark"
+    },
+    {
+        "idx":  11,
+        "name":  "WB_MUG",
+        "x":  112.742,
+        "y":  80,
+        "z":  111,
+        "status":  "committed",
+        "tag":  "11. far landmark"
+    }
+]

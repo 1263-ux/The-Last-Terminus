@@ -126,6 +126,9 @@ Exit（书桌 → 列车）
 | **C-16** | **`runtime screenshot --object` 的 `instanceId` 每次重启都会变** | 必须每次 `runtime snapshot` 重新取，不能缓存。`snapshot` 里用正则 `"instanceId":"(-?\d+)","name":"(WB_[A-Z_]+)"` 提取最快。 |
 | **C-17** | **可以直接读相机 transform（本轮最有用的技巧）** ★ | `runtime lua eval --file x.lua --global`。`--global` 下**没有** `UnityEngine`，但有 **`CS`**。要点：① 查对象用 `CS.UnityEngine.GameObject.FindGameObjectsWithTag("MainCamera")`（`FindObjectsOfType` 在这条桥上不可用）；② **数组必须用 `cams:get_Item(0)`**，`cams[0]` 是 nil；③ `GetComponent` 必须传 `typeof(CS.UnityEngine.Camera)`，传类表会报 `invalid arguments`。完整脚本见 `lua/get_cam.lua`。 |
 | **C-18** | **第三人称相机在玩家"身后且下方"** | 实测 `TPCameraAvatar` 位置比玩家脚下低约 **1.08 m**，前向带 **18° 俯角**。后果：① 任何顶面平齐玩家脚底的整块地面板都会**把相机包在下面，挡死视野**；② 放在地面高度（y=玩家脚）的远景道具会**落到画面顶部之外**。摆位公式：`y = camY − tan(pitch) × 水平距离`。**这条对 C 的地形/平台尤其重要。** |
+| **C-19** | **`scene import` 会二次放大你的模型** ★★★ | **本项目目前最贵的坑。** 导入时编辑器把网格归一化到约 1 单位，再把**该网格的最长边**作为缩放倍数写回节点。因此 `实际尺寸 = 原创尺寸 × 原创最长边`。实测：14 m 的书拿到 `scale=(14,14,14)` → 实际 196 m；2 m 的书拿到 `scale=(2,2,2)` → 实际 4 m。**要得到目标尺寸 T，按最长边创作 `√T`。** 我为此耗掉两天，把"物件不可见"先后误判成相机朝向、地形遮挡、法线缺失。**A 和 C 只要用 `scene import` 放 GLB 就一定会踩到。** |
+| **C-20** | **怎么自查缩放** | 导完后解包 `scene.data`（是 ZIP）看 `nodeTransformDatas[].basic.scale`。**不要凭截图判断尺寸对不对**——截图只能说"看得到/看不到"，说不出"多大"。 |
+| **C-21** | **可见带只有贴地平线的一条窄缝** | 相机只比地面高约 0.4 m，帧顶高度约 `79.6 + 0.105·d`。10 m 处帧顶仅 y=80.65，所以**高于 1.1 m 的地面物件就出画**。含义：靠"巨大的立式物件"表达尺度在这个默认相机下**根本不成立**；要么改相机（`_followMaxDistance` 6.0 → 更大），要么改表达（平躺的巨物、玩家在其表面行走）。**C 的平台/温室如果也是立式巨物，会遇到同一堵墙。** |
 
 ### ② B 对"两个世界玩法差异"的自我界定（请 C 审查是否越界）
 

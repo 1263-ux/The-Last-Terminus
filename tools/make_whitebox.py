@@ -204,6 +204,31 @@ def make_book(w, h, d, cover, pages=0.82, name='book'):
     return merge(parts)
 
 
+def make_book_flat(w, h, d, cover, pages=0.82):
+    """A book LYING FLAT, i.e. wide in X/Z and thin in Y.
+
+    This is the readable form for the Desk World, and the reason is a measured
+    engine constraint rather than an art preference: the third-person camera
+    sits at y=79.6 with only ~4.5 deg of upward visibility, so at 10 m the whole
+    frame above y=80.67 is out of shot. A standing 7 m book is therefore never
+    seen - only an unreadable slab edge. A book lying flat presents its cover
+    and page block as a raised plateau inside the visible band, and it also
+    gives the walker something to climb, which the 1.0 m jump limit requires.
+
+    Local frame: cover on the ground, page block stacked on top, thickness h.
+    """
+    parts = []
+    t = h * 0.10                                   # cover thickness
+    parts.append(box(w, t, d, cover, origin=(0, 0, 0)))
+    # page block, inset on all sides so the cover overhangs (deckle edge)
+    parts.append(box(w * 0.94, h * pages, d * 0.94, PAPER,
+                     origin=(0, t, 0)))
+    parts.append(box(w, t, d, cover, origin=(0, t + h * pages, 0)))
+    # spine: a raised rail along one long edge, reads as the book's binding
+    parts.append(box(w * 0.04, h, d, PAPER_D, origin=(-w / 2 + w * 0.02, 0, 0)))
+    return merge(parts)
+
+
 def make_ruler(length, width, thick):
     """A wooden ruler whose LONG axis runs along Z.
 
@@ -320,6 +345,38 @@ def make_mug(scale=1.0):
     return merge([body, handle])
 
 
+def make_ramp(length, width, rise):
+    """A wedge ramp rising along +Z: the optional branch route.
+
+    Built as a stepped wedge (N steps) rather than a true incline, because the
+    engine's player controller has jumpMaxHeight = 1.0 m and no verified slope
+    handling; steps of <= 0.5 m are always climbable by walking.
+    """
+    n = 12
+    parts = []
+    for i in range(n):
+        h = rise * (i + 1) / n
+        z = -length / 2 + length * (i + 0.5) / n
+        parts.append(box(width, h, length / n, WOOD_L,
+                         origin=(0, 0, z)))
+    return merge(parts)
+
+
+def make_sign(height=6.0):
+    """Exit marker: a tall post with a sign plate and a base pad.
+
+    Day 2 needs a visible EXIT that reads from the village, so the route has a
+    defined end instead of just stopping.
+    """
+    parts = [
+        box(0.35, height, 0.35, METAL, origin=(0, 0, 0)),
+        box(2.6, 1.1, 0.22, (0.90, 0.85, 0.62),
+            origin=(0.9, height - 1.4, 0)),
+        box(1.4, 0.28, 1.4, WOOD, origin=(0, 0, 0)),
+    ]
+    return merge(parts)
+
+
 def main():
     os.makedirs(OUT, exist_ok=True)
     made = []
@@ -357,6 +414,26 @@ def main():
     # side by side in the real engine before any Tripo spend.
     emit('WB_BOOK_XL.glb', make_book(27.0, 21.0, 18.0, (0.45, 0.22, 0.20)), 'WB_BOOK_XL')
     emit('WB_RULER_XL.glb', make_ruler(34.0, 6.0, 1.0), 'WB_RULER_XL')
+
+    # ---- Day-2 route pieces -------------------------------------------
+    # Branch: a broad ramp climbing onto the far slab's side, so the optional
+    # route is a real alternate path (not just a viewpoint).
+    emit('WB_RAMP.glb', make_ramp(22.0, 9.0, 5.0), 'WB_RAMP')
+    # Exit marker at the end of the far slab.
+    emit('WB_SIGN.glb', make_sign(6.0), 'WB_SIGN')
+
+    # ---- FLAT books: the only form that is actually visible ------------
+    # SCALE BUG (found Day 2): the importer normalises each GLB to ~1 unit and
+    # bakes a scale equal to the mesh's LONGEST dimension back onto the node.
+    # Effective world size is therefore authored_size x authored_longest, i.e.
+    # quadratic in the authored length. Verified in scene.data:
+    #   WB_BOOK_FLAT_A (14 x 1.84 x 11) -> scale (14,14,14)
+    # So to land a book at ~4 m across, author it at sqrt(4) ~ 2 m per side.
+    # These variants are authored small on purpose ("S" = small).
+    emit('WB_BOOK_S.glb', make_book_flat(2.0, 0.55, 1.6, (0.45, 0.22, 0.20)),
+         'WB_BOOK_S')
+    emit('WB_RULER_S.glb', make_ruler(3.2, 0.7, 0.14), 'WB_RULER_S')
+    emit('WB_CASE_S.glb', make_pencil_case(2.2, 0.5, 1.5), 'WB_CASE_S')
 
     with open(os.path.join(OUT, 'manifest.json'), 'w', encoding='utf-8') as fh:
         json.dump(made, fh, ensure_ascii=False, indent=2)

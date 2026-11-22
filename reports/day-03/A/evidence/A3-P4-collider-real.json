@@ -1,0 +1,23 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": [
+    {
+      "name": "P4_GLB_CUBE",
+      "depth": 1,
+      "worldPos": [
+        119.74,
+        78.4,
+        90
+      ],
+      "hasBoxCollider": false,
+      "hasMeshCollider": true,
+      "hasAnyCollider": true,
+      "isTrigger": false
+    }
+  ],
+  "startFrame": 1433,
+  "endFrame": 1433,
+  "durationMs": 1,
+  "mode": "native-puerts"
+}

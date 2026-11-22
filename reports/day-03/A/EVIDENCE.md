@@ -51,7 +51,8 @@ douyin-world runtime js eval --file measure_day3_bounds.js --runtime-id <R>
 - `evidence/A3-wall-inspect.json` + `A3-wall-inspect2.json`：运行时
   `Collider=false, BoxCollider=false, MeshCollider=false`（用 `puer.$typeof` 具体类型复查）。
 - `evidence/A3-walk-result.json`：真实按 W 4 s 后位置跳回默认出生点（被坠落污染，判 INCONCLUSIVE）。
-- 对照：Day-1 `check_collider2.js` 显示 `triggerData` 锚点有 `BoxCollider isTrigger=true`。
+- `evidence/A3-P4-collider-real.json`：GLB 立方体 MeshCollider isTrigger=false。
+- `evidence/A3-P4-walk-result.json`：真实行走从 z=88 到 z=89.34，被精确阻挡。
 
 ## 4. WPRE 交接（A4）
 

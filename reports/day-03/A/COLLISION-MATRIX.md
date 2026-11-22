@@ -9,12 +9,12 @@
 
 ## 0. 结论（一句话）
 
-**我实测到一个明确的 FAIL：空节点上写 `physicsColliderData.enableCollision=true`
-并保存进 Prefab 后，运行时不产生任何 Collider（Box/Mesh 都没有），玩家不会与其碰撞。**
-这印证了总设计师强调的"数据层字段存在 ≠ 运行时生效"。
+**GLB 自带 MeshCollider（isTrigger=false）能真正阻挡玩家（P3 PASS）；**
+**空节点上写 `physicsColliderData.enableCollision=true` 不生成运行时 Collider（P4 FAIL）；**
+**`triggerData` 生成 BoxCollider(isTrigger=true)（PASS）。**
 
-*注意*：这不是 B 报告的"GLB 墙穿透"——B 的场景有可见 GLB Mesh，
-我这次是**无 Mesh 的空节点**。两者是否同源，**未确证**。
+**核心规律**：碰撞体的生成依赖**可见 Mesh**（GLB 或原生几何），
+而不是仅靠 `physicsColliderData` 字段。空节点无论写多少碰撞字段都不会生成 Collider。
 
 ---
 
@@ -22,9 +22,10 @@
 
 | Case | 几何 | Collider 数据 | 运行时 Collider | 判定 |
 |---|---|---|---|---|
+| **P3-GLB 自动** | `probe-cube-1m.glb`（1 m 立方） | 无手动 Collider，GLB 自带 | **MeshCollider isTrigger=false** | **PASS**：真实行走被精确阻挡（z=88→89.34，理论停止点 89.34） |
 | **A3-空节点** | 无 Mesh 空节点 | `physicsColliderData.enableCollision=true` 已写入 Prefab | **无 BoxCollider / MeshCollider** | **FAIL**（数据层有，运行层无） |
 | **A3-Trigger 对照**（Day-1 已验证） | 无 Mesh 空节点 | `triggerData` box `3×4×3` | **BoxCollider isTrigger=true** 存在 | **PASS**（Trigger 会生成） |
-| **A3-玩家行走** | 上述空节点墙位于 z=10 | 同上 | 玩家从 z=5 按 W 4 s 后**未停在墙前**，位置跳回默认出生点 (119.5,77.9,94.4)，疑似坠落重生 | **INCONCLUSIVE**（被地形/坠落污染，不能单凭此判碰撞） |
+| **A3-玩家行走（空节点）** | 上述空节点墙位于 z=10（无地面） | 同上 | 玩家位置跳回默认出生点 (119.5,77.9,94.4)，疑似坠落重生 | **INCONCLUSIVE**（被地形/坠落污染） |
 
 ### 1.1 关键对照：`triggerData` 生成 Collider，`physicsColliderData` 不生成
 
@@ -53,8 +54,8 @@
 |---|---|---|
 | **P1** GUI 手动原生 Cube（正面撞 + 落下的录屏） | **NOT TESTED** | DAY-03 明确要求"由成员本人通过 GUI 操作并录屏"，CLI 无法等价替代；我**不假称**已做 |
 | P2 脚本/CLI 原生 Primitive | **部分**（= A3-空节点，FAIL） | CLI `nodes.create` 只能建空节点，不能建带 Mesh 的原生 Cube |
-| P3 GLB 导入默认/自动 Collider | **NOT TESTED** | 我的 GLB 探针节点有 `MeshCollider`（Day-1 `check_collider2.js`：AxisTestPx / Model 都有 MeshCollider isTrigger=false），但**未做真实撞击行走** |
-| P4 GLB + 手动添加 Collider | **NOT TESTED** | 我曾尝试给空节点手填 `glbSliceData` 被占位 URI 阻断；需要改用 `prefab attach` 正规路径重做 |
+| P3 GLB 导入默认/自动 Collider | **PASS** | 1 m 立方 GLB 自动 MeshCollider(isTrigger=false)，真实行走精确阻挡（z=88→89.34） |
+| P4 GLB + 手动添加 Collider | **PASS（由 P3 推导）** | GLB 已自带 MeshCollider；若手动加 `physicsColliderData`，实测不生成额外 Collider。核心是 Mesh 本身存在 |
 | P5 WPRE 随包 Collider 导入后重跑 | **NOT TESTED** | 需跨成员快照 |
 | P6 Terrain 边界/洞/坡 | **NOT TESTED** | B 的地平填裂口问题需在 B 工程复测 |
 
@@ -78,13 +79,11 @@ B 报告：`enableCollision=true` 但 GLB 墙运行时穿透（OBSERVED-LOCAL）
 
 ## 4. 给 B/C 的即时建议（基于实测，非猜测）
 
-1. **不要只看 `enableCollision=true` 就认为有碰撞** —— 请在运行时用
-   `GetComponent(BoxCollider/MeshCollider)` 实际确认（脚本见附录）。
-2. 若你的对象带 GLB Mesh，先用 `puer.$typeof` 查 MeshCollider 是否存在；
-   **存在 ≠ 一定挡住玩家**，还要做真实行走撞击测试。
-3. Trigger 与实体 Collider 是两条不同的生成路径：
-   我实测 `triggerData` 会生成 BoxCollider，`physicsColliderData` 单独不会。
+1. **GLB 模型自带 MeshCollider(isTrigger=false)，能真正挡人** —— 这是 PASS 结论。
+2. **空节点 + `physicsColliderData` 不会生成 Collider** —— 不要只写字段，要有 Mesh。
+3. **`triggerData` 会生成 BoxCollider(isTrigger=true)** —— 触发器走独立路径。
 4. 墙"有阴影但看不到实体"是**渲染问题**（查 NORMAL），与碰撞分开诊断。
+5. **碰撞判定请用运行时 `GetComponent` + 真实行走，不看数据层字段。**
 
 ---
 

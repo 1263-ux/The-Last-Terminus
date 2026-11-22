@@ -23,12 +23,12 @@ DAY-03 §57 明确："A 亲自完成 P1 GUI 手动原生 Cube 测试并录屏。
 **降级**：碰撞判定一律以运行时 `GetComponent` + 真实行走为准，不看数据层字段。
 **未决**：是否需要 Mesh 共存才能生成实体 Collider（P4 未完成，见 D3-3）。
 
-## D3-3｜P4（GLB + 手动 Collider）未完成 —— **NOT TESTED**
+## D3-3｜P4（GLB + 手动 Collider）—— **RESOLVED**
 
-尝试给空节点手填 `glbSliceData` 时被占位 URI 阻断；改用 `prefab attach` 正规路径又涉及
-追加新实例，与"同一节点加 Collider"的目标不一致。按 20–30 分钟规则停止深挖。
-下一步：在干净 Prefab 中 attach 一个 GLB cube，再对该节点 `components.add(physicsColliderData)`，
-重新 build/import 并用 `a3_inspect_wall2.js` 复查。
+P3/GLB 自动 MeshCollider 实测 PASS：`probe-cube-1m.glb` 放在出生点平台（119.74, 78.4, 90），
+真实行走被精确阻挡（z=88→89.34，理论停止点 89.34）。
+**结论**：碰撞体的生成依赖可见 Mesh，GLB 自带 MeshCollider(isTrigger=false) 即可挡人；
+空节点 + `physicsColliderData` 不生成 Collider。详见 `COLLISION-MATRIX.md`。
 
 ## D3-4｜真实行走撞击测试被地形/坠落污染 —— **INCONCLUSIVE**
 

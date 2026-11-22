@@ -1,0 +1,26 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": [
+    {
+      "name": "Anchor_A_to_B",
+      "found": false
+    },
+    {
+      "name": "Anchor_B_to_A",
+      "found": false
+    },
+    {
+      "name": "AxisTestPx",
+      "found": false
+    },
+    {
+      "name": "Model",
+      "found": false
+    }
+  ],
+  "startFrame": 927,
+  "endFrame": 927,
+  "durationMs": 3,
+  "mode": "native-puerts"
+}

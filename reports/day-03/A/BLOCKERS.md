@@ -13,15 +13,14 @@ DAY-03 §57 明确："A 亲自完成 P1 GUI 手动原生 Cube 测试并录屏。
 **我不假称完成。** P1 标 NOT TESTED，并已在 `COLLISION-MATRIX.md` 说明。
 **需要：成员 A 本人在编辑器 GUI 中放一个原生 Cube 并录屏撞击/落下测试。**
 
-## D3-2｜`physicsColliderData` 不生成运行时 Collider —— **OPEN（已定位到现象）**
+## D3-2｜碰撞不稳定（跨成员确认）—— **OPEN（P0 级）**
 
-现象：空节点写 `physicsColliderData.enableCollision=true` 并保存，运行时无 Box/Mesh Collider
-（用 `puer.$typeof` 具体类型复查，`A3-wall-inspect2.json`）。
-对照：`triggerData` 会生成 `BoxCollider isTrigger=true`。
+A 实测：GLB 1m 立方精确阻挡（PASS）；空节点 + physicsColliderData 不生成 Collider（FAIL）。
+B 独立实测（不同工程）：原生 Cube 3 次 1 挡 2 穿（不稳定），GLB 墙穿透（FAIL）。
 
-**已做最小验证**：确认不是 PuerTS 类型转换假阴性（具体类型复查仍 false）。
-**降级**：碰撞判定一律以运行时 `GetComponent` + 真实行走为准，不看数据层字段。
-**未决**：是否需要 Mesh 共存才能生成实体 Collider（P4 未完成，见 D3-3）。
+**碰撞机制跨成员结果不一致，不能宣称可靠。** 这是 Day-3 的 P0 问题。
+**降级**：所有玩法设计暂不依赖"实体阻挡"，用 Trigger + Teleport 替代。
+**需要**：统一工程/统一配置下的 A/B/C 对照测试（B 的报告 §6 列了 4 条需要人做的验证）。
 
 ## D3-3｜P4（GLB + 手动 Collider）—— **RESOLVED**
 

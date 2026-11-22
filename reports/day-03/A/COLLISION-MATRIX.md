@@ -7,14 +7,15 @@
 
 ---
 
-## 0. 结论（一句话）
+## 0. 结论
 
-**GLB 自带 MeshCollider（isTrigger=false）能真正阻挡玩家（P3 PASS）；**
-**空节点上写 `physicsColliderData.enableCollision=true` 不生成运行时 Collider（P4 FAIL）；**
-**`triggerData` 生成 BoxCollider(isTrigger=true)（PASS）。**
+**A 的 P3 测试：GLB 自带 MeshCollider(isTrigger=false) 精确阻挡玩家（PASS）。**
+**B 的独立测试（不同工程）：原生 Cube 3 次 1 挡 2 穿（不稳定），GLB 墙穿透（FAIL）。**
+**碰撞机制跨成员结果不一致，不能宣称"碰撞可靠"。**
 
 **核心规律**：碰撞体的生成依赖**可见 Mesh**（GLB 或原生几何），
-而不是仅靠 `physicsColliderData` 字段。空节点无论写多少碰撞字段都不会生成 Collider。
+空节点 + `physicsColliderData` 不生成 Collider。
+但**运行时阻挡是否生效不稳定**，受对象尺寸/创建时机/工程配置影响。
 
 ---
 
@@ -48,7 +49,27 @@
 
 ---
 
-## 2. 未完成 / NOT TESTED 的 Case
+## 2. 跨成员对照（A vs B）
+
+| 测试 | A（工程 fb583637） | B（工程 006822bc） |
+|---|---|---|
+| GLB 1m 立方（自动 MeshCollider） | **PASS**（精确阻挡 z=88→89.34） | **FAIL**（大 GLB 墙 24×4×1 穿透） |
+| 原生 Cube（CreatePrimitive） | 未测 | **不稳定**（3 次 1 挡 2 穿） |
+| 空节点 + physicsColliderData | **FAIL**（不生成 Collider） | 未测 |
+| triggerData → BoxCollider(isTrigger) | **PASS** | 未测 |
+| 渲染层（阴影有、本体无） | 未测 | **FAIL**（两者都有） |
+
+**差异分析：**
+1. **对象尺寸不同**：A 用 1m 立方（小而实心），B 用 24×4×1 大墙（大而薄）。
+2. **工程不同**：物理配置/碰撞层可能不同。
+3. **创建时机不同**：B 怀疑"运行时启动后第一个对象 vs 后续创建"有关（未验证）。
+4. **A 的测试是单次成功**，不能排除偶然性。
+
+**结论**：碰撞机制**不可靠**，需在统一工程/统一配置下重复测试才能定论。
+
+---
+
+## 3. 未完成 / NOT TESTED 的 Case
 
 | Case | 状态 | 原因 |
 |---|---|---|
@@ -61,19 +82,22 @@
 
 ---
 
-## 3. 与 B 报告的关系（不否定 B）
+## 3. 与 B 报告的关系（跨成员对照）
 
-B 报告：`enableCollision=true` 但 GLB 墙运行时穿透（OBSERVED-LOCAL）。
-我的发现：空节点 + `enableCollision=true` 连 Collider 都不生成（OBSERVED-LOCAL）。
+B 的 Day-3 `COLLISION-REPRO.md`（feature/desk-world）结论：
+- 原生 Cube 3 次测试 1 挡 2 穿，**碰撞不稳定**；
+- GLB 墙（24×4×1）穿透；
+- 数据层 BoxCollider 都在；
+- 渲染层"有影无面"是独立缺陷。
 
-**两者共同点**：`enableCollision=true` 这个字段单独都不足以证明碰撞生效。
-**差异**：B 有 GLB Mesh，我没有。
+**A 与 B 的关键分歧**：A 的 GLB 1m 立方精确阻挡，B 的 GLB 大墙穿透。
+**差异可能来自对象尺寸（1m vs 24m）、工程配置或创建时机。**
 
 **下一步正确的分支判断**（按 DAY-03 §65）：
-- 在**同一工程、同一出生点、同一运行模式**下，用**同一个 GLB**做
-  "有 Mesh 无手动 Collider" vs "有 Mesh + 手动 Collider" 对照，
-  才能定位是导入路径、Mesh 依赖还是 Preview 模式问题。
-- **不能直接否定 B，也不能把我的空节点结论推广到 B 的 GLB 墙。**
+- **走第二条**（P1/P3 都不能挡 → 查工程模板/运行时/玩家碰撞层）：
+  B 的报告也命中这一条。
+- 需要**统一工程、统一出生点、同一运行模式**下做 A/B/C 对照测试。
+- **不能直接否定 B，也不能把 A 的单次成功当作"碰撞可靠"。**
 
 ---
 

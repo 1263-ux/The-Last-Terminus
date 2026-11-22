@@ -53,11 +53,26 @@
 **结论**：115m 路线的"可走性"在当前引擎限制下无法完整验证。
 已验证部分：平坦地形行走 + 拱廊前两跨 + 终点站几何可建可渲染。
 
-## 5. 音频探针（修订任务 #5）—— **NOT TESTED**
+## 5. 音频探针（修订任务 #5）—— **PARTIAL PASS**
 
-尚未开始。需要验证：导入/播放/循环/音量/触发提示。
-CLI 无音频录制命令，但有 `resource archive --kind audio` 入口。
-**下一步**：创建一个最小 WAV 文件，走 `resource archive --kind audio` 流程。
+**导入流程（PASS）**：
+1. 创建 WAV 文件（44144 B，22050 Hz，1s，440Hz 正弦波）
+2. 放入 `wprefabs/<id>/assets/audio/<resourceId>/audio.wav` + `meta.json`
+3. `meta.json` 需 `schemaVersion: 4` + `resourceId` + `displayName` + `summary`
+4. `resource archive --kind audio` → 返回 URI（PASS）
+
+**绑定流程（PASS）**：
+- AudioClip 参数用 `{uri}` 简写格式绑定
+- 绑定数据正确保存（`refFrom: asset`, `refType: AudioClip`, `assetUri` 已保存）
+
+**播放（PARTIAL）**：
+- AudioSource 组件已创建（`hasAudioSource: true`, `volume: 1`）
+- 但 `clip` 为空（音频文件未加载到 AudioSource）
+- **可能原因**：Lua 脚本的 `AudioClip` 参数注入为 URI 字符串而非 Unity AudioClip 对象
+- **未解决**：需要进一步调试 Lua 类型转换
+
+**支持的格式**：WAV（已验证）、MP3（文档声明支持，未测试）
+**CLI 工作流**：`resource archive --kind audio` → `{uri}` 绑定 → Lua `AudioSource` 播放
 
 ## 6. 更新 PR #12（修订任务 #6）—— **进行中**
 
@@ -73,5 +88,5 @@ CLI 无音频录制命令，但有 `resource archive --kind audio` 入口。
 | #2 文档一致性 | **DONE** |
 | #3 最小 WPRE + 导入请求 | **PARTIAL**（WPRE 已交付，跨成员待回执） |
 | #4 完整 115m 路线 | **INCONCLUSIVE**（引擎限制） |
-| #5 音频探针 | **NOT TESTED** |
+| #5 音频探针 | **PARTIAL PASS**（导入/绑定 PASS，播放 clip 未加载） |
 | #6 更新 PR | **进行中** |

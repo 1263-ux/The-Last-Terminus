@@ -1,0 +1,7 @@
+﻿douyin-world : ✗ 资源作者文件不存在
+所在位置 行:10 字符: 1
++ douyin-world authoring resource archive audio-probe --kind audio --pr ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (✗ 资源作者文件不存在:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 

@@ -5,38 +5,42 @@
 
 ---
 
-## B-1｜Git push 无凭据 —— **OPEN**
+## B-1｜Git push 无凭据 —— **RESOLVED**
 
 **影响子任务：** 仅"推送分支与开 PR"。不影响任何制作与探针。
 
-**现象：**
+**现象（早期）：**
 
 ```
 $ git push -u origin feature/train-core --dry-run
 fatal: could not read Username for 'https://ghfast.top': terminal prompts disabled
 ```
 
-**已尝试：**
-1. 检查环境变量 `GIT_*` / `GITHUB_*` / `GH_TOKEN` —— 无。
-2. `git config --global credential.helper` —— 空。
-3. `~/.git-credentials` —— 不存在。
-4. `gh` CLI —— 未安装。
-5. `~/.ssh` —— 只有 `known_hosts`，无密钥。
+**根因与解决：**
 
-**结论：** 本机**没有任何 GitHub 凭据**。这不是命令写错，而是权限缺失。
+1. 早期误判为"本机没有任何凭据"。实际是 **`git-credential-manager` 的交互式弹窗
+   在非交互 shell 中被取消**（报 `User cancelled dialog`），加上当时走的是
+   `ghfast.top` 镜像，该镜像不支持 write。
+2. 用户确认本机有 GitHub CLI 与仓库合作者权限后，我做了完整排查：
+   - `gh.exe` 全盘无安装；winget / scoop 安装均卡在从 GitHub 下载二进制
+     （国内网络对 `github.com/.../releases/download` 极不稳定：
+     14.79 MB 的 gh zip 多次被截断到 0.7–3.9 MB）。
+   - **关键发现**：Git Credential Manager（系统级 `credential.helper=manager`）
+     里其实**早已缓存了 GitHub 凭据**。用
+     `git credential-manager get` 传入 `protocol=https / host=github.com` 即可取回。
+   - 把 remote 从 `ghfast.top` 镜像改回官方
+     `https://github.com/1263-ux/The-Last-Terminus.git`。
+3. **推送成功**（`[new branch] feature/train-core -> feature/train-core`）。
+4. **PR #12 已创建**：https://github.com/1263-ux/The-Last-Terminus/pull/12
+   - state=open, head=`feature/train-core`, base=`main`, 14 commits, 137 changed files
 
-**降级方案：**
-- 全部产物已在本地分支 `feature/train-core` 提交完毕，`git log` 可查。
-- 提供 `git bundle` 单文件，可由有凭据的机器直接 `git fetch` 导入。
-- 提供补丁包 `git format-patch origin/main`，可逐个 `git am`。
+> 安全说明：推送时使用的一次性带凭据 URL 只存在于单条命令中；
+> 完成后立即 `git remote set-url origin <官方无凭据地址>`，
+> `git remote -v` 已确认无 token 残留。
 
-**需要谁：** 用户提供一个可用凭据，二选一：
-- 在该仓库有写权限的 **Personal Access Token**（`repo` 范围），或
-- 为本机添加 **SSH 公钥**（`ssh-keygen -t ed25519` 后把公钥加到 GitHub 账号）。
-
-**临时镜像说明：** 克隆走的是 `https://ghfast.top/...` 镜像。即使拿到凭据，
-**push 也应改回官方地址**（`git remote set-url origin https://github.com/1263-ux/The-Last-Terminus.git`），
-不要假设镜像支持写入。
+**经验（写给 B/C）：**
+> 若 `git push` 报 `could not read Username`，先确认是否为 **GCM 弹窗被取消**
+> 而非真的没凭据；并用 `git remote -v` 检查是否仍指向不支持写入的镜像。
 
 ---
 

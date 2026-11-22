@@ -19,7 +19,8 @@
 | T-05 | 碰撞与可走性 | GLB 自带碰撞，玩家能真实走通连续可走面 | [已验证] |
 | T-06 | **移动平台组件** | **组件表里不存在** | [实测不支持] |
 | T-07 | 程序驱动平台 + 载人 | 平台可上升，玩家被带走 | [已验证] |
-| T-08 | **GLB 材质 / 分层配色** | **运行时被统一覆盖，三种改法全失败** | [实测不支持] |
+| T-08 | **GLB 材质 / 分层配色** | **已解决：必须写 shader `_BaseColor`，`material.color` 无效** | [已验证·已解] |
+| T-08b | 带贴图 GLB 进场景 | **我的最小带贴图 GLB 导入失败；去贴图即成功** | [信号明确·待真机复测] |
 | T-09 | 场景保存 / 关闭重开 | 白盒与可走性都保留 | [已验证] |
 | T-10 | 运行时世界边界 | `[0,255]`，越界对象被销毁 | [已验证] |
 | T-11 | `prefab attach` 语义 | **追加而非替换**，会留重复副本 | [已验证] |
@@ -196,19 +197,23 @@ localPrefabData, glbSliceData
 
 ---
 
-## T-08｜GLB 材质与分层配色 [实测不支持] ⚠️ 当天最严重问题
+## T-08｜GLB 材质与分层配色 [已验证·已解决] ✅
 
-**现象**：白盒在 Three.js 里给每个层设了不同颜色的 `MeshStandardMaterial`（根系层绿、温室层蓝、花冠层紫、岩层棕、玻璃半透明）。进入运行时后，**所有几何体都是同一个青蓝色**，层与层无法区分。
+> **状态更新**：Day 1 当天一度判定为"不支持"，**当天已攻破并交付可持久化方案**。下面的失败记录保留，因为"哪些入口无效"对 A/B 同样有价值。
 
-**三次改法全部失败**，逐条记录：
+### 现象
+
+白盒在 Three.js 里给每层设了不同颜色的 `MeshStandardMaterial`（根系层绿、温室层蓝、花冠层紫、岩层棕、玻璃半透明）。进入运行时后，**所有几何体都是同一个青蓝色**，层与层无法区分。
+
+### 三次失败（当天前半段）
 
 | 尝试 | 做法 | 结果 |
 |---|---|---|
 | 1 | Three.js 源里 `new MeshStandardMaterial({color})` | 导出后在运行时失效 |
-| 2 | `appearanceData` 组件写 `color` + `isModified: true` | 写入成功（`components: 5`），渲染无变化 |
-| 3 | 运行时直接改 `mr.sharedMaterial.color` | 改完截图仍无变化 |
+| 2 | `appearanceData` 组件写 `color` + `isModified: true` | 写入成功（`components: 5`），渲染无变化，且**重新 attach 后组件直接丢失** |
+| 3 | 运行时改 `mr.sharedMaterial.color` | 无变化 |
 
-**运行时诊断**：遍历所有 `MeshRenderer` 的 `sharedMaterial.name`：
+运行时诊断，遍历 `MeshRenderer.sharedMaterial.name`：
 
 ```
 __optimized_merged_material_0..7 → "EnvLit_AI_Mat"
@@ -217,19 +222,130 @@ EntryIsland / UnderGreenhousePad / RootCorridor_Y0 / Greenhouse_Y9 / CrownZone_Y
                                  → "Standard (Instance)"
 ```
 
-**根因**：编辑器在导入 GLB 后，把几何按材质**合并**并统一赋予环境光照材质 `EnvLit_AI_Mat`。原始的 PBR 颜色不再是权威来源。
+### 根因（关键发现）
 
-**含义与影响**：
+拉出 shader 属性表：
 
-1. 白盒阶段的"分层配色"必须换一条路：**用独立的 Model 资源分件**（每种材质一个资源），或在编辑器侧用原生材质系统重建，而不是靠 GLB 内嵌材质。
-2. **美术阶段的风险放大**：如果 Day 4 用 Tripo 生成带颜色贴图的巨花/温室，导入后可能同样被统一材质覆盖。这条必须**在 Day 4 之前**由总设计师与 A 共同确认，否则关键美术会白做。
-3. Day 2 的「哪些能走」灰度测试（参考研究硬结论 1 的验收方法）**必须先解决材质问题**才能做。
+```
+shader: Douyin/AI/PBR/EnvLit_AI
+34 个属性，其中颜色相关的是 _BaseColor，不是 Unity 标准的 _Color。
+```
 
-**未解决**，已列为 `BLOCKERS.md` B-02，优先级最高。
+**`material.color` 访问的是 `_Color`，而这个 shader 根本不使用 `_Color`。** 所以前三次尝试看起来"写成功了"却毫无渲染变化——写进了一个没人读的属性。
+
+### 正确做法（已验证）
+
+```javascript
+mr.sharedMaterial.SetColor("_BaseColor", new CS.UnityEngine.Color(r, g, b, 1));
+```
+
+A/B 对照实测：
+
+- 只改 `_BaseColor`、**不动** `_UseVertexColor` → 颜色立即生效（远处浮岛变紫，入口岛保持红）。
+- 结论：`_UseVertexColor` 不是必要条件，无需一起改。
+
+### 持久化方案（本项目采用）
+
+运行时改色只活一轮。为了"每次运行自动正确"，绑定了一个 Lua 脚本：
+
+```
+scripts/garden_layer_tint.lua
+→ scripts.bind({ nodes: [<Model 根节点>], script: <scriptId> })
+```
+
+脚本在 `Start()` 里遍历子树所有 `MeshRenderer`，按**相对本节点原点的局部高度**分三层赋色，走 `_BaseColor`。参数（五层颜色 + 两个高度分界）都做成面板可调：
+
+```lua
+---@var RootColor:Color=(0.42,0.72,0.44,1)
+---@var GreenhouseColor:Color=(0.36,0.66,0.82,1)
+---@var CrownColor:Color=(0.72,0.56,0.86,1)
+---@var RockColor:Color=(0.30,0.26,0.24,1)
+---@var FarColor:Color=(0.62,0.70,0.78,1)
+```
+
+**重要设计取舍**：用**局部高度**而不是世界坐标。WPrefab 可以被放到任意世界位置、旋转、缩放，写死世界坐标会在集成时全部错位。这条也写进了 `HANDOFF.md`。
+
+### 验证链（全部通过）
+
+1. 手动改 `_BaseColor` → 颜色变（截图 `mat-test-red-entry.png`）
+2. 绑定 Lua → 重新运行自动变（截图 `11-entry-colored-layers.png`）
+3. **关闭实例 → 新实例 → 新 profile → 重新运行 → 颜色仍在**（截图 `13-colors-persisted-after-restart.png`）
+4. 着色后复测行走：`134.00 → 127.40`，可走性未受影响
+
+### 对 A/B 的意义
+
+| 结论 | 影响 |
+|---|---|
+| 颜色必须写 `_BaseColor` | 任何用 GLB 做视觉区分的场景都必须走这条路 |
+| `material.color` / `appearanceData` 无效 | 不要在这两个入口上浪费时间 |
+| `appearanceData` 重新 attach 会丢 | 不要依赖组件做持久视觉配置 |
+| 持久化必须用 Lua 脚本 | 运行时手改不跨轮次 |
+| **贴图是否保留仍未验证** | 只测了纯色，**带贴图的 GLB 是下一个必须测的项** |
+
+**残留风险**：`_BaseTex` 属性存在，说明 shader 支持贴图，但**没有验证导入的 GLB 贴图实际是否被采样**。Day 4 的 Tripo 模型如果依赖贴图细节，必须先补这个探针。已记入 `BLOCKERS.md` 的 R-06。
+
+---
+
+## T-08b｜带贴图 GLB 是否保留贴图 [部分验证·有明确信号]
+
+**为什么要测**：T-08 只修好了**纯色**。Day 4 的 Tripo 模型如果依赖贴图细节，必须先知道贴图会不会被吞掉。
+
+### 做法
+
+用 Python 手写一个最小带贴图 GLB（24 顶点立方体 + 256×256 红蓝棋盘 PNG，`baseColorTexture` 指向内嵌 bufferView），
+`resource model import` 导入 → `check` 通过（`modelType: 1, nodeCount: 1`）→ `archive` 成功拿到 URI。
+
+### 结果（这是一个真实信号，不是"没测出结论"）
+
+| 步骤 | 结果 |
+|---|---|
+| GLB 导入 + check + archive | **通过**（贴图随包被打包，没有在导入阶段报错） |
+| `prefab attach` 到已有 WPrefab | 通过 |
+| `prefab build` + `result archive` | 通过 |
+| **`scene import` 到主场景** | **失败** —— `节点导入失败，脚本已保留，可重试导入（阶段：runtime）` |
+
+**关键对照**：把带贴图节点从 prefab 里删掉、重新 build/archive 后，同一场景**立刻导入成功**（`c-import-base-02`）。
+
+也就是说：**失败是带贴图节点引起的，不是场景或流程问题。** 同一个 prefab、同一台机器、同一个 request 流程，去掉贴图节点就能进，带上就进不去。
+
+### 含义
+
+1. **不能假定"Tripo 导出的带贴图 GLB 能直接进场景"**。这条在 Day 4 之前必须由总设计师/我一起处理。
+2. 当前可用的安全路线是：**几何承重 + `_BaseColor` 上色 + 分件材质**，不依赖贴图。这条路线已在白盒上完整验证（T-08）。
+3. 尚未定位失败的具体原因（是 bufferView 布局、mimeType、还是编辑器对贴图 GLB 的额外约束）。**我手写的是最小 GLB，可能是我的构造有问题，不排除标准的 Blender/Tripo 导出能正常导入。**
+
+### 诚实边界
+
+这条结论的强度是"**我的最小带贴图 GLB 进不了场景**"，不等于"所有带贴图 GLB 都进不了"。要下后者结论，必须用**一个真实导出器（Blender 或 Tripo）产出的带贴图 GLB** 再测一次。已列入 Day 2 待办。
+
+### 对 Day 4 的直接影响
+
+| 如果…… | 那么 Tripo 模型应该…… |
+|---|---|
+| 真实导出的带贴图 GLB 能进 | 正常走贴图流程，细节靠贴图 |
+| 真实导出的带贴图 GLB 也进不去 | **必须改为分件 + `_BaseColor`**，花瓣/花心/茎/根分成独立 Model，靠几何和纯色表达层次，不靠贴图 |
+
+这条必须在 Day 4 前定，否则关键美术会返工。
 
 ---
 
 ## T-09｜场景保存 / 关闭重开 [已验证]
+
+```
+runtime stop
+scene save --request-id c-save-02
+→ status: committed, hasUnsavedChanges: false
+
+instance stop <instanceId>        ← 完全关闭进程
+instance start --project <同上>   ← 新实例、新 profile
+runtime start
+→ GameObject.Find('garden-whitebox') → present: true, pos (120, 60, 120)
+→ 走位复测 134.00 → 127.90，y 60.00 → 60.30
+```
+
+**结论**：白盒几何、位置、碰撞、可走性在**跨实例、跨 profile 重开**后全部保留。**分层配色同样保留**（Lua 脚本在 `Start` 重新赋色，见 T-08）。
+
+同时确认了 `PRODUCTION-OPERATING-SYSTEM.md` 里那句关键规则：`instance stop` **不会自动保存**。必须先 `scene save` 再停；停之前不保存，改动就丢。这条要转告 A/B。
 
 ```
 runtime stop
@@ -334,9 +450,11 @@ Day 3 前必须验证：玩家进入 Trigger → 是否能驱动另一节点位�
 | 场景保存 / 跨实例重开 | 可用 | `instance stop` 不自动保存 |
 | 程序驱动节点位移 | 可用 | 唯一的位移手段 |
 | 平台载人 | 可用 | 已验证 |
+| **GLB 材质改色** | **可用（需写 `_BaseColor`）** | `material.color` / `appearanceData` 均无效 |
+| **分层配色持久化** | **可用（Lua 脚本）** | 按局部高度赋色，跨实例重开保留 |
 | 原生移动平台组件 | **不存在** | |
 | AI 地形生成浮空岛 | **不支持** | |
-| GLB 材质在运行时保留 | **不支持** | 被 `EnvLit_AI_Mat` 覆盖 |
+| GLB 贴图在运行时保留 | **有明确负面信号** | 最小带贴图 GLB 进不了场景（T-08b） |
 | PCG 参考图确认 | **CLI 无可用格式** | |
 | Trigger 驱动玩法 | 未验证 | |
 | 重力方向变化 | 未测 | 本轮不需要，不做 |

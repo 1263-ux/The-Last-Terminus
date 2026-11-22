@@ -27,7 +27,7 @@
 ### 当前状态
 
 - 白盒几何：**可用**（可走通、可保存、可重开）
-- 分层配色：**不可用**（见下）
+- 分层配色：**可用**（`_BaseColor` + Lua 持久化，跨实例重开保留）
 - 入口/出口 Anchor：**临时占位**
 
 ### 入口 / 出口 / 出生朝向（草案，`[待 A 确认]`）
@@ -90,11 +90,29 @@ douyin-world runtime screenshot --out <png>
 
 ### 想和 B 交换的三件事
 
-**1｜材质覆盖问题（最重要，B 很可能也会遇到）**
+**1｜材质改色：已攻破，B 直接抄这个结论**
 
-用 Three.js 或 GLB 导入后，编辑器会把几何按材质合并成 `__optimized_merged_material_N`，并统一赋予 `EnvLit_AI_Mat`。**GLB 内嵌的 PBR 颜色、`appearanceData` 组件颜色、运行时改 `sharedMaterial.color`，三种方式全部无效。**
+用 GLB 导入后，几何会被按材质合并成 `__optimized_merged_material_N` 并统一使用 `EnvLit_AI_Mat`。**三种常见改法全部无效**：
 
-如果 B 的书桌站也依赖 GLB 材质区分物件，建议 B 尽早做同一个探针，别等到美术阶段。我这边**尚未验证带贴图的 GLB 是否保留贴图**（只测了纯色），建议作为 B↔C 的第一次联合探针。
+| 做法 | 结果 |
+|---|---|
+| Three.js 里 `new MeshStandardMaterial({color})` | 运行时失效 |
+| `appearanceData` 组件写 `color` | 无变化，且重新 attach 后组件丢失 |
+| `mr.sharedMaterial.color = ...` | 无变化（写错属性名） |
+
+**根因**：shader 是 `Douyin/AI/PBR/EnvLit_AI`，颜色属性叫 **`_BaseColor`**，不是 Unity 标准的 `_Color`。`material.color` 访问的是 `_Color`，这个 shader 根本不读。
+
+**正确做法**：
+```javascript
+mr.sharedMaterial.SetColor("_BaseColor", new CS.UnityEngine.Color(r, g, b, 1));
+```
+只改 `_BaseColor` 即可，**不需要**动 `_UseVertexColor`（A/B 对照已确认）。
+
+**持久化**：运行时手改只活一轮。写一个 Lua 脚本绑到模型根节点，在 `Start()` 里遍历 `MeshRenderer` 按**局部高度**赋色。我用局部高度而不是世界坐标，因为 WPrefab 可能被放到任意世界位置/旋转/缩放。
+
+我的脚本在 `ai-sessions/workspace_ihycinrp/wprefabs/garden-whitebox/scripts/garden_layer_tint.lua`，可以直接拿来改造。
+
+**残留风险**：只验证了纯色。**带贴图的 GLB 是否保留贴图未测**，这是 Day 4 前必须补的项。如果贴图不保留，就改成「几何承重 + `_BaseColor` 上色」，不依赖贴图。
 
 **2｜可走面的碰撞必须实测，不能靠几何判断**
 
@@ -129,9 +147,15 @@ douyin-world runtime screenshot --out <png>
 
 | # | 决策 | 为什么现在必须定 | 推荐 |
 |---|---|---|---|
-| 1 | 是否接受方案 C（温室悬在入口**下方**）作为 Day 2 白盒方向 | Day 2 白盒一旦按 A/B 建，返工成本约半天 | 接受 C。目标可见性与路线发现强度都是 3/3，白盒成本最低 |
+| 1 | 是否接受方案 C（温室悬在入口**下方**）作为 Day 2 白盒方向 | Day 2 白盒一旦按 A/B 建，返工成本约半天 | 接受 C。空间方案文档已给出完整几何与 500 行规格；三方案对比 C 20 / B 19 / A 16，C 只在"路线发现强度"与"与书桌站差异度"领先，而这两项正是 TASK.md 的不可替代项 |
 | 2 | AI 地形不支持浮空岛 → 是否接受"地形做台地、浮岛由独立 Model 承担"的拆法 | 决定 Day 2 的地面处理方式 | 接受。与编辑器「Map + 独立 Model 槽位」架构一致 |
-| 3 | GLB 材质被覆盖 → Day 4 的 Tripo 模型是否还能保留贴图与颜色 | 若不解决，关键美术可能白做 | 请在 Day 4 前让我做一次"带贴图 GLB"的探针，用结论决定 Tripo 模型的交付格式 |
+| 3 | ~~GLB 材质~~ → **已解决**，改为：带贴图 GLB 是否保留贴图 | 若不解决，Day 4 关键美术可能白做 | 允许我在 Day 4 前做一次贴图探针，用结论决定 Tripo 模型的交付格式 |
+
+### 顺带需要总设计师裁决的一条（来自空间方案）
+
+`SPATIAL-PROPOSALS.md` §4.7 有两处视线**无法单帧入画**（根结台看向走面环与回望入口岛相差 105°；观景点正下方碗口与来路相差 44°），与参考研究硬结论 3 的"单帧看见来路与下一个目标"冲突。
+
+建议的验收改法：把"转身"本身当作揭示，验收改为**转身后 3 s 内能指认**，不按单帧测。请确认这个改法。
 
 ### 已就绪的 Asset Card
 

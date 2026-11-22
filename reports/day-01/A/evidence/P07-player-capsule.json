@@ -1,0 +1,17 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": {
+    "capsule": "ERR TypeError: actor.GetComponent is not a function",
+    "actorPosition": {
+      "x": 119.74166870117188,
+      "y": 77.90534973144531,
+      "z": 88.64060974121094
+    },
+    "allCapsules": []
+  },
+  "startFrame": 896,
+  "endFrame": 896,
+  "durationMs": 3,
+  "mode": "native-puerts"
+}

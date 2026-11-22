@@ -287,7 +287,7 @@ scripts/garden_layer_tint.lua
 | 持久化必须用 Lua 脚本 | 运行时手改不跨轮次 |
 | **贴图同样保留（但须 KTX2）** | T-08b 已验证：`_BaseTex` 采样有效；裸 PNG GLB 进不了场景 |
 
-**残留风险（已大幅收敛）**：T-08b 用编辑器自己的 Three.js 导出器验证了 albedo 贴图保留。仍未验证的是 **Tripo 实际导出格式**、`normal/ORM/emissive` 多通道贴图、以及透明+贴图组合。见 T-08b 与 R-06。
+**残留风险（已大幅收敛）**：T-08b 验证了 albedo 贴图保留；**T-19 进一步验证了 emissive 与透明 BLEND 保留、normal/ORM 运行时丢弃**。仍未验证的只剩 **Tripo 实际导出格式**、`_Alpha` 的实际控制方式、三通道同材质叠加。见 T-08b / T-19 与 R-06。
 
 ---
 

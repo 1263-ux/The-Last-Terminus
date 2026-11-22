@@ -144,8 +144,15 @@ Git 只能按二进制处理 → 冲突不可合并。
 
 **影响子任务：** 任何需要动画的交付物（本轮非 P0）。
 
-**现象：** 带 glTF node animation 的 GLB 导入后，节点存在但
-`animatorData` / `ugcAnimatorData` 组件**未生成**。
+**现象（已实测补强）：**
+1. 带 glTF node animation 的 GLB 导入后，节点存在，
+   但 `animatorData` / `ugcAnimatorData` 组件**未生成**。
+2. 更值得注意：**含动画的模型被放进了另一个组件 `aigcModelData`**，
+   而静态模型用 `glbSliceData`。同一次导入、同一套命令，路径不同。
+   证据：`P02-model-component-types.json`。
+
+**含义：** 动画模型不是"静态模型 + 动画"，而是走了另一条运行时通路。
+若需要动画，**必须单独验证播放**，不能用静态资产的导入结论推断。
 
 **当前判断：** 动画需要通过编辑器的动画配置流程单独接入，不能指望 GLB 自带。
 **本轮不阻塞**：列车 Hub 与云海尽头以静态为主，动画非必需。

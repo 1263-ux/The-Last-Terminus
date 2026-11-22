@@ -104,7 +104,7 @@ GLB → resource model import --glb → resource model check → resource archiv
 | 材质（PBR 参数） | **PARTIAL** | `glbSliceData` 仅存 `sourceUri`/`slicePath`/`isShowTex`/`opType`，**未单独保存 baseColor/roughness/metallic 字段**；实际外观由 GLB 源文件提供 |
 | 层级（父子结构） | **PASS** | 3 节点 GLB → 编辑器中 `Model` + `ProbeChildArmA` + `ProbeChildArmB`，父子关系保留 |
 | 透明度（alpha BLEND） | **OBSERVED** | 半透明面板在截图中呈半透效果（`P02-04-transparent.png`），但未见独立 alpha 参数字段 |
-| 动画（glTF node animation） | **PARTIAL** | `ProbeAnimatedNode` 子节点存在；但 `animatorData`/`ugcAnimatorData` 组件**未生成** → GLB 动画不会自动变成引擎动画，需另配 |
+| 动画（glTF node animation） | **PARTIAL** | `ProbeAnimatedNode` 子节点存在，且该节点使用 **`aigcModelData`** 组件（静态模型用 `glbSliceData`）；但 `animatorData`/`ugcAnimatorData` **未生成** → GLB 动画不会自动变成引擎动画，需另配 |
 | 碰撞 | **FAIL（需重建）** | GLB 不含碰撞；`physicsColliderData` 默认生成 `enableCollision: true` 但形状需重建 |
 | 单位 / 原点 | **PASS** | `resource inspect` 返回 `min [-0.5,-0.5,-0.5] max [0.5,0.5,0.5]`（1 m 立方体），米制正确 |
 | **坐标手性** | **FAIL（重要）** | 见 §3.3 |
@@ -127,7 +127,22 @@ GLB → resource model import --glb → resource model check → resource archiv
 在编辑器内必须**重新确认朝向**，不能凭 Blender 视图判断左右；
 若需要在导入后保持原朝向，应在导出 GLB 前对 X 做预镜像，或在编辑器内统一加 180° Y 旋转并记录。
 
-### 3.4 导入限制（实测返回值）
+### 3.4 模型组件的两条分支（实测）
+
+同样的 `resource model import` 路径，导入后节点上出现的组件**不同**：
+
+| 源 GLB | 生成组件 | 引用字段 |
+|---|---|---|
+| 静态模型（无动画） | `glbSliceData` | `sourceUri` |
+| **含 node animation 的模型** | **`aigcModelData`** | `uri` |
+
+证据：`P02-model-component-types.json`（11 个模型节点中，仅含动画的 `n2` 使用 `aigcModelData`，
+其余 10 个全部 `glbSliceData`）。
+
+**含义：** 动画模型走的是另一条运行时路径。若 B/C 交付带动画的资产，
+**不能假设它与静态资产行为一致**，必须单独在编辑器内验证播放。
+
+### 3.5 导入限制（实测返回值）
 
 - **30000 面 / 10 MiB** —— `resource inspect` 明确输出「资产导入限制 30000 面 / 10485760 字节」
 - WPrefab 单文件上限 **64 MiB**

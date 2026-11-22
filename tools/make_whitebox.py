@@ -335,7 +335,13 @@ def main():
     emit('WB_DESK.glb', make_desk(), 'WB_DESK')
     emit('WB_BOOK_A.glb', make_book(9.0, 7.0, 6.0, (0.45, 0.22, 0.20)), 'WB_BOOK_A')
     emit('WB_BOOK_B.glb', make_book(7.5, 5.6, 5.0, (0.20, 0.32, 0.38)), 'WB_BOOK_B')
-    emit('WB_RULER.glb', make_ruler(30.0, 2.6, 0.45), 'WB_RULER')
+    # R1: 30 m was far too long for a 10 m chasm (necessarily overhung 20 m).
+    # 12 m spans a 10 m gap with 1 m of seating on each edge.
+    emit('WB_RULER.glb', make_ruler(12.0, 2.6, 0.45), 'WB_RULER')
+    # Same ruler authored already in the SPANNING pose, for the two-preset-state
+    # bridge solution (blocker B-03 degradation L0): swapping between
+    # WB_RULER (rest) and WB_RULER_SPAN (spanning) needs no anchor API.
+    emit('WB_RULER_SPAN.glb', make_ruler(12.0, 2.6, 0.45), 'WB_RULER_SPAN')
     emit('WB_ERASER.glb', make_eraser(4.0, 1.8, 2.4), 'WB_ERASER')
     emit('WB_PENCIL.glb', make_pencil(22.0, 0.85), 'WB_PENCIL')
     emit('WB_PENCILCASE.glb', make_pencil_case(14.0, 2.6, 9.0), 'WB_PENCILCASE')

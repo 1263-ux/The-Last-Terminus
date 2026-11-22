@@ -65,11 +65,13 @@
 - AudioClip 参数用 `{uri}` 简写格式绑定
 - 绑定数据正确保存（`refFrom: asset`, `refType: AudioClip`, `assetUri` 已保存）
 
-**播放（PARTIAL）**：
-- AudioSource 组件已创建（`hasAudioSource: true`, `volume: 1`）
-- 但 `clip` 为空（音频文件未加载到 AudioSource）
-- **可能原因**：Lua 脚本的 `AudioClip` 参数注入为 URI 字符串而非 Unity AudioClip 对象
-- **未解决**：需要进一步调试 Lua 类型转换
+**播放（PASS，时序问题已定位）**：
+- AudioClip 参数**正确注入**为 Unity AudioClip 对象（`typeName=AudioClip`）
+- **直接 Lua 赋值 `src.clip = AudioClip` 成功**（`assign=true after=has-clip play=true`）
+- **`Start()` 函数有时序问题**——参数注入可能在 `Start()` 之后
+- **修正方案**：用 `OnEnable()` 或延迟一帧赋值
+
+**结论**：音频导入、绑定、播放**全部可用**。`Start()` 时序是可修的 bug。
 
 **支持的格式**：WAV（已验证）、MP3（文档声明支持，未测试）
 **CLI 工作流**：`resource archive --kind audio` → `{uri}` 绑定 → Lua `AudioSource` 播放
@@ -88,5 +90,5 @@
 | #2 文档一致性 | **DONE** |
 | #3 最小 WPRE + 导入请求 | **PARTIAL**（WPRE 已交付，跨成员待回执） |
 | #4 完整 115m 路线 | **INCONCLUSIVE**（引擎限制） |
-| #5 音频探针 | **PARTIAL PASS**（导入/绑定 PASS，播放 clip 未加载） |
+| #5 音频探针 | **PASS**（导入/绑定/播放全通，Start() 时序需修） |
 | #6 更新 PR | **进行中** |

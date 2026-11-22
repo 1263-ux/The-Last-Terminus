@@ -1,0 +1,16 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": [
+    {
+      "name": "AudioV3Node",
+      "clipType": "no-clip",
+      "clipIsNull": true,
+      "hasSource": true
+    }
+  ],
+  "startFrame": 1550,
+  "endFrame": 1550,
+  "durationMs": 3,
+  "mode": "native-puerts"
+}

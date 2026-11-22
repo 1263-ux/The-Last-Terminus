@@ -1,0 +1,22 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": [
+    {
+      "name": "AudioTestNode",
+      "hasSource": true,
+      "clipName": "",
+      "isPlaying": false
+    },
+    {
+      "name": "AudioV3Node",
+      "hasSource": true,
+      "clipName": "null",
+      "isPlaying": false
+    }
+  ],
+  "startFrame": 892,
+  "endFrame": 892,
+  "durationMs": 10,
+  "mode": "native-puerts"
+}

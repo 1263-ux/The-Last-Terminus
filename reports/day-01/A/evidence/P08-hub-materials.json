@@ -1,0 +1,64 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": {
+    "materials": [
+      {
+        "name": "WB_Floor",
+        "found": true,
+        "materialName": "EnvLit_AI_Mat (Instance)",
+        "color": {
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 0
+        },
+        "hasTexture": false,
+        "shader": "Douyin/AI/PBR/EnvLit_AI"
+      },
+      {
+        "name": "WB_Wall_A",
+        "found": true,
+        "materialName": "EnvLit_AI_Mat (Instance)",
+        "color": {
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 0
+        },
+        "hasTexture": false,
+        "shader": "Douyin/AI/PBR/EnvLit_AI"
+      },
+      {
+        "name": "WB_StoveColumn",
+        "found": true,
+        "materialName": "EnvLit_AI_Mat (Instance)",
+        "color": {
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 0
+        },
+        "hasTexture": false,
+        "shader": "Douyin/AI/PBR/EnvLit_AI"
+      },
+      {
+        "name": "WB_JourneyMap",
+        "found": true,
+        "materialName": "EnvLit_AI_Mat (Instance)",
+        "color": {
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 0
+        },
+        "hasTexture": false,
+        "shader": "Douyin/AI/PBR/EnvLit_AI"
+      }
+    ]
+  },
+  "startFrame": 5029,
+  "endFrame": 5029,
+  "durationMs": 4,
+  "mode": "native-puerts"
+}

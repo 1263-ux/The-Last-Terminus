@@ -1,0 +1,34 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": [
+    {
+      "node": "Model",
+      "mat": "EnvLit_AI_Mat (Instance)",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "hasTexture": false,
+      "shader": "Douyin/AI/PBR/EnvLit_AI"
+    },
+    {
+      "node": "AxisTestPx",
+      "mat": "EnvLit_AI_Mat (Instance)",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "hasTexture": false,
+      "shader": "Douyin/AI/PBR/EnvLit_AI"
+    }
+  ],
+  "startFrame": 5313,
+  "endFrame": 5313,
+  "durationMs": 1,
+  "mode": "native-puerts"
+}

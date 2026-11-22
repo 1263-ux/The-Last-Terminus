@@ -1,0 +1,510 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": {
+    "probes": [
+      {
+        "node": "WB_Floor",
+        "shader": "Douyin/AI/PBR/EnvLit_AI",
+        "props": [
+          {
+            "name": "_AlphaCutoff",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_Cull_Mode",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_UseVertexColor",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_TriplanarTiling",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_TriplanarOffset",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_TriplanarSmooth",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_Alpha",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_BaseTex",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_BaseColor",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_ColorPower",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_BaseTexSpeed",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_Normalmap",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_NormalScale",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_NormalmapSpeed",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_ORM",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_ORMSpeed",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_Metallic",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_Smoothness",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_AOIntensity",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_EmissionMask",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_EmissionMaskSpeed",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_EmissionTex",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_EmissionTexSpeed",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_EmissionColor",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_EmissionPower",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_RimColor",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_RimPower",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_FresnelInt",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_UseTriplanarSample",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_CullMode",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_DepthBiasFactor",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_DepthBiasUnits",
+            "hasTex": false,
+            "texName": null
+          }
+        ]
+      },
+      {
+        "node": "WB_JourneyMap",
+        "shader": "Douyin/AI/PBR/EnvLit_AI",
+        "props": [
+          {
+            "name": "_AlphaCutoff",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_Cull_Mode",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_UseVertexColor",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_TriplanarTiling",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_TriplanarOffset",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_TriplanarSmooth",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_Alpha",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_BaseTex",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_BaseColor",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_ColorPower",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_BaseTexSpeed",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_Normalmap",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_NormalScale",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_NormalmapSpeed",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_ORM",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_ORMSpeed",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_Metallic",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_Smoothness",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_AOIntensity",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_EmissionMask",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_EmissionMaskSpeed",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_EmissionTex",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_EmissionTexSpeed",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_EmissionColor",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_EmissionPower",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_RimColor",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_RimPower",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_FresnelInt",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_UseTriplanarSample",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_CullMode",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_DepthBiasFactor",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_DepthBiasUnits",
+            "hasTex": false,
+            "texName": null
+          }
+        ]
+      },
+      {
+        "node": "Model",
+        "shader": "Douyin/AI/PBR/EnvLit_AI",
+        "props": [
+          {
+            "name": "_AlphaCutoff",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_Cull_Mode",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_UseVertexColor",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_TriplanarTiling",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_TriplanarOffset",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_TriplanarSmooth",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_Alpha",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_BaseTex",
+            "hasTex": true,
+            "texName": ""
+          },
+          {
+            "name": "_BaseColor",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_ColorPower",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_BaseTexSpeed",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_Normalmap",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_NormalScale",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_NormalmapSpeed",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_ORM",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_ORMSpeed",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_Metallic",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_Smoothness",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_AOIntensity",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_EmissionMask",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_EmissionMaskSpeed",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_EmissionTex",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_EmissionTexSpeed",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_EmissionColor",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_EmissionPower",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_RimColor",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_RimPower",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_FresnelInt",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_UseTriplanarSample",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_CullMode",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_DepthBiasFactor",
+            "hasTex": false,
+            "texName": null
+          },
+          {
+            "name": "_DepthBiasUnits",
+            "hasTex": false,
+            "texName": null
+          }
+        ]
+      }
+    ]
+  },
+  "startFrame": 5594,
+  "endFrame": 5594,
+  "durationMs": 8,
+  "mode": "native-puerts"
+}

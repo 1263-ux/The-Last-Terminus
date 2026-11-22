@@ -132,7 +132,7 @@ GLB → resource model import --glb → resource model check → resource archiv
 | GLB 可导入 | **PASS** | `sourceState: "topology"`，`modelType: 1` |
 | 贴图（内嵌 PNG） | **PASS** | 棋盘纹理 + 红色角标在渲染截图中完整可见 → `P02-02-glb-object-closeup.png` |
 | UV | **PASS** | 同上，贴图未拉伸/翻转错乱 |
-| 材质（PBR 参数） | **PARTIAL** | `glbSliceData` 仅存 `sourceUri`/`slicePath`/`isShowTex`/`opType`，**未单独保存 baseColor/roughness/metallic 字段**；实际外观由 GLB 源文件提供 |
+| 材质（PBR 参数） | **PASS（实测确认）** | 材质被统一到 `Douyin/AI/PBR/EnvLit_AI` shader，**但颜色与贴图完整保留**到 `_BaseColor` / `_BaseTex`。见 §3.4 的实测与踩坑 |
 | 层级（父子结构） | **PASS** | 3 节点 GLB → 编辑器中 `Model` + `ProbeChildArmA` + `ProbeChildArmB`，父子关系保留 |
 | 透明度（alpha BLEND） | **OBSERVED** | 半透明面板在截图中呈半透效果（`P02-04-transparent.png`），但未见独立 alpha 参数字段 |
 | 动画（glTF node animation） | **PARTIAL** | `ProbeAnimatedNode` 子节点存在，且该节点使用 **`aigcModelData`** 组件（静态模型用 `glbSliceData`）；但 `animatorData`/`ugcAnimatorData` **未生成** → GLB 动画不会自动变成引擎动画，需另配 |
@@ -158,7 +158,36 @@ GLB → resource model import --glb → resource model check → resource archiv
 在编辑器内必须**重新确认朝向**，不能凭 Blender 视图判断左右；
 若需要在导入后保持原朝向，应在导出 GLB 前对 X 做预镜像，或在编辑器内统一加 180° Y 旋转并记录。
 
-### 3.4 模型组件的两条分支（实测）
+### 3.4 材质颜色与贴图的真实保留情况（含一次自我纠错）
+
+**曾一度误判的结论：** 用 `Renderer.material.color` / `.mainTexture` 读取时，
+所有材质都返回 `(0,0,0,0)` 且 `mainTexture = null`，据此差点写下"GLB 材质颜色与贴图丢失"。
+
+**实际不是丢失，是查错了属性。** 该编辑器的材质统一使用
+`Douyin/AI/PBR/EnvLit_AI` shader，颜色与贴图的真实属性名是
+**`_BaseColor`** 与 **`_BaseTex`**，不是 Unity 常规的 `_Color` / `_MainTex`。
+
+按正确属性名读回（`P08-base-props.json`）：
+
+| 节点 | `_BaseColor` (RGBA) | `_BaseTex` |
+|---|---|---|
+| `WB_Floor`（作者设 0.55,0.53,0.50） | **0.767, 0.755, 0.735, 1** | null |
+| `WB_StoveColumn`（作者设 0.35,0.33,0.32） | **0.626, 0.610, 0.601, 1** | null |
+| `WB_JourneyMap`（作者设 0.30,0.45,0.55） | **0.584, 0.701, 0.767, 1** | null |
+| `ProbeTexturedCube`（带内嵌贴图） | 1,1,1,1 | **非 null** |
+
+**结论：**
+1. **贴图确实保留** —— 带贴图的模型 `_BaseTex` 有值，截图里棋盘纹也可见。
+2. **颜色确实保留，但经过色彩空间转换** —— 作者值被转到线性空间
+   （0.55 → 0.767 ≈ sRGB→Linear；0.35 → 0.626 同理）。
+   这不是丢失，**不要**按"数值变了"判断材质出错。
+3. `glbSliceData` 组件本身**不存**颜色/粗糙度字段，说明材质数据是**导入时生成**到
+   运行时材质实例里，而不是随节点保存。**跨工程导入后颜色仍然正确**（Probe 06 已验证渲染）。
+
+> **给 B/C 的提示：** 检查材质是否正确时，请查 `_BaseColor` / `_BaseTex`，
+> 不要查 `color` / `mainTexture`，否则会得到"全黑、无贴图"的假故障。
+
+### 3.5 模型组件的两条分支（实测）
 
 同样的 `resource model import` 路径，导入后节点上出现的组件**不同**：
 
@@ -173,7 +202,7 @@ GLB → resource model import --glb → resource model check → resource archiv
 **含义：** 动画模型走的是另一条运行时路径。若 B/C 交付带动画的资产，
 **不能假设它与静态资产行为一致**，必须单独在编辑器内验证播放。
 
-### 3.5 导入限制（实测返回值）
+### 3.6 导入限制（实测返回值）
 
 - **30000 面 / 10 MiB** —— `resource inspect` 明确输出「资产导入限制 30000 面 / 10485760 字节」
 - WPrefab 单文件上限 **64 MiB**

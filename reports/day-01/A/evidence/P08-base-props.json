@@ -1,0 +1,58 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": [
+    {
+      "node": "Model",
+      "mat": "EnvLit_AI_Mat (Instance)",
+      "baseTex": "",
+      "baseColor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "alpha": 1
+    },
+    {
+      "node": "WB_Floor",
+      "mat": "EnvLit_AI_Mat (Instance)",
+      "baseTex": null,
+      "baseColor": [
+        0.767,
+        0.755,
+        0.735,
+        1
+      ],
+      "alpha": 1
+    },
+    {
+      "node": "WB_StoveColumn",
+      "mat": "EnvLit_AI_Mat (Instance)",
+      "baseTex": null,
+      "baseColor": [
+        0.626,
+        0.61,
+        0.601,
+        1
+      ],
+      "alpha": 1
+    },
+    {
+      "node": "WB_JourneyMap",
+      "mat": "EnvLit_AI_Mat (Instance)",
+      "baseTex": null,
+      "baseColor": [
+        0.584,
+        0.701,
+        0.767,
+        1
+      ],
+      "alpha": 1
+    }
+  ],
+  "startFrame": 5946,
+  "endFrame": 5946,
+  "durationMs": 2,
+  "mode": "native-puerts"
+}

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Generate Day-1 scale white-box GLBs for the Desk World.
 
 Purpose: verify the MICRO-SCALE READ in the real editor, not to produce art.
@@ -173,19 +173,47 @@ METAL   = (0.62, 0.64, 0.68)
 TIN     = (0.55, 0.60, 0.62)
 
 
-def target_box(tx, ty, tz, color, origin=(0, 0, 0)):
-    """Emit a box that lands at EXACT world size (tx,ty,tz) after import.
+def target_size(tx, ty, tz):
+    """Return the (sx, sy, sz) to AUTHOR so the mesh lands at (tx, ty, tz).
 
-    The importer normalises the mesh to ~1 unit then bakes the mesh's longest
-    authored dimension L back on as a uniform scale, so
+    The importer normalises a mesh to ~1 unit then bakes the mesh's LONGEST
+    authored dimension L back on as a uniform node scale:
         actual = authored * L
-    To hit a target T on the longest axis we need authored_longest = sqrt(T),
-    and every other axis is divided by that same L:
-        authored = (tx/L, ty/L, tz/L)   with L = sqrt(max(tx, tz))
-    Verified in-engine: WB_BOOK_S authored 2.0 gave scale 2.0 -> world 4.0.
+    To hit target T on the longest axis, authored_longest = sqrt(T); every other
+    axis is divided by that same L. Y IS INCLUDED in the max now - an earlier
+    version only considered X/Z, which silently mis-scaled any object taller
+    than it was wide (walls, signs).
+    Verified in-engine: WB_BOOK_S authored 2.0 -> scale 2.0 -> world 4.0.
     """
-    L = math.sqrt(max(tx, tz))
-    return box(tx / L, ty / L, tz / L, color, origin=origin)
+    L = math.sqrt(max(tx, ty, tz))
+    return (tx / L, ty / L, tz / L)
+
+
+def target_box(tx, ty, tz, color, origin=(0, 0, 0)):
+    """A box that lands at EXACT world size (tx,ty,tz) after import."""
+    sx, sy, sz = target_size(tx, ty, tz)
+    return box(sx, sy, sz, color, origin=origin)
+
+
+def scale_parts(parts, tx, ty, tz):
+    """Rescale an already-built part list so its bounding box lands at
+    (tx,ty,tz) after import. Needed for multi-part meshes (ramps, towns) where
+    each piece cannot be sized independently.
+
+    Measures the assembled bbox, then applies the same uniform scale that
+    target_size() would demand for a single box of that target size.
+    """
+    v, f, c = parts
+    lo = v.min(axis=0)
+    hi = v.max(axis=0)
+    cur = hi - lo
+    sx, sy, sz = target_size(tx, ty, tz)
+    factor = np.array([
+        (sx / cur[0]) if cur[0] > 1e-9 else 1.0,
+        (sy / cur[1]) if cur[1] > 1e-9 else 1.0,
+        (sz / cur[2]) if cur[2] > 1e-9 else 1.0,
+    ], dtype=np.float32)
+    return (v * factor, f, c)
 
 
 def make_desk_near(tx=28.0, tz=28.0, th=0.6):
@@ -369,6 +397,52 @@ def make_mug(scale=1.0):
     return merge([body, handle])
 
 
+def make_break_wall(tx=30.0, ty=6.0, tz=4.0):
+    """C4: the vertical break that blocks the corridor.
+
+    Sizing is deliberate, not aesthetic:
+      - ty = 3.0 m is well above jumpMaxHeight = 1.0 m, so it CANNOT be jumped.
+      - tz = 1.2 m is thicker than one player capsule so it cannot be clipped.
+      - tx = 30.0 m spans the whole walkable strip. An earlier 12 m wall DID
+        stop forward motion but the player slid along its face and walked
+        AROUND the end (measured: ended at x=105.2 while the wall spanned
+        x 113.7-125.7). Widening past the reachable area removes that bypass.
+
+    Built as a wall plus two buttress ribs so the silhouette reads as a torn
+    page edge rather than an abstract box.
+    """
+    parts = [box(tx, ty, tz, PAPER_D)]
+    parts.append(box(tx * 0.04, ty * 0.92, tz * 1.35, WOOD,
+                     origin=(-tx * 0.30, 0, 0)))
+    parts.append(box(tx * 0.04, ty * 0.72, tz * 1.35, WOOD,
+                     origin=(tx * 0.22, 0, 0)))
+    return scale_parts(merge(parts), tx, ty, tz)
+
+
+def make_ruler_ramp(tx=9.0, ty=3.0, tz=8.0):
+    """C4: the ruler re-purposed as a RAMP onto the break wall.
+
+    This is why C4 keeps the core fantasy intact: the player still changes what
+    the ruler is for. It is a ruler, its tick marks run up the slope, and it is
+    the only thing long enough and flat enough to span the height difference.
+
+    Stepped on purpose: jumpMaxHeight is 1.0 m and slope handling is unverified,
+    so each riser is ty/12 = 0.25 m - always walkable, never a jump.
+    """
+    n = 12
+    parts = []
+    for i in range(n):
+        h = ty * (i + 1) / n
+        z = -tz / 2 + tz * (i + 0.5) / n
+        parts.append(box(tx, h, tz / n, WOOD_L, origin=(0, 0, z)))
+        # a tick mark across each step: the ruler reading survives the re-use
+        if i % 2 == 0:
+            parts.append(box(tx * 0.28, h + 0.02, tz / n * 0.10,
+                             (0.25, 0.18, 0.10),
+                             origin=(tx * 0.22, 0, z)))
+    return scale_parts(merge(parts), tx, ty, tz)
+
+
 def make_ramp(length, width, rise):
     """A wedge ramp rising along +Z: the optional branch route.
 
@@ -461,6 +535,14 @@ def main():
          'WB_BOOK_S')
     emit('WB_RULER_S.glb', make_ruler(3.2, 0.7, 0.14), 'WB_RULER_S')
     emit('WB_CASE_S.glb', make_pencil_case(2.2, 0.5, 1.5), 'WB_CASE_S')
+
+    # ---- C4: vertical break + ruler-as-ramp ----------------------------
+    # The horizontal chasm failed in-engine because the terrain filled it and the
+    # player simply walked across. A 3 m wall (vs jumpMaxHeight 1.0) cannot be
+    # jumped, so it blocks for a computable reason rather than an assumed one.
+    emit('WB_BREAK_WALL.glb', make_break_wall(30.0, 6.0, 4.0), 'WB_BREAK_WALL')
+    emit('WB_RULER_RAMP.glb', make_ruler_ramp(9.0, 3.0, 8.0), 'WB_RULER_RAMP')
+    emit('WB_RULER_RAMP_UP.glb', make_ruler_ramp(9.0, 3.0, 8.0), 'WB_RULER_RAMP_UP')
 
     with open(os.path.join(OUT, 'manifest.json'), 'w', encoding='utf-8') as fh:
         json.dump(made, fh, ensure_ascii=False, indent=2)

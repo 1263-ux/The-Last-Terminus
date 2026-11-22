@@ -165,6 +165,19 @@ spawnPointData = [{"id": 118359383}]
 | `07-wb-village-goal.jpg` | 中景：小镇目标 | 目标可见性 |
 | `08-editor-ui-scene-tree.jpg` | 编辑器 UI 全貌 | 场景树 + 资产库缩略图 + 容量条 207/4000 |
 
+### 6.2 Day 1 REVISE 回合新增（白盒修正后）
+
+| 文件 | 内容 | 证明什么 |
+|---|---|---|
+| `09-wb-far-overview-fixed.jpg` | 白盒远景总览 | 双书、裂口、尺子、铅笔盒、台灯、杯**同时可读**；体量关系正确 |
+| `10-wb-canyon-mid-fixed.jpg` | 书谷中景 | 书墙 vs 玩家通道的尺度压迫 |
+| `11-wb-bridge-chasm-mid-fixed.jpg` | 裂口中景 | 10 m 裂口宽度与尺子长度的真实比例 |
+| `12-wb-village-goal-fixed.jpg` | 小镇目标 | 目标可见性 |
+| `13-night-warm-lamp-wide.jpg` | **夜景 + 暖台灯** | 暖光 vs 冷夜 skybox 成立，冷暖对比可读 |
+| `14-night-village-warm-windows.jpg` | 夜景小镇 | 暗部仍可读，暖光成为唯一视线锚点 |
+
+> 关键：这 6 张证明的是"几何体真的渲染出来了"。修复前同样位置只有阴影、没有表面（缺 `NORMAL` 属性），见 §8.1。
+
 > **这些图是从真实运行的引擎里截的**，不是示意图、不是 Blender 渲染、不是概念图。
 
 ---
@@ -183,15 +196,24 @@ spawnPointData = [{"id": 118359383}]
 
 ## 8. 未能取得的证据（明确声明）
 
+> **更新（Day 1 REVISE 回合）：** 夜景与白盒可见性两项已在本轮解决，详见 `WHITEBOX-FIX.md`。
+> 新增证据 `09~14` 见 §6.2。下列为**仍未取得**的部分。
+
 | 证据 | 原因 | 计划 |
 |---|---|---|
-| **玩家视角录屏** | `douyin-world` 无录屏命令；运行实例 Day 1 后半段反复卡在 `status=loading` | Day 2 用 `runtime input` + 高频 screenshot + ffmpeg 合成 |
-| **夜景截图** | 同上：写入夜间环境后运行实例持续 `loading`，无法截图 | Day 2 重试 |
-| **行走穿越裂口** | 白盒位置未对齐出生点 | Day 2 对齐后再测 |
+| **玩家视角录屏** | `douyin-world` 无录屏命令；`runtime input` 注入已验证生效（角色确实移动），但不能记录 | 用 `input` + 定时 `screenshot` + ffmpeg 合成（ffmpeg 已确认在 `C:\dsh\tools\ffmpeg\bin\ffmpeg.exe`） |
+| **玩家视角直接看到白盒** | 相机朝向已二分确认，但本轮结束时未把全部物件摆到相机正前方 | 按 `WHITEBOX-FIX.md` §1.2 的朝向结论重摆 |
+| **行走穿越裂口** | 尺子未真正跨裂口（缺锚点 API，且 30 m 尺子对 10 m 裂口必然悬空） | 见 `WHITEBOX-FIX.md` §5 R1（把尺子缩到 12 m） |
 | **GLB 碰撞是否自动生成** | 未做专项探针 | Day 2 |
-| **锚点吸附是否可行** | CLI 无对应 API，未验证 | Day 2，见 `BLOCKERS.md` B-03 |
+| **锚点吸附是否可行** | CLI 无对应 API | Day 2，见 `BLOCKERS.md` B-03 |
 
 > 按 `production/prompts/README.md` §4.7：「不得伪造完成状态」。上表即为此规则的执行。
+
+### 8.1 一个必须记录的调试教训（GLB 缺 NORMAL）
+
+白盒最初"有阴影但没有表面"。根因是自写 GLB 缺少 `NORMAL` 顶点属性：shadow pass 只要深度所以阴影正常，主 pass 无法着色因此表面不被绘制。
+**排查顺序上的浪费：** 先后误判为地形遮挡、原点偏移、相机朝向、埋入地面，最后才验法线。
+**结论：** 凡"有影子没表面"，先查法线。此坑已写入 `HANDOFF.md` 给 A/C。
 
 ---
 

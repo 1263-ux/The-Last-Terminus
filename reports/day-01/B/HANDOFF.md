@@ -75,6 +75,9 @@ Exit（书桌 → 列车）
 
 3. **`runtime start` 后若在运行中修改场景/环境，下一次 `runtime status` 会长时间卡 `loading`。**
    → 稳定做法：`stop → 写完所有内容 → scene save → start → 立即连续截图`，中途不再改动。
+   → 真卡死了：`instance stop` → 等 10 s → `instance start --project <projectRoot> --mode foreground`，本轮验证过 3 次都能干净恢复。
+
+4. **程序化 GLB 必须写 `NORMAL`。** 只给 `POSITION + COLOR_0` 时引擎会画出阴影但不画表面（shadow pass 只要深度，主 pass 要法线）。这是 B 线浪费最多的一个坑。
 
 ### ⑤ 已知问题
 - 白盒当前在原点，出生点在 (119.74, 80, 88.64)，相距 148 m → 玩家看不到白盒。
@@ -115,6 +118,12 @@ Exit（书桌 → 列车）
 | C-8 | **环境 44 字段全可控** | `scene environment get` 看 schema，`set --file x.json --mode patch` 写入。**天空盒内置 6 种**：白天/夕阳/夜晚/星空/雨/雪。雾、Bloom、Vignette、LensFlare 都有。 |
 | C-9 | **节点定向截图** | `runtime screenshot --object=<instanceId> --yaw --pitch --distance --size`。`instanceId` 从 `runtime snapshot` 拿（注意是**负数**，同样要用 `=` 写法）。**这比玩家视角更能证明空间关系。** |
 | C-10 | **`scene.data` / `.wprefab` 都是 ZIP** | 可以直接解包看 `SerializePcgData.json`，用于**离线核查节点/出生点/玩家参数**，不必截图。这个技巧对 C 验证"移动平台"尤其有用。 |
+| **C-11** | **GLB 必须有 NORMAL，否则"有影子没表面"** ★ | 自写/程序化 GLB 若只给 `POSITION + COLOR_0`，引擎的 shadow pass 照画阴影，但主 pass 无法着色 → **物体看得见影子、看不见本体**。我为此浪费了整整一个调试周期（先后误判地形遮挡、原点偏移、相机朝向、埋入地面）。**凡"有影子没表面"，先查法线。** |
+| **C-12** | **出生点的 `rot` 不能用来推断相机朝向** | 实测出生点 `rot=(0,0,0,1)` 单位四元数，但相机仍有明确朝向。判断朝向只能用二分法：在 +Z 与 −Z 各放一个高物体，看哪个出现在画面里。 |
+| **C-13** | **桌面/地形板会把相机包在内部** | 早期桌面是 40×30 m 单板，放到玩家脚下后**相机被板体包住**，画面一片空。大体积地面必须给玩家留出"站在上表面"的锚点，而不是让原点落在板中心。 |
+| **C-14** | **`scene remove` 只接受位置参数** | `scene remove -667818639` ✅；`scene remove --args '{"rootIDs":[...]}'` 会**静默失败**（返回 CHECK/无输出）。删除必须用位置参数形式，负号数字直接写。 |
+| **C-15** | **编辑器卡死可用实例级重启恢复** | `instance stop` → 等 10 s → `instance start --project <projectRoot> --mode foreground --startup-timeout 180`。本轮用了 3 次，每次都干净恢复。注意 `instance stop` 返回 `{"stopping":true,"stopped":false}` 是正常的。 |
+| **C-16** | **`runtime screenshot --object` 的 `instanceId` 每次重启都会变** | 必须每次 `runtime snapshot` 重新取，不能缓存。`snapshot` 里用正则 `"instanceId":"(-?\d+)","name":"(WB_[A-Z_]+)"` 提取最快。 |
 
 ### ② B 对"两个世界玩法差异"的自我界定（请 C 审查是否越界）
 

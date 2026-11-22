@@ -54,26 +54,42 @@ def merge(parts):
 
 
 def write_glb(path, verts, faces, colors, name):
-    """Write a minimal GLB: POSITION + COLOR_0 + indices, one node one mesh."""
+    """Write a minimal GLB: POSITION + NORMAL + COLOR_0 + indices.
+
+    NORMAL is REQUIRED. Without normals the engine renders the mesh invisible:
+    the shadow map still draws (it only needs depth), so the symptom is a real
+    object that casts a shadow but has no visible surface. That exact symptom
+    cost a full debugging cycle, hence this comment.
+    """
     verts = np.asarray(verts, dtype=np.float32)
     faces = np.asarray(faces, dtype=np.uint32)
     colors = np.asarray(colors, dtype=np.float32)
 
-    pos_bytes = verts.tobytes()
-    col_bytes = colors.tobytes()
-    idx_bytes = faces.tobytes()
+    # Smooth per-vertex normals: accumulate face normals, then normalise.
+    normals = np.zeros_like(verts)
+    tri = verts[faces]                       # (n,3,3)
+    fn = np.cross(tri[:, 1] - tri[:, 0], tri[:, 2] - tri[:, 0])
+    for k in range(3):
+        np.add.at(normals, faces[:, k], fn)
+    ln = np.linalg.norm(normals, axis=1, keepdims=True)
+    ln[ln < 1e-12] = 1.0
+    normals = (normals / ln).astype(np.float32)
 
-    def pad4(b, fill=b'\x00'):
-        return b + fill * ((4 - len(b) % 4) % 4)
+    def pad4(b):
+        return b + b'\x00' * ((4 - len(b) % 4) % 4)
 
-    pos_bytes = pad4(pos_bytes)
-    col_bytes = pad4(col_bytes)
-    idx_bytes = pad4(idx_bytes, b'\x00')
+    pos_bytes = pad4(verts.tobytes())
+    nrm_bytes = pad4(normals.tobytes())
+    col_bytes = pad4(colors.tobytes())
+    idx_bytes = pad4(faces.tobytes())
 
-    bin_blob = pos_bytes + col_bytes + idx_bytes
-    glb_len = 12 + 8 + len(json.dumps({}).encode())  # placeholder
+    bin_blob = pos_bytes + nrm_bytes + col_bytes + idx_bytes
     mn = verts.min(axis=0).tolist()
     mx = verts.max(axis=0).tolist()
+
+    o_pos, o_nrm = 0, len(pos_bytes)
+    o_col = o_nrm + len(nrm_bytes)
+    o_idx = o_col + len(col_bytes)
 
     gltf = {
         'asset': {'version': '2.0', 'generator': 'TLT whitebox generator'},
@@ -83,8 +99,8 @@ def write_glb(path, verts, faces, colors, name):
         'meshes': [{
             'name': name + '_mesh',
             'primitives': [{
-                'attributes': {'POSITION': 0, 'COLOR_0': 1},
-                'indices': 2,
+                'attributes': {'POSITION': 0, 'NORMAL': 1, 'COLOR_0': 2},
+                'indices': 3,
                 'material': 0,
             }],
         }],
@@ -100,16 +116,18 @@ def write_glb(path, verts, faces, colors, name):
         'accessors': [
             {'bufferView': 0, 'componentType': 5126, 'count': len(verts),
              'type': 'VEC3', 'min': mn, 'max': mx},
-            {'bufferView': 1, 'componentType': 5126, 'count': len(colors),
+            {'bufferView': 1, 'componentType': 5126, 'count': len(normals),
              'type': 'VEC3'},
-            {'bufferView': 2, 'componentType': 5125, 'count': faces.size,
+            {'bufferView': 2, 'componentType': 5126, 'count': len(colors),
+             'type': 'VEC3'},
+            {'bufferView': 3, 'componentType': 5125, 'count': faces.size,
              'type': 'SCALAR'},
         ],
         'bufferViews': [
-            {'buffer': 0, 'byteOffset': 0, 'byteLength': len(pos_bytes)},
-            {'buffer': 0, 'byteOffset': len(pos_bytes), 'byteLength': len(col_bytes)},
-            {'buffer': 0, 'byteOffset': len(pos_bytes) + len(col_bytes),
-             'byteLength': len(idx_bytes)},
+            {'buffer': 0, 'byteOffset': o_pos, 'byteLength': len(pos_bytes)},
+            {'buffer': 0, 'byteOffset': o_nrm, 'byteLength': len(nrm_bytes)},
+            {'buffer': 0, 'byteOffset': o_col, 'byteLength': len(col_bytes)},
+            {'buffer': 0, 'byteOffset': o_idx, 'byteLength': len(idx_bytes)},
         ],
         'buffers': [{'byteLength': len(bin_blob)}],
     }
@@ -139,20 +157,21 @@ TIN     = (0.55, 0.60, 0.62)
 
 
 def make_desk():
-    """Two desk-surface slabs separated by a 10 m chasm.
+    """Desk slabs forming a 10 m chasm, anchored so the player stands at z=0
+    on the near slab while the chasm lies AHEAD in +Z.
 
-    The chasm is what makes the ruler bridge *necessary* rather than decorative:
-    the player cannot walk around it (it spans the full Z depth of both slabs).
-    Split along X: west slab + gap + east slab.
+    Local frame: near slab z in [-6, +22], chasm z in [22, 32], far slab z in
+    [32, 44]. The player spawn camera was measured to look toward +Z, so the
+    player must walk forward into the gap.
+
+    The near slab starts at z=-6 only; the player at z=0 stands safely on it and
+    is never inside geometry (an earlier 40 m slab put the camera inside the
+    desk, which is why nothing was visible).
     """
-    gap = 10.0
-    total_x = 40.0
-    depth = 30.0
-    side = (total_x - gap) / 2          # 15 m each
-    thick = 0.6
-    west = box(side, thick, depth, WOOD, origin=(-(gap / 2 + side / 2), 0, 0))
-    east = box(side, thick, depth, WOOD, origin=(gap / 2 + side / 2, 0, 0))
-    return merge([west, east])
+    gap_start, gap_end = 22.0, 32.0
+    near = box(28.0, 0.6, (gap_start + 6.0), WOOD, origin=(0, 0, (gap_start - 6.0) / 2))
+    far = box(28.0, 0.6, 12.0, WOOD, origin=(0, 0, (gap_end + 6.0)))
+    return merge([near, far])
 
 
 def make_book(w, h, d, cover, pages=0.82, name='book'):
@@ -170,19 +189,30 @@ def make_book(w, h, d, cover, pages=0.82, name='book'):
 
 
 def make_ruler(length, width, thick):
-    """A wooden ruler: body + a raised bevelled edge + tick marks as thin bars."""
-    parts = [box(length, thick, width, WOOD_L)]
-    # raised edge rail (reads as the bevelled rim of a real ruler)
-    parts.append(box(length, thick * 0.25, width * 0.06, WOOD,
-                     origin=(0, thick, -width / 2 + width * 0.08)))
-    # tick marks: every 1/10 of length, long ticks every 5th
+    """A wooden ruler whose LONG axis runs along Z.
+
+    Orientation is baked into the geometry on purpose: this CLI exposes no
+    rotate command for already-placed nodes, so an asset can only ever have the
+    orientation its GLB was authored with. The desk chasm is a gap in Z, so the
+    ruler must run along Z to span it.
+    Body + a raised bevelled rail + tick marks as thin bars.
+    """
+    def zbox(w, h, d, color, origin=(0, 0, 0)):
+        # box() builds w along X, h along Y, d along Z -- use directly.
+        return box(w, h, d, color, origin=origin)
+
+    parts = [zbox(width, thick, length, WOOD_L)]
+    # raised edge rail along one long side
+    parts.append(zbox(width * 0.06, thick * 0.25, length, WOOD,
+                      origin=(-width / 2 + width * 0.08, thick, 0)))
+    # tick marks: every 1/10 of length, long ticks every 5th, on one edge
     n = 10
     for i in range(1, n):
-        x = -length / 2 + length * i / n
+        z = -length / 2 + length * i / n
         long = (i % 5 == 0)
         w = width * (0.34 if long else 0.18)
-        parts.append(box(length * 0.006, thick * 0.12, w, (0.25, 0.18, 0.10),
-                         origin=(x, thick, width / 2 - w / 2 - width * 0.06)))
+        parts.append(zbox(w, thick * 0.12, length * 0.006, (0.25, 0.18, 0.10),
+                          origin=(width / 2 - w / 2 - width * 0.06, thick, z)))
     return merge(parts)
 
 
@@ -194,13 +224,13 @@ def make_eraser(w, h, d):
 
 
 def make_pencil(length, radius):
-    """Hexagonal prism lying along X, plus a cone tip."""
+    """Hexagonal prism lying along Z (same orientation rule as the ruler)."""
     sides = 6
     verts = []
     for i in range(sides):
         a = 2 * np.pi * i / sides
-        verts.append([-length / 2, radius * np.cos(a), radius * np.sin(a) + radius])
-        verts.append([length / 2, radius * np.cos(a), radius * np.sin(a) + radius])
+        verts.append([radius * np.cos(a) + radius, radius * np.sin(a), -length / 2])
+        verts.append([radius * np.cos(a) + radius, radius * np.sin(a), length / 2])
     verts = np.array(verts, dtype=np.float32)
     faces = []
     for i in range(sides):
@@ -208,8 +238,7 @@ def make_pencil(length, radius):
         b0, b1 = 2 * ((i + 1) % sides), 2 * ((i + 1) % sides) + 1
         faces.append([a0, b0, b1])
         faces.append([a0, b1, a1])
-    # caps
-    tip = np.array([[length / 2, 0, radius]], dtype=np.float32)
+    tip = np.array([[radius, 0, length / 2]], dtype=np.float32)
     verts = np.vstack([verts, tip])
     ti = len(verts) - 1
     for i in range(sides):
@@ -218,7 +247,6 @@ def make_pencil(length, radius):
         faces.append([a1, b1, ti])
     faces = np.array(faces, dtype=np.uint32)
     col = np.tile(np.array((0.85, 0.72, 0.30), dtype=np.float32), (len(verts), 1))
-    # graphite tip
     col[ti] = (0.15, 0.15, 0.17)
     return verts, faces, col
 

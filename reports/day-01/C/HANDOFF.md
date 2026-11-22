@@ -63,6 +63,7 @@ douyin-world runtime screenshot --out <png>
 - **需要 A 提供**：玩家尺度基线、Entry/Exit Anchor 的正式格式、列车站台到花园入口的对接方式。
 - **A 可先用的临时成果**：白盒 WPrefab 已归档，A 可以直接 `scene import` 到自己的集成场景试连接，不必等 C 完成美术。
 - **A 必须知道的一条**：`prefab attach` 是追加不是替换，迭代模型前要删旧副本（B-05）。
+- **A 可复用的已验证能力**：Trigger + Lua 已端到端跑通（T-13），列车到站/离站的触发与玩家传送可以直接照抄这条路径。
 
 ### 已知问题
 
@@ -133,6 +134,16 @@ mr.sharedMaterial.SetColor("_BaseColor", new CS.UnityEngine.Color(r, g, b, 1));
 **任何依赖源码坐标的外部脚本（触发器、传送点、集成 Anchor）都必须用运行时实测坐标，或统一做一次 X 取反。** 这条同样适用于 A 的列车站台对接：不要用 C 源码里的坐标去算世界位置，找 C 要实测 Anchor。
 
 顺带两条同源结论：① 在编辑器里旋转节点不改变运行时包围盒（几何是烘死的，要改布局必须改 GLB 源）；② `Physics.Raycast` 在合并后的白盒上持续打空，判断"能不能站"要靠真实角色落地，不能靠射线。
+
+**4｜Trigger 已跑通，但 Lua 实例方法必须用冒号调用**（新，T-13）
+
+我用 `triggerData`（box）+ 一个 Lua 脚本端到端验证了：玩家真实走过边界 → 6 个 enter/exit 回调全部触发；回调里写 `self.transform.position` 能挪动节点；`CS.DouyinActorService.GetLocalActor():Teleport(v)` 能把玩家复位回检查点。
+
+**踩到的坑**：写成 `a.Teleport(v)` 会报
+`InvalidCastException: Unable to cast Vector3 to DouyinActor`。
+Lua 里点号调用把 `v` 当成 `self`，实例方法必须用冒号 `a:Teleport(v)`。B 的尺子桥交互如果要传送玩家，直接避开这个坑。
+
+另一个观测坑：`---@varSync` 注入的是装箱对象，外部 `lua eval` 读回是 `userdata`，看不出值。探针用 `_G` 普通全局表记日志并返回**纯字符串**才可读。
 
 ### 玩法差异声明（避免重复）
 

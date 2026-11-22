@@ -25,7 +25,7 @@
 | T-10 | 运行时世界边界 | `[0,255]`，越界对象被销毁 | [已验证] |
 | T-11 | `prefab attach` 语义 | **追加而非替换**，会留重复副本 | [已验证] |
 | T-12 | PCG 地形续轮 | 卡在参考图确认，CLI 无可用回答格式 | [实测不支持] |
-| T-13 | 触发体（Trigger）组件 | 组件存在且可写，未接玩法 | [TO-VERIFY] |
+| T-13 | 触发体（Trigger）驱动玩法 | enter/exit 回调全通；能驱动节点位移与玩家复位 | [已验证·端到端] |
 | T-14 | 运行时世界边界外的出生点 | 出生在世界中心，白盒必须放在 `[0,255]` 内 | [已验证] |
 
 ---
@@ -421,13 +421,82 @@ total = 53
 
 ---
 
-## T-13｜Trigger 组件 [TO-VERIFY]
+## T-13｜Trigger 驱动玩法 [已验证·端到端跑通]
 
-`triggerData` 组件存在且 `writable: true`，schema 支持 `box / sphere / capsule`、`center`、`size`、`radius`、`height`、`direction`、`enabled`。
+> 原为 `[TO-VERIFY]`，Day 2 补齐。这是 C-G3 的 backup cue（`SPATIAL-PROPOSALS.md` §8.6）与掉落复位的最小前置。
 
-**但 Day 1 没有接任何玩法逻辑**。因此"触发器能触发什么、能调用什么、与 Lua 绑定的实际入口"全部是 `[TO-VERIFY]`。
+### 探针搭建
 
-Day 3 前必须验证：玩家进入 Trigger → 是否能驱动另一节点位移（这决定"触发式平台"这个降级方案是否成立）。
+1. 新建节点 `C_TriggerProbe`，挂 `triggerData`：`shape="box"`, `center=(0,0,0)`, `size=(6,3,6)`
+2. 新建 `scripts/trigger_probe.lua`，绑定该节点
+3. 脚本里逐个声明 `OnActorTriggerEnter/Exit`、`OnPlayerTriggerEnter/Exit`、`OnTriggerEnter/Exit`
+4. `validate → build → result archive → scene import → runtime start` 全链路通过
+
+运行时实测 trigger 节点在世界 `(120, 70.5, 108)`，box 覆盖 `x∈[117,123]`, `y∈[69,72]`, `z∈[105,111]`。
+
+### 验证 1：回调确实会触发
+
+玩家从 `z=103` **真实走过**边界到 `z=108.6`（不是 teleport）：
+
+```
+BEFORE: 0:none
+AFTER : 4:OnTriggerEnter,OnPlayerTriggerEnter,OnTriggerEnter,OnActorTriggerEnter
+```
+
+走出边界回到 `z=104.2`：
+
+```
+8:...,OnTriggerExit,OnActorTriggerExit,OnTriggerExit,OnPlayerTriggerExit
+```
+
+**结论**：6 个回调全部可用，enter/exit 成对触发。`OnTriggerEnter` 触发了两次（可能与 Actor 和 Collider 双重登记有关），需要在正式玩法里做去重或用 `OnPlayerTriggerEnter` 作为唯一入口。
+
+### 验证 2：回调里能驱动节点位移
+
+Lua 里 `self.transform.position = ...`（进入时 +1 m，退出时 −1 m）：
+
+```
+调用 MoveOnEnter() 前 trigger 节点 y = 70.50
+调用后                        y = 71.50   ✅
+```
+
+**结论**：**触发式平台这个降级方案成立**。T-06 确认没有原生移动平台组件，但「Trigger + Lua 写 transform」这条路径可用，且不需要每帧 `Update`。
+
+### 验证 3：掉落复位的最小形态
+
+`RespawnLocal()` 用 `CS.DouyinActorService.GetLocalActor()` 拿到本地 Actor 并传送回入口检查点：
+
+```
+调用前 (130, 8.8, 150)   ← 玩家已掉出世界
+调用后 (120, 70.5, 102)  ✅ 回到入口岛
+```
+
+**结论**：掉落复位可实现。这解掉了 `PLAN-C-WHITEBOX.md §5` 里的「坠落复位未做」，以及 `SPATIAL-PROPOSALS.md §4.7` 的 `[TO-VERIFY]`。
+
+### 踩到的一个真实坑（Lua 冒号调用）
+
+第一版写 `a.Teleport(v)`，报错：
+
+```
+System.InvalidCastException: Unable to cast object of type 'Vector3' to type 'DouyinActor'.
+```
+
+原因：Lua 里 `a.Teleport(v)` 把 `v` 当作 `self` 传给了 C# 实例方法。`Teleport` 是实例方法，必须用**冒号调用** `a:Teleport(v)`，才会把 `a` 作为 self。改成冒号后立刻成功。
+
+这条与 `guide` 里「静态方法用 `.`、实例方法用 `:`」一致，但很容易在写探测脚本时漏掉，特此留档给 A/B。
+
+### 观测方法的坑
+
+`---@varSync` 注入的是**装箱对象**，外部 `lua eval` 读回是 `{"__type":"userdata"}`，无法直接观测。因此探针额外用了 `_G.C_TRIG_LOG` 普通全局表记录事件，并返回**纯字符串** `count:event1,event2,...`。这个模式可复用。
+
+### 仍未验证
+
+| 项 | 说明 |
+|---|---|
+| 计时器 / 条件状态机 | backup cue 需要「停留 > 45 s」，本轮只验证进入/退出事件，没验计时 |
+| 动态点光 / 声音触发 | `SPATIAL §8.6` 的第二、第三次提示需要它们 |
+| 多 Trigger 去抖 | `OnTriggerEnter` 单次进入触发两次，正式玩法要定唯一入口 |
+| 网络同步下的一致性 | 只在本地预览验证过 |
 
 ---
 
@@ -569,5 +638,6 @@ Day 2 必须解决的三条：
 | AI 地形生成浮空岛 | **不支持** | |
 | GLB 贴图在运行时保留 | **有明确负面信号** | 最小带贴图 GLB 进不了场景（T-08b） |
 | PCG 参考图确认 | **CLI 无可用格式** | |
-| Trigger 驱动玩法 | 未验证 | |
+| Trigger 驱动玩法 | **可用** | 6 个回调成对触发；能写 transform、能复位玩家（T-13）。计时器/灯光/声音仍未验 |
+| 触发式平台降级方案 | **成立** | Trigger + Lua 写 transform，不需原生移动平台组件 |
 | 重力方向变化 | 未测 | 本轮不需要，不做 |

@@ -348,6 +348,16 @@ def main():
     emit('WB_LAMP.glb', make_lamp(), 'WB_LAMP')
     emit('WB_MUG.glb', make_mug(), 'WB_MUG')
 
+    # ---- SCALE A/B variants -------------------------------------------
+    # The reference study's own basis [PROPOSED] says a 300 mm ruler against a
+    # 15 mm player is 20x. With the editor's measured 1.7 m avatar that means a
+    # 34 m ruler and a ~27 m book. The current white box is only 7.1x / 5.3x,
+    # i.e. ~3x too small, which is why it reads as canyon walls rather than as
+    # a giant book. These variants exist so the two readings can be compared
+    # side by side in the real engine before any Tripo spend.
+    emit('WB_BOOK_XL.glb', make_book(27.0, 21.0, 18.0, (0.45, 0.22, 0.20)), 'WB_BOOK_XL')
+    emit('WB_RULER_XL.glb', make_ruler(34.0, 6.0, 1.0), 'WB_RULER_XL')
+
     with open(os.path.join(OUT, 'manifest.json'), 'w', encoding='utf-8') as fh:
         json.dump(made, fh, ensure_ascii=False, indent=2)
     print(f'\n{len(made)} whitebox GLBs -> {OUT}')

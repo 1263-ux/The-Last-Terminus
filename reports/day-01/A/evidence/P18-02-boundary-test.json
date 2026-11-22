@@ -1,0 +1,28 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": {
+    "before": {
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "active": true
+    },
+    "afterMoveExists": false,
+    "after": {
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "active": true
+    },
+    "note": "if after is null or pos reset, [0,255] destruction is real"
+  },
+  "startFrame": 1276,
+  "endFrame": 1286,
+  "durationMs": 480,
+  "mode": "native-puerts"
+}

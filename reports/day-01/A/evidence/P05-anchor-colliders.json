@@ -1,0 +1,15 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": {
+    "found": true,
+    "layer": 0,
+    "activeSelf": true,
+    "hasBoxCollider": false,
+    "hasAnyCollider": false
+  },
+  "startFrame": 24496,
+  "endFrame": 24496,
+  "durationMs": 2,
+  "mode": "native-puerts"
+}

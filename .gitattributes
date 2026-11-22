@@ -1,0 +1,6 @@
+﻿# Reports and evidence are team-visible artifacts, not build output.
+# Keep the large binary evidence out of the main pack but tracked.
+*.png -text -diff
+*.wprefab -text -diff
+*.glb -text -diff
+*.data -text -diff

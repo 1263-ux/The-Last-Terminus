@@ -1,0 +1,6 @@
+﻿{
+  "ok": true,
+  "resultType": "string",
+  "result": "actor=-0.10,1.45,-0.10 | cam=-0.09,2.04,-0.80 | horizDist=0.70 | wallX=-1.90 | camOutsideWall=false",
+  "bindingKey": "global"
+}

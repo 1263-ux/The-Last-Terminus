@@ -337,8 +337,10 @@ GLB → resource model import --glb → resource model check → resource archiv
 | 1 | 玩家胶囊高 1.6–1.8 m（按视觉比例**推断**） | 实测 **0.90 m 高 / 0.32 m 宽**，是矮胖胶囊 | §1.1、契约 §1、HANDOFF |
 | 2 | GLB 材质颜色与贴图**丢失**（读 `color` 得 0,0,0,0） | 材质完好；该编辑器用 `_BaseColor`/`_BaseTex`，我**查错了属性名** | §3.4 |
 | 3 | `.wprefab` 外部 URI 是**高风险** | 同账号同机跨工程实测**完全可用**，风险降级为"跨账号未验证" | §6、`BLOCKERS.md` B-4 |
+| 4 | 相机会穿墙，车厢必须加宽到 4.4 m | **引擎自带避让**：车厢内请求 6 m 被压到 1.60 m 且不穿墙；开阔地同样请求得 5.98 m | `CAMERA-REPORT.md` |
 
 > 第 2 条尤其值得记录：如果只看到"读回全是 0"就写进报告，会误导 B/C 去重做全部材质。
+> 第 4 条同理：仅凭一次截图就断言"相机会穿墙"，会导致白白加宽车厢、破坏已定的 3.8 m 比例。
 
 ---
 
@@ -353,5 +355,6 @@ GLB → resource model import --glb → resource model check → resource archiv
 | `HANDOFF.md` | 可直接转发给 B/C | 完成 |
 | `WORLD-INTERFACE-CONTRACT.md` | 公共接口契约 v0.1 | PROPOSED |
 | `research/REFERENCES-ANALYSIS.md` | 参考研究与 Hub/终点方案 | 完成 |
-| `HUB-WHITEBOX.md` | 列车 Hub 灰盒实测记录 + 相机约束 | 完成 |
+| `HUB-WHITEBOX.md` | 列车 Hub 灰盒实测记录 | 完成（相机结论已修正） |
+| `CAMERA-REPORT.md` | 相机避让 A/B 实测 + 对 Hub 设计的影响 | 完成 |
 | `evidence/` | 截图、回执、读回 JSON | 9.0 MB |

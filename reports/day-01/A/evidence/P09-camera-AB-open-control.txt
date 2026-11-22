@@ -1,0 +1,6 @@
+﻿{
+  "ok": true,
+  "resultType": "string",
+  "result": "actor=60.00,77.91,60.00 | cam=54.02,79.48,59.87 | horizDist=5.98 | fullDist=6.18",
+  "bindingKey": "global"
+}

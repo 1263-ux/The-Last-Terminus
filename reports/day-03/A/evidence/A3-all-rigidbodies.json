@@ -1,0 +1,12 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": {
+    "rigidbodyCount": 0,
+    "nodes": []
+  },
+  "startFrame": 1259,
+  "endFrame": 1259,
+  "durationMs": 6,
+  "mode": "native-puerts"
+}

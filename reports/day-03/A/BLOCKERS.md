@@ -13,14 +13,23 @@ DAY-03 §57 明确："A 亲自完成 P1 GUI 手动原生 Cube 测试并录屏。
 **我不假称完成。** P1 标 NOT TESTED，并已在 `COLLISION-MATRIX.md` 说明。
 **需要：成员 A 本人在编辑器 GUI 中放一个原生 Cube 并录屏撞击/落下测试。**
 
-## D3-2｜碰撞不稳定（跨成员确认）—— **OPEN（P0 级）**
+## D3-2｜碰撞根因已确认：玩家是运动学刚体 —— **CONFIRMED（P0 级，影响全部玩法）**
 
-A 实测：GLB 1m 立方精确阻挡（PASS）；空节点 + physicsColliderData 不生成 Collider（FAIL）。
-B 独立实测（不同工程）：原生 Cube 3 次 1 挡 2 穿（不稳定），GLB 墙穿透（FAIL）。
+**根因（B 发现，A 独立复现）**：玩家是 `NetworkActor` 运动学刚体
+（`isKinematic=true`, `Rigidbody.velocity=0`, `layer=8`），位移由脚本写 `transform`。
+**物理求解器不参与，场景物体不可能阻挡玩家。**
 
-**碰撞机制跨成员结果不一致，不能宣称可靠。** 这是 Day-3 的 P0 问题。
-**降级**：所有玩法设计暂不依赖"实体阻挡"，用 Trigger + Teleport 替代。
-**需要**：统一工程/统一配置下的 A/B/C 对照测试（B 的报告 §6 列了 4 条需要人做的验证）。
+**A 的独立验证**（`A3-player-full-stack.json` + `A3-kinematic-walk.json`）：
+- 玩家刚体状态：isKinematic=true, velocity=(0,0,0) ✓
+- 6 秒长距离行走测试：从 z=85 穿过 z=90 的立方体到达 z=102.89 ✓
+- 之前 P3 的"精确阻挡"是误判（短距离巧合）。
+
+**对全部玩法的影响**：
+- **任何依赖"物体挡路"的设计都不成立**（C4、尺子桥、书桌站障碍等）。
+- **Trigger + Teleport 是唯一可靠的交互机制**（已验证）。
+- B 建议的 E1（触发器判定）/ E2（状态门）是正确方向，需总设计师裁定。
+
+**降级**：所有玩法设计改用 Trigger + Teleport，不依赖实体碰撞。
 
 ## D3-3｜P4（GLB + 手动 Collider）—— **RESOLVED**
 

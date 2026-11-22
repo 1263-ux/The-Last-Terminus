@@ -9,14 +9,12 @@
 
 ## 0. 结论
 
-**A 的测试：GLB 自带 MeshCollider(isTrigger=false) 精确阻挡玩家，1m 立方和 24×4×1 墙都 PASS。**
-**B 的独立测试（不同工程）：原生 Cube 3 次 1 挡 2 穿（不稳定），GLB 墙穿透（FAIL）。**
-**同尺寸 GLB 墙在 A 的工程 PASS、在 B 的工程 FAIL——问题不在 GLB 或尺寸，在工程配置/运行时机。**
+**玩家是 `NetworkActor` 运动学刚体（isKinematic=true, velocity=0），场景物体不可能阻挡。**
+B 的根因分析在 A 的工程里完全复现（`A3-player-full-stack.json`）。
 
-**核心规律**：
-1. 碰撞体生成依赖**可见 Mesh**（GLB 或原生几何），空节点 + physicsColliderData 不生成。
-2. GLB 自动 MeshCollider 在 A 的工程里**可靠**（尺寸无关）。
-3. 但跨工程/跨成员结果不一致，**不能宣称碰撞机制通用可靠**。
+**A 的 P3"精确阻挡"是误判**——玩家在 4 秒短距离测试中碰巧停在 z=89.34，
+但 6 秒长距离测试中直接穿过立方体（z=85→102.89，经过 z=90 的立方体无阻挡）。
+**碰撞机制对玩家无效，任何依赖"物体挡路"的玩法设计都不成立。**
 
 ---
 
@@ -24,10 +22,11 @@
 
 | Case | 几何 | Collider 数据 | 运行时 Collider | 判定 |
 |---|---|---|---|---|
-| **P3-GLB 自动** | `probe-cube-1m.glb`（1 m 立方） | 无手动 Collider，GLB 自带 | **MeshCollider isTrigger=false** | **PASS**：真实行走被精确阻挡（z=88→89.34，理论停止点 89.34） |
-| **A3-空节点** | 无 Mesh 空节点 | `physicsColliderData.enableCollision=true` 已写入 Prefab | **无 BoxCollider / MeshCollider** | **FAIL**（数据层有，运行层无） |
-| **A3-Trigger 对照**（Day-1 已验证） | 无 Mesh 空节点 | `triggerData` box `3×4×3` | **BoxCollider isTrigger=true** 存在 | **PASS**（Trigger 会生成） |
-| **A3-玩家行走（空节点）** | 上述空节点墙位于 z=10（无地面） | 同上 | 玩家位置跳回默认出生点 (119.5,77.9,94.4)，疑似坠落重生 | **INCONCLUSIVE**（被地形/坠落污染） |
+| **P3-GLB 自动** | `probe-cube-1m.glb`（1 m 立方） | GLB 自带 MeshCollider(isTrigger=false) | 存在 | **FAIL**（玩家穿过，6 秒测试 z=85→102.89） |
+| **P3-GLB 大墙** | `wall-24x4x1.glb`（24×4×1） | GLB 自带 MeshCollider(isTrigger=false) | 存在 | **FAIL**（同上，B 也确认） |
+| **A3-空节点** | 无 Mesh 空节点 | `physicsColliderData.enableCollision=true` | **无 Collider** | **FAIL**（不生成） |
+| **A3-Trigger 对照** | 无 Mesh 空节点 | `triggerData` box | **BoxCollider isTrigger=true** | **PASS**（Trigger 有效） |
+| **玩家刚体** | — | — | **isKinematic=true, velocity=0** | **根因确认** |
 
 ### 1.1 关键对照：`triggerData` 生成 Collider，`physicsColliderData` 不生成
 
@@ -50,19 +49,23 @@
 
 ---
 
-## 2. 跨成员对照（A vs B）
+## 2. 跨成员对照（A vs B）—— 根因已确认
 
 | 测试 | A（工程 fb583637） | B（工程 006822bc） |
 |---|---|---|
-| GLB 1m 立方（自动 MeshCollider） | **PASS**（精确阻挡 z=88→89.34） | — |
-| GLB 24×4×1 墙（自动 MeshCollider） | **PASS**（精确阻挡 z=88→91.34） | **FAIL**（穿透） |
-| 原生 Cube（CreatePrimitive） | 未测 | **不稳定**（3 次 1 挡 2 穿） |
+| GLB 1m 立方 | **FAIL**（穿入，6s 测试 z=85→102.89） | — |
+| GLB 24×4×1 墙 | **FAIL**（同上） | **FAIL**（穿透） |
+| 原生 Cube | 未测 | **FAIL**（3 次 1 挡 2 穿，第 1 次为时序巧合） |
 | 空节点 + physicsColliderData | **FAIL**（不生成 Collider） | 未测 |
 | triggerData → BoxCollider(isTrigger) | **PASS** | 未测 |
-| 渲染层（阴影有、本体无） | 未测 | **FAIL**（两者都有） |
+| **玩家刚体状态** | **isKinematic=true, velocity=0** | **isKinematic=true, velocity=0** |
 
-**关键发现**：A 的 24×4×1 GLB 墙（与 B 同尺寸）精确阻挡，证明 **GLB MeshCollider 在 A 的工程里尺寸无关地可靠**。
-B 的穿透**不是尺寸问题**，而是工程配置/创建时机/Preview 模式问题。
+**根因（B 发现，A 独立复现）**：玩家是 `NetworkActor` 运动学刚体，
+位移由脚本写 `transform`，`Rigidbody.velocity` 恒 0，物理求解器不参与。
+**场景物体（GLB、原生 Cube、任何 Layer）都不可能阻挡玩家。**
+
+A 的 P3"精确阻挡"是**误判**：4 秒短距离测试中玩家碰巧停在 z=89.34（地形/斜坡影响），
+6 秒长距离测试中直接穿过。**不能把单次巧合当作碰撞可用的证据。**
 
 ---
 

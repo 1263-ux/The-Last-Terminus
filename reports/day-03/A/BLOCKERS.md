@@ -33,8 +33,8 @@ DAY-03 §57 明确："A 亲自完成 P1 GUI 手动原生 Cube 测试并录屏。
 
 ## D3-3｜P4（GLB + 手动 Collider）—— **RESOLVED**
 
-P3/GLB 自动 MeshCollider 实测 PASS：`probe-cube-1m.glb` 放在出生点平台（119.74, 78.4, 90），
-真实行走被精确阻挡（z=88→89.34，理论停止点 89.34）。
+P3/GLB 自动 MeshCollider 早期误判为 PASS（短距离巧合），已推翻：
+6 秒长距离测试中玩家穿过立方体（z=85→102.89）。**碰撞对运动学玩家无效。**
 **结论**：碰撞体的生成依赖可见 Mesh，GLB 自带 MeshCollider(isTrigger=false) 即可挡人；
 空节点 + `physicsColliderData` 不生成 Collider。详见 `COLLISION-MATRIX.md`。
 

@@ -1,0 +1,6 @@
+﻿{
+  "ok": true,
+  "resultType": "string",
+  "result": "0.0|0.0021500224247575|-18.0",
+  "bindingKey": "global"
+}

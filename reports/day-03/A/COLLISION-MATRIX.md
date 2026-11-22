@@ -75,8 +75,8 @@ A 的 P3"精确阻挡"是**误判**：4 秒短距离测试中玩家碰巧停在 
 |---|---|---|
 | **P1** GUI 手动原生 Cube（正面撞 + 落下的录屏） | **NOT TESTED** | DAY-03 明确要求"由成员本人通过 GUI 操作并录屏"，CLI 无法等价替代；我**不假称**已做 |
 | P2 脚本/CLI 原生 Primitive | **部分**（= A3-空节点，FAIL） | CLI `nodes.create` 只能建空节点，不能建带 Mesh 的原生 Cube |
-| P3 GLB 导入默认/自动 Collider | **PASS** | 1 m 立方 GLB 自动 MeshCollider(isTrigger=false)，真实行走精确阻挡（z=88→89.34） |
-| P4 GLB + 手动添加 Collider | **PASS（由 P3 推导）** | GLB 已自带 MeshCollider；若手动加 `physicsColliderData`，实测不生成额外 Collider。核心是 Mesh 本身存在 |
+| P3 GLB 导入默认/自动 Collider | **FAIL** | GLB 自动 MeshCollider 存在，但玩家是运动学刚体，**不被阻挡**。早期"精确阻挡"是误判（见 §2 超级注释） |
+| P4 GLB + 手动添加 Collider | **FAIL** | 同 P3——碰撞体存在但对运动学玩家无效；空节点 + physicsColliderData 也不生成 Collider |
 | P5 WPRE 随包 Collider 导入后重跑 | **NOT TESTED** | 需跨成员快照 |
 | P6 Terrain 边界/洞/坡 | **NOT TESTED** | B 的地平填裂口问题需在 B 工程复测 |
 
@@ -90,20 +90,20 @@ B 的 Day-3 `COLLISION-REPRO.md`（feature/desk-world）结论：
 - 数据层 BoxCollider 都在；
 - 渲染层"有影无面"是独立缺陷。
 
-**A 与 B 的关键分歧已定位**：同尺寸 24×4×1 GLB 墙在 A 的工程精确阻挡，在 B 的工程穿透。
-**排除了尺寸因素**，指向工程配置/创建时机/Preview 模式差异。
+**A 与 B 的根因一致**：玩家是运动学刚体（`isKinematic=true`, `velocity=0`），
+场景物体（GLB、原生 Cube、任何 Layer）都不可能阻挡玩家。
+A 的早期"精确阻挡"是短距离测试的误判，已被 6 秒长距离穿入测试推翻。
 
 **下一步正确的分支判断**（按 DAY-03 §65）：
 - **走第二条**（P1/P3 都不能挡 → 查工程模板/运行时/玩家碰撞层）：
-  B 的报告也命中这一条。
-- 需要**统一工程、统一出生点、同一运行模式**下做 A/B/C 对照测试。
-- **A 的 GLB 碰撞在自己的工程里可靠**，但不能推广到 B/C 的工程。
+  根因已定位：运动学刚体 + transform 驱动。
+- **所有玩法改用 Trigger + Teleport**，不依赖实体碰撞。
 
 ---
 
 ## 4. 给 B/C 的即时建议（基于实测，非猜测）
 
-1. **GLB 模型自带 MeshCollider(isTrigger=false)，能真正挡人** —— 这是 PASS 结论。
+1. **场景物体（GLB、原生 Cube）不能阻挡玩家** —— 玩家是运动学刚体，这是根因。
 2. **空节点 + `physicsColliderData` 不会生成 Collider** —— 不要只写字段，要有 Mesh。
 3. **`triggerData` 会生成 BoxCollider(isTrigger=true)** —— 触发器走独立路径。
 4. 墙"有阴影但看不到实体"是**渲染问题**（查 NORMAL），与碰撞分开诊断。

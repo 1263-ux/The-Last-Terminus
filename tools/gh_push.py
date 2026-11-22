@@ -87,10 +87,10 @@ def main():
         print(f'  blob {blob["sha"][:10]}  {rel}  ({len(raw)} bytes)')
 
     for rel in a.delete:
+        # Deleting from a base_tree requires sha:null with NO mode/type fields.
+        # Including mode/type yields GitRPC::BadObjectState (HTTP 422).
         tree_entries.append({
             'path': rel.replace('\\', '/'),
-            'mode': '100644',
-            'type': 'blob',
             'sha': None,
         })
         print(f'  delete {rel}')

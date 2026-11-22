@@ -89,6 +89,32 @@ Day-1 的竖向条纹在 Day-3 组合体里**未观察到**：
 
 ---
 
+## 3.7b 状态门禁 PoC（Trigger+Teleport，为 B 的 E1 提供技术验证）
+
+**目的**：验证 Trigger+Teleport 能实现 B 的 E1（状态门禁），不依赖碰撞。
+
+**布局**：
+- `SG_UnlockPad`（z=88）：踩上后设置 `_G.gateActivated = true`
+- `SG_GateTrigger`（z=95）：进入时若 `gateActivated != true` 则传送回 z=88
+
+**测试结果**：
+
+| 测试 | 操作 | 结果 | 判定 |
+|---|---|---|---|
+| TEST 1 | 直接走向门禁（未解锁） | 玩家被传送回（z=92→91.8，符合传送回 z=88 后继续走） | **PASS**（门禁拦截） |
+| TEST 2 | 先踩解锁垫再走门禁 | 玩家通过（但 x 偏移，因共享变量 bug） | **概念 PASS，实现需修** |
+
+**发现的问题**：两个脚本的变量未共享（`local activated` vs `_G.gateActivated`）。
+**修正**：已改用 `_G.gateActivated` 全局变量。
+
+**给 B 的技术参考**：
+- Trigger+Teleport 可实现状态门禁，不需要碰撞。
+- 共享状态用 `_G.xxx` 全局变量或组件参数。
+- 冷却 `CooldownSeconds` 防止重复触发。
+- 完整 PoC 脚本见 `probe-assets/build_state_gate.js` + `fix_state_gate.js`。
+
+---
+
 ## 4. 尚未验证
 
 | 项 | 状态 |

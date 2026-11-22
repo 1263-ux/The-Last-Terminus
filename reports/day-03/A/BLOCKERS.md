@@ -41,10 +41,11 @@ P3/GLB 自动 MeshCollider 实测 PASS：`probe-cube-1m.glb` 放在出生点平�
 无第二账号 / 第二机器环境。同机同账号跨工程 PASS（REPRODUCED-LOCAL）。
 **需要**：B 或 C 用自己账号导入最小 WPRE 并回执，否则按总设计师要求保持 NOT TESTED + 裸 GLB 兜底。
 
-## D3-6｜B/C 的 `spawn_yaw` 数值未回填 —— **OPEN（阻塞集成串联）**
+## D3-6｜B/C 的 `spawn_yaw` 数值未回填 —— **MITIGATED（占位往返已跑通）**
 
 B/C 的 HANDOFF 都只给了文字朝向（"面向 -Z 暖窗" / "面向 +X 温室"），没给度数。
-`INTEGRATION-RESPONSE.md` 已请求。**不等待**：先继续白盒与文档，数值到达后直接填 Anchor。
+`INTEGRATION-RESPONSE.md` 已请求。**占位往返已跑通**（HubEntry z=88↔TerminusExit z=100），
+等数值到位后替换锚点坐标即可。证据：`HUB-AND-TERMINUS-UPDATE.md` §3.5。
 
 ## D3-7｜Git push 时好时坏 —— **MITIGATED**
 

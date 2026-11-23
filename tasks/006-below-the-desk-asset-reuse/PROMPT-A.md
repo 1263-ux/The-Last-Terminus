@@ -23,7 +23,7 @@
    - 一个 `RULER_BRIDGE_ROOT`（GLB 根节点，内部有多个 mesh children）；
    - 多个显式 `RAMP_NODE_NAMES`。
 4. REST 与完整桥体做互斥显示；激活后必须确保桥体全部 mesh 显示。
-5. 正常出生 `activated=false)，不得出生自动解锁。
+5. 正常出生 `activated=false`，不得出生自动解锁。
 6. 未解锁越界回安全点，已解锁可通过；冷却/去抖防止连续传送。
 7. 状态必须在同一个已验证脚本实例内管理；不依赖未验证的跨绑定全局变量。
 8. 交互入口优先复用 C 已验证的 GUI Trigger + Lua 绑定流程；若 B 项目无法复现，记录精确限制和降级提案。

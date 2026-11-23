@@ -66,13 +66,14 @@
 - AudioClip 参数用 `{uri}` 简写格式绑定
 - 绑定数据正确保存（`refFrom: asset`, `refType: AudioClip`, `assetUri` 已保存）
 
-**播放（PASS，时序问题已定位）**：
+**播放（PASS，官方指南确认正确模式）**：
 - AudioClip 参数**正确注入**为 Unity AudioClip 对象（`typeName=AudioClip`）
-- **直接 Lua 赋值 `src.clip = AudioClip` 成功**（`assign=true after=has-clip play=true`）
-- **`Start()` 函数有时序问题**——参数注入可能在 `Start()` 之后
-- **修正方案**：用 `OnEnable()` 或延迟一帧赋值
+- **直接 Lua 赋值 `src.clip = AudioClip` 成功**（`assign=true play=true`）
+- **`Start()` 有时序问题**——官方指南要求**播放时应用设置**，非 `Start()`
+- **官方模式**：声明 `@refFrom asset` + `@dataType Audio` + `@assetCategory Music`，
+  用 `ApplySoundSettings()` 在播放前调用（而非 `Start()`）
 
-**结论**：音频导入、绑定、播放**全部可用**。`Start()` 时序是可修的 bug。
+**结论**：音频导入、绑定、播放**全部可用**。按官方指南用播放时应用设置模式。
 
 **支持的格式**：WAV（已验证）、MP3（文档声明支持，未测试）
 **CLI 工作流**：`resource archive --kind audio` → `{uri}` 绑定 → Lua `AudioSource` 播放

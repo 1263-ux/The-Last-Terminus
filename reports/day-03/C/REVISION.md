@@ -217,6 +217,46 @@ remove 没执行成功，于是每轮都留下一个。累积到 5 个。
 
 ## 6. 本轮技术新增（可复用）
 
+### 6.0b 发现并修掉一处"补丁代码反而破坏体验"（轮 24，重要）
+
+**`garden_layer_tint.lua` 一直在破坏三层配色。** 实测对比：
+
+| 状态 | 合并网格的不同颜色数 |
+|---|---|
+| 带 `garden_layer_tint.lua` | **2 种** |
+| 移除该脚本（用 GLB 原生材质） | **9 种** |
+
+移除后读到的 9 种颜色，正是源码里本来就定义好的各层材质：
+
+```
+根层   (0.23, 0.42, 0.24)  绿    MAT_walk_root_zone
+花冠层 (0.36, 0.26, 0.47)  紫    MAT_walk_crown_zone
+温室层 (0.12, 0.27, 0.35)  蓝    MAT_greenhouse_roof_walkable
+玻璃   (0.31, 0.56, 0.54)  青    MAT_greenhouse_glass（AlphaBlend）
+岩体   (0.17, 0.15, 0.13)  深褐  MAT_basalt_underside
+```
+
+**根因**：这个 Lua 是 Day 1 在「材质颜色改不了」（B-02）时写的补丁，
+靠 `renderer.bounds.center.y` 反推分层。但 T-08 之后：
+
+1. GLB 原生材质已能正确上色，**补丁的存在前提消失了**；
+2. 更糟的是 GLB 合并后每个 `__optimized_merged_material_N` 的 y 跨度极大
+   （实测 `material_1` 从 y=44 到 77.8，跨 34 m），所有网格的 `center.y`
+   都挤在 60–71 之间，**全都落进同一两个颜色档**；
+3. 结果脚本把本来 9 色的模型**统一刷成 2 色**，直接破坏了
+   TASK「三层空间形成可读连接」这条硬要求。
+
+**处理**：从 `Model` 节点解绑 `garden_layer_tint.lua`，改用 GLB 原生材质。
+证据：`evidence/day-03/C/11-native-materials-9colors.png`
+
+> **这是本会话第四次**被"合并网格的 bounds 不可代表单个对象"绊倒
+> （前三次：T-16 X 镜像测量、T-19 多通道探针、T-23 屏占比）。
+> 这次教训更狠：**不只是测错，而是靠它做逻辑判断的代码会持续产生错误结果。**
+
+**给 A/B 的提醒**：如果你们也在运行时按 `renderer.bounds` 做分层/分区逻辑，
+同样会失效。合并后请改用「源码里就分开的材质」或「带碰撞体的未合并节点」
+（实测 `SpawnMarker` 因为带 `physicsColliderData` 而保留了 `EntryZone_Y20` 父级）。
+
 ### 6.0 重启（runtime restart）后 Lua 状态与功能复验（轮 23）
 
 Day-3 任务 5 明确要求 "fall-recovery **after restart**"，此前只验了同一次运行内。

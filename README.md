@@ -95,3 +95,8 @@
 - [A｜列车与集成](production/prompts/ROLE-A-TRAIN-INTEGRATION.md)
 - [B｜书桌站](production/prompts/ROLE-B-DESK-WORLD.md)
 - [C｜失重花园](production/prompts/ROLE-C-FLOATING-GARDEN.md)
+
+
+## 当前执行任务包
+
+- [TASK PACK 005｜Day 3 收尾 → Day 4 入场](tasks/005-day03-closeout-day04-entry/README.md)：包含 A/B/C 独立 Agent 提示词、逐项验收标准、参考设计图与空间示意、跨成员交接要求和 Day 4 Go/No-Go Gate。

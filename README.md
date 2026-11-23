@@ -100,3 +100,12 @@
 ## 当前执行任务包
 
 - [TASK PACK 005｜Day 3 收尾 → Day 4 入场](tasks/005-day03-closeout-day04-entry/README.md)：包含 A/B/C 独立 Agent 提示词、逐项验收标准、参考设计图与空间示意、跨成员交接要求和 Day 4 Go/No-Go Gate。
+
+
+
+## BelowTheDesk 成熟资产复用（当前 B 的资产输入）
+
+- [TASK PACK 006｜BelowTheDesk 资产复用与 A/B/C 当前 Gate](tasks/006-below-the-desk-asset-reuse/README.md)
+- [资产导入清单与 SHA-256](tasks/006-below-the-desk-asset-reuse/ASSET-IMPORT-MANIFEST.md)
+- [A/B/C 当前验收标准](tasks/006-below-the-desk-asset-reuse/TASK-ACCEPTANCE.md)
+- [A 提示词](tasks/006-below-the-desk-asset-reuse/PROMPT-A.md) · [B 提示词](tasks/006-below-the-desk-asset-reuse/PROMPT-B.md) · [C 提示词](tasks/006-below-the-desk-asset-reuse/PROMPT-C.md)

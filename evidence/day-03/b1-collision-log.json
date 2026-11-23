@@ -1,0 +1,23 @@
+﻿{
+  \"report\": \"B1 collision root cause\",
+  \"editor\": \"1.0.104\",
+  \"player_object\": \"Player_1\",
+  \"player_components\": \"Transform,U3dObjectTrigger,NetworkActor,NetworkActorData,CapsuleCollider,Rigidbody,NetworkActorTransformDataComponent,...\",
+  \"player_layer\": 8,
+  \"player_layer_name\": \"Actor\",
+  \"rigidbody\": {\"isKinematic\": true, \"useGravity\": false, \"detectCollisions\": true, \"constraints\": 0, \"mass\": 1.0, \"velocity\": \"0.0000,0.0000,0.0000\"},
+  \"capsule\": {\"enabled\": true, \"isTrigger\": false, \"radius\": 0.16, \"height\": 0.90},
+  \"physics\": {\"autoSimulation\": true, \"gravity_y\": -9.81},
+  \"experiments\": [
+    {\"id\": 1, \"obstacle\": \"native Cube\", \"layer\": 0, \"size\": \"6x2x1\", \"z\": 96, \"player_end_z\": 94.36, \"verdict\": \"BLOCKED (unexplained one-off)\"},
+    {\"id\": 2, \"obstacle\": \"native Cube\", \"layer\": 0, \"size\": \"4x3x1\", \"z\": 92.6, \"player_end_z\": 95.83, \"verdict\": \"PENETRATED\"},
+    {\"id\": 3, \"obstacle\": \"native Cube\", \"layer\": 0, \"size\": \"6x3x1\", \"z\": 104, \"player_end_z\": 107.53, \"verdict\": \"PENETRATED\"},
+    {\"id\": 4, \"obstacle\": \"GLB wall\", \"layer\": 0, \"size\": \"30x6x4\", \"z\": 95, \"player_end_z\": 112.33, \"verdict\": \"PENETRATED\"},
+    {\"id\": 5, \"obstacle\": \"GLB wall\", \"layer\": 0, \"size\": \"24x4x1\", \"z\": 101, \"player_end_z\": 110.72, \"verdict\": \"PENETRATED\"},
+    {\"id\": 6, \"obstacle\": \"3 gates on layers 0/8/2\", \"size\": \"8x2x1 each\", \"z\": \"94/99/104\", \"player_end_z\": 109.41, \"verdict\": \"ALL PENETRATED\"},
+    {\"id\": 7, \"obstacle\": \"terrain step\", \"size\": \"10x1.2x6\", \"top_y\": 81.2, \"player_end_y\": 79.963, \"verdict\": \"NO GROUND SAMPLING\"}
+  ],
+  \"root_cause\": \"kinematic rigidbody driven by script transform writes; solver does not participate\",
+  \"ruled_out\": [\"size\", \"missing collider\", \"layer mask\", \"GLB format\", \"autoSimulation off\", \"detectCollisions off\"],
+  \"not_tested\": [\"GUI manual cube\", \"terrain brush blocking\", \"Preview vs Published\", \"NetworkActor layer queries\"]
+}

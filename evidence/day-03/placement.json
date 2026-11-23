@@ -1,0 +1,83 @@
+﻿[
+    {
+        "idx":  1,
+        "name":  "WB_ERASER",
+        "x":  116.742,
+        "y":  80,
+        "z":  91.5,
+        "status":  "committed",
+        "role":  "1. counterweight, 3 m out"
+    },
+    {
+        "idx":  2,
+        "name":  "WB_PENCIL",
+        "x":  122.742,
+        "y":  80,
+        "z":  91.5,
+        "status":  "committed",
+        "role":  "2. alt tool, 3 m out"
+    },
+    {
+        "idx":  3,
+        "name":  "WB_BOOK_S",
+        "x":  115.742,
+        "y":  80,
+        "z":  95,
+        "status":  "committed",
+        "role":  "3. book terrace L"
+    },
+    {
+        "idx":  4,
+        "name":  "WB_BOOK_S",
+        "x":  123.742,
+        "y":  80,
+        "z":  95,
+        "status":  "committed",
+        "role":  "4. book terrace R"
+    },
+    {
+        "idx":  5,
+        "name":  "WB_BREAK_WALL",
+        "x":  119.742,
+        "y":  80,
+        "z":  101,
+        "status":  "committed",
+        "role":  "5. THE BLOCKER (3 m \u003e 1 m jump)"
+    },
+    {
+        "idx":  6,
+        "name":  "WB_RULER_RAMP",
+        "x":  113.742,
+        "y":  80,
+        "z":  97,
+        "status":  "committed",
+        "role":  "6. ramp REST pose (clue)"
+    },
+    {
+        "idx":  7,
+        "name":  "WB_RULER_RAMP_UP",
+        "x":  119.742,
+        "y":  80,
+        "z":  105,
+        "status":  "committed",
+        "role":  "7. ramp LEANING on wall (solved)"
+    },
+    {
+        "idx":  8,
+        "name":  "WB_CASE_S",
+        "x":  119.742,
+        "y":  80,
+        "z":  112,
+        "status":  "committed",
+        "role":  "8. village = GOAL, past the wall"
+    },
+    {
+        "idx":  9,
+        "name":  "WB_SIGN",
+        "x":  115.742,
+        "y":  80,
+        "z":  115,
+        "status":  "committed",
+        "role":  "9. EXIT"
+    }
+]

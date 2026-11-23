@@ -1,4 +1,4 @@
-# COMMON ACCEPTANCE｜Day 3 收尾与 Day 4 入场验收
+> **B 项口径更新（2026-11-23）：** B-04 中“六段坡道”是早期白盒方案的节点表达，不再强制固定为六个独立节点。当前以 [TASK PACK 006 的 B-04](../006-below-the-desk-asset-reuse/TASK-ACCEPTANCE.md) 为准，按完整 GLB root 或其全部子 mesh 验收。\n\n# COMMON ACCEPTANCE｜Day 3 收尾与 Day 4 入场验收
 
 ## 0. 状态标签
 

@@ -100,7 +100,7 @@ P2：
 - `reports/day-03/B/ASSET-IMPORT-REPORT.md`
 - `reports/day-03/B/C4-PLAYABLE-LOOP.md`
 - `reports/day-03/B/EVIDENCE.md`
-- `reports/day-03/B/BLOCKERS.md)
+- `reports/day-03/B/BLOCKERS.md`
 
 必须提交：
 - 资产导入矩阵；

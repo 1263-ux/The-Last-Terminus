@@ -1,0 +1,7 @@
+﻿douyin-world : ✗ Audio meta.json requires schemaVersion 4, matching resourceId, displayName and summary
+所在位置 行:10 字符: 1
++ douyin-world authoring resource archive audio-probe --kind audio --pr ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (✗ Audio meta.js...ame and summary:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 

@@ -1,0 +1,7 @@
+﻿douyin-world : ✗ 未找到可用的 Creator 实例描述，请启动或指定实例
+所在位置 行:9 字符: 10
++   $out = douyin-world runtime lua eval --file .\player_pos.lua --inst ...
++          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (✗ 未找到可用的 Creator 实例描述，请启动或指定实例:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 

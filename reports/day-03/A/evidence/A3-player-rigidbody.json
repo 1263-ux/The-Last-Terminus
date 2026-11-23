@@ -1,0 +1,11 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": {
+    "playerNodes": []
+  },
+  "startFrame": 439,
+  "endFrame": 439,
+  "durationMs": 17,
+  "mode": "native-puerts"
+}

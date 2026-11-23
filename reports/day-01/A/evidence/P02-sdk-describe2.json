@@ -1,0 +1,1 @@
+﻿{"ok":false,"command":"authoring","error":{"code":"REQUEST_FAILED","message":"This SDK method is not implemented. Use context.capabilities to list supported methods, then context.describe with an exact returned method name. importAsset/importPrefab are scene_execute operations, not SDK methods."}}

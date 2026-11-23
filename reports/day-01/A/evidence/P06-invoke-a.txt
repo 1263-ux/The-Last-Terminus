@@ -1,0 +1,6 @@
+﻿{
+  "ok": true,
+  "resultType": "string",
+  "result": "before=119.74,77.91,88.64 after=20.00,1.00,0.00",
+  "bindingKey": "-2076:fc4dd815-40f2-4300-944e-63660930fcb4"
+}

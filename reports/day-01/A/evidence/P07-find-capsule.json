@@ -1,0 +1,13 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": {
+    "transformCount": 212,
+    "roots": [],
+    "capsules": []
+  },
+  "startFrame": 1353,
+  "endFrame": 1353,
+  "durationMs": 0,
+  "mode": "native-puerts"
+}

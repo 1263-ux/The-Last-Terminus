@@ -1,0 +1,27 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": {
+    "rootName": "A_单板隔离",
+    "authored": "12 x 0.3 x 7",
+    "renderers": [
+      {
+        "name": "IsoSlab",
+        "size": [
+          12,
+          0.3,
+          7
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    ]
+  },
+  "startFrame": 1267,
+  "endFrame": 1267,
+  "durationMs": 1,
+  "mode": "native-puerts"
+}

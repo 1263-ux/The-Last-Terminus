@@ -1,0 +1,50 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": [
+    {
+      "name": "Anchor_A_to_B",
+      "found": true,
+      "hasCollider": true,
+      "colliderType": "BoxCollider",
+      "isTrigger": true,
+      "colliderEnabled": true,
+      "hasMeshFilter": false,
+      "childCount": 0
+    },
+    {
+      "name": "Anchor_B_to_A",
+      "found": true,
+      "hasCollider": true,
+      "colliderType": "BoxCollider",
+      "isTrigger": true,
+      "colliderEnabled": true,
+      "hasMeshFilter": false,
+      "childCount": 0
+    },
+    {
+      "name": "AxisTestPx",
+      "found": true,
+      "hasCollider": true,
+      "colliderType": "MeshCollider",
+      "isTrigger": false,
+      "colliderEnabled": true,
+      "hasMeshFilter": true,
+      "childCount": 0
+    },
+    {
+      "name": "Model",
+      "found": true,
+      "hasCollider": true,
+      "colliderType": "MeshCollider",
+      "isTrigger": false,
+      "colliderEnabled": true,
+      "hasMeshFilter": true,
+      "childCount": 0
+    }
+  ],
+  "startFrame": 812,
+  "endFrame": 812,
+  "durationMs": 1,
+  "mode": "native-puerts"
+}

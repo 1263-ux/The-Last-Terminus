@@ -1,0 +1,6 @@
+﻿{
+  "ok": true,
+  "resultType": "string",
+  "result": "default: dist=0.93 camX=-0.93 camZ=-0.02 | setDistance2: dist=0.93 camX=-0.93 camZ=-0.02 | setDistance5: dist=0.93 camX=-0.93 camZ=-0.02",
+  "bindingKey": "global"
+}

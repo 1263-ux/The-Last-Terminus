@@ -1,0 +1,6 @@
+﻿{
+  "ok": true,
+  "resultType": "string",
+  "result": "0.0|1.0|0.0|90.0",
+  "bindingKey": "-22894:fc4dd815-40f2-4300-944e-63660930fcb4"
+}

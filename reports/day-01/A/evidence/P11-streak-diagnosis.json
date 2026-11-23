@@ -1,0 +1,44 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": {
+    "cameraAt": [
+      -0.1,
+      1.7,
+      19
+    ],
+    "count": 2,
+    "items": [
+      {
+        "name": "T_Platform",
+        "size": [
+          8,
+          0,
+          35
+        ],
+        "center": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "T_ArcadeDeck",
+        "size": [
+          4,
+          0,
+          48
+        ],
+        "center": [
+          0,
+          0,
+          45
+        ]
+      }
+    ]
+  },
+  "startFrame": 21362,
+  "endFrame": 21362,
+  "durationMs": 4,
+  "mode": "native-puerts"
+}

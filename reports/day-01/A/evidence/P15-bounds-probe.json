@@ -1,0 +1,31 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": {
+    "probePoint": [
+      1.1,
+      0.9,
+      12.9
+    ],
+    "containingCount": 1,
+    "hits": [
+      {
+        "name": "V_ArcadeDeck",
+        "size": [
+          3.5,
+          0.3,
+          18
+        ],
+        "center": [
+          0,
+          -0.2,
+          9
+        ]
+      }
+    ]
+  },
+  "startFrame": 5205,
+  "endFrame": 5205,
+  "durationMs": 1,
+  "mode": "native-puerts"
+}

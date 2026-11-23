@@ -1,0 +1,18 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": [
+    {
+      "name": "A_音频探针",
+      "depth": 1,
+      "hasAudioSource": true,
+      "clip": "",
+      "isPlaying": false,
+      "volume": 1
+    }
+  ],
+  "startFrame": 5176,
+  "endFrame": 5176,
+  "durationMs": 47,
+  "mode": "native-puerts"
+}

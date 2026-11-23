@@ -1,0 +1,23 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": [
+    {
+      "name": "A3_Wall_Solid",
+      "hasCollider": false,
+      "isTrigger": null,
+      "enabled": null,
+      "boundsCenter": null,
+      "boundsSize": null,
+      "worldPos": [
+        0,
+        1,
+        10
+      ]
+    }
+  ],
+  "startFrame": 4325,
+  "endFrame": 4325,
+  "durationMs": 2,
+  "mode": "native-puerts"
+}

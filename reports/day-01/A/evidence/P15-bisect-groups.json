@@ -1,0 +1,20 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": {
+    "wrapper": "V_ArcadeDeck",
+    "childCount": 0,
+    "groups": {
+      "deck": 0,
+      "rib": 0,
+      "ramp": 0,
+      "rail": 0,
+      "cloud": 0,
+      "other": 0
+    }
+  },
+  "startFrame": 6743,
+  "endFrame": 6743,
+  "durationMs": 0,
+  "mode": "native-puerts"
+}

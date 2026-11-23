@@ -1,0 +1,6 @@
+﻿{
+  "ok": true,
+  "resultType": "string",
+  "result": "name=A_云海尽头灰盒v2 pos=0.0,0.0,0.0 childCount=10 first=Model,Model,Model,Model,Model,Anchor_A_to_B",
+  "bindingKey": "global"
+}

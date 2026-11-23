@@ -1,0 +1,143 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": {
+    "totalRenderers": 10,
+    "renderers": [
+      {
+        "name": "出生点",
+        "size": [
+          0.348,
+          0.535,
+          0.271
+        ],
+        "center": [
+          119.742,
+          80.265,
+          88.665
+        ]
+      },
+      {
+        "name": "IsoSlab",
+        "size": [
+          12,
+          0.3,
+          7
+        ],
+        "center": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "Model",
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "center": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "Model",
+        "size": [
+          2,
+          2,
+          2
+        ],
+        "center": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "Model",
+        "size": [
+          4,
+          4,
+          4
+        ],
+        "center": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "Model",
+        "size": [
+          0.4,
+          0.4,
+          0.4
+        ],
+        "center": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "AxisPlusX_RED",
+        "size": [
+          2,
+          0.2,
+          0.2
+        ],
+        "center": [
+          -1,
+          0.1,
+          0
+        ]
+      },
+      {
+        "name": "AxisPlusZ_BLUE",
+        "size": [
+          0.2,
+          0.2,
+          1
+        ],
+        "center": [
+          0,
+          0.1,
+          0.5
+        ]
+      },
+      {
+        "name": "AxisPlusY_GREEN",
+        "size": [
+          0.2,
+          0.6,
+          0.2
+        ],
+        "center": [
+          0,
+          0.3,
+          0
+        ]
+      },
+      {
+        "name": "Model",
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "center": [
+          0,
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  "startFrame": 2259,
+  "endFrame": 2259,
+  "durationMs": 1,
+  "mode": "native-puerts"
+}

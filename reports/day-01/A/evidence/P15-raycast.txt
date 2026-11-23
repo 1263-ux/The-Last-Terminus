@@ -1,0 +1,6 @@
+﻿{
+  "ok": true,
+  "resultType": "string",
+  "result": "right(n=2):<nil>,<nil> | centre(n=3):<nil>,<nil>,<nil> | left(n=1):<nil>",
+  "bindingKey": "global"
+}

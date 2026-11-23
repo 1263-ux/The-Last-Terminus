@@ -1,0 +1,28 @@
+﻿{
+  "ok": true,
+  "status": "completed",
+  "result": {
+    "actorFound": true,
+    "actorTypeName": "DouyinActor",
+    "goName": "Player_1",
+    "goLayer": 8,
+    "hasRigidbody": true,
+    "isKinematic": true,
+    "velocity": [
+      0,
+      0,
+      0
+    ],
+    "useGravity": false,
+    "detectCollisions": true,
+    "hasCapsule": true,
+    "capsuleRadius": 0.1599999964237213,
+    "capsuleHeight": 0.8999999761581421,
+    "capsuleTrigger": false,
+    "error": "comps.getItem is not a function"
+  },
+  "startFrame": 1847,
+  "endFrame": 1847,
+  "durationMs": 47,
+  "mode": "native-puerts"
+}

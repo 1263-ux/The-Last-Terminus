@@ -66,7 +66,7 @@ douyin-world scene save --instance <I> --request-id save-1
 
 ---
 
-## 必须知道的 5 个坑
+## 必须知道的 7 个坑
 
 | # | 坑 | 解法 |
 |---|---|---|
@@ -75,6 +75,8 @@ douyin-world scene save --instance <I> --request-id save-1
 | 3 | **材质属性是 `_BaseColor`/`_BaseTex`** | 查 `color`/`mainTexture` 得空是假故障 |
 | 4 | **NORMAL 必带** | 缺失 → 有影无面（C-11） |
 | 5 | **空节点 + physicsColliderData 不生成 Collider** | 碰撞体依赖可见 Mesh；但玩家是运动学刚体，碰撞无效 |
+| 6 | **顶点色不生成可见材质** | COLOR_0 导入后存 `glbSliceData`，不进 `appearanceData`。需用 `_BaseColor` 材质才能显示颜色 |
+| 7 | **`Start()` Lua 有时序问题** | 参数注入可能在 `Start()` 之后；用 `OnEnable()` 或延迟一帧 |
 
 ---
 

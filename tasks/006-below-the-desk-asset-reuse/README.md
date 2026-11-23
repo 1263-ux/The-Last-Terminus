@@ -36,8 +36,8 @@
 3. `production/prompts/DAY-03-REVISION-AND-DAY-04-ENTRY-GATE.md`
 4. `production/INTEGRATION-CONTRACT.md`
 5. `tasks/005-day03-closeout-day04-entry/COMMON-ACCEPTANCE.md`
-6. 本目录 `ASSET-IMPORT-MANIFEST.md`、`TASK-ACCEPTANCE.md)
-7. 自己的专属提示词 `PROMPT-A.md)、`PROMPT-B.md) 或 `PROMPT-C.md)
+6. 本目录 `ASSET-IMPORT-MANIFEST.md`、`TASK-ACCEPTANCE.md`
+7. 自己的专属提示词 `PROMPT-A.md`、`PROMPT-B.md` 或 `PROMPT-C.md`
 8. 原世界任务包和最新主线报告。
 
 ## 4. 当前远端基线（已合并 PR）
@@ -57,7 +57,7 @@
 - **B：书桌站资产集成与可玩闭环。** 复用精选资产，不从零建模；在造世界编辑器实测导入、适配和玩家视角；完成尺子 REST → RAMP → 小镇的主动交互闭环。
 - **C：失重花园最终体验验收。** 不扩图；清理重复白盒/重叠 Trigger 实例；在干净场景复测路线、45 秒提示和坠落恢复；完成真人 GUI free-look 与两人盲测。
 
-详细执行见各自提示词。
+详细执行见各自提示词：[A](PROMPT-A.md) · [B](PROMPT-B.md) · [C](PROMPT-C.md)。
 
 ## 6. 生产顺序
 

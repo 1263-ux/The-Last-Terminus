@@ -1,4 +1,4 @@
-# PROMPT B｜书桌站《桌面以下》可玩闭环负责人
+> **执行口径更新（2026-11-23）：** 本提示词中的“RAMP 六段”是早期白盒方案描述，不再是固定验收节点数量。当前请以 [TASK PACK 006](../006-below-the-desk-asset-reuse/README.md) 为准：尺子桥可以是一个 GLB root（内部多个 mesh）或多个子节点，验收完整桥体所有部件切换和真实通行，不强制拆成六个独立段。\n\n# PROMPT B｜书桌站《桌面以下》可玩闭环负责人
 
 > 复制本文件全文给成员 B 的 DSH 主控 Agent。B 本人操作造世界编辑器 GUI、Preview/Published 和真实试玩。
 

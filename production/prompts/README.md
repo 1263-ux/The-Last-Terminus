@@ -53,3 +53,11 @@
 - [A｜技术集成与共享交付提示词](../../tasks/005-day03-closeout-day04-entry/PROMPT-A.md)
 - [B｜书桌站可玩闭环提示词](../../tasks/005-day03-closeout-day04-entry/PROMPT-B.md)
 - [C｜失重花园体验验收提示词](../../tasks/005-day03-closeout-day04-entry/PROMPT-C.md)
+
+
+
+## 当前资产复用专项（TASK PACK 006）
+- [TASK PACK 006｜BelowTheDesk 资产复用与 A/B/C 当前 Gate](../../tasks/006-below-the-desk-asset-reuse/README.md)
+- [A｜公共技术与资产集成](../../tasks/006-below-the-desk-asset-reuse/PROMPT-A.md)
+- [B｜书桌站资产复用与玩家闭环](../../tasks/006-below-the-desk-asset-reuse/PROMPT-B.md)
+- [C｜失重花园清洁场景与真人验收](../../tasks/006-below-the-desk-asset-reuse/PROMPT-C.md)

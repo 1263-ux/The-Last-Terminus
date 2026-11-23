@@ -13,3 +13,9 @@ Owner：成员 B | World Type：Playable | Status：DESIGN BRIEF
 文件：TASK.md、DESIGN-DIRECTION.md、AGENT-TEAM.md、REFERENCES.md、VISUAL-REFERENCE-BOARD.md、ASSET-BRIEFS.md、GATES-AND-ACCEPTANCE.md。
 
 Tripo：B 提出关键资产需求，附参考视图和提示词草案；总设计师负责实际生成；B 负责 Blender 检查、导入、场景适配和反馈。
+
+
+
+## 当前资产输入更新
+
+书桌站已有成熟 GLB 资产，不应重新从零制作。当前复用和目标编辑器导入验收以 [TASK PACK 006｜BelowTheDesk 资产复用](../006-below-the-desk-asset-reuse/README.md) 与其 [资产清单](../006-below-the-desk-asset-reuse/ASSET-IMPORT-MANIFEST.md) 为准。关键资产由总设计师提供独立交接 ZIP，B 负责目标编辑器导入、场景适配与玩法闭环。

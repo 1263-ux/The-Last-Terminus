@@ -46,3 +46,10 @@
 - REVISE：修订后复审。
 - REJECT：方向错误，回到方案/白盒。
 - BLOCKED：局部冻结，继续独立工作。
+
+
+## 当前专项执行包
+- [TASK PACK 005｜Day 3 Closeout → Day 4 Entry](../../tasks/005-day03-closeout-day04-entry/README.md)
+- [A｜技术集成与共享交付提示词](../../tasks/005-day03-closeout-day04-entry/PROMPT-A.md)
+- [B｜书桌站可玩闭环提示词](../../tasks/005-day03-closeout-day04-entry/PROMPT-B.md)
+- [C｜失重花园体验验收提示词](../../tasks/005-day03-closeout-day04-entry/PROMPT-C.md)

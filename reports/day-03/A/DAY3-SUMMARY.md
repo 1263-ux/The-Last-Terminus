@@ -2,63 +2,67 @@
 
 > Owner：成员 A
 > 分支：`feature/train-core`（PR #12）
-> 日期：2026-11-22
+> 更新：2026-11-22
 
 ---
 
-## 1. 今日完成
+## 1. 修订任务完成情况
 
-| 项 | 状态 | 核心发现 |
-|---|---|---|
-| A1 共享测试资产 | **PASS** | 5 个 GLB（1/2/4m Cube + 轴标 + 贴图），SHA-256 齐全 |
-| A2 GLB 导入矩阵 | **PASS** | A 路径 1:1 保留；X 轴镜像 REPRODUCED；B 的 sqrt(T) 是路径局部经验 |
-| A3 Collider 矩阵 | **CONFIRMED** | **玩家是运动学刚体，场景物体不可能挡人** |
-| A4 WPRE 交接 | **NOT TESTED** | 同机同账号 PASS；跨账号需 B/C 配合 |
-| A5 接口契约 v0.2 | **PASS** | 全部字段带 CONFIRMED/PROPOSED/TO-VERIFY |
-| A6 Hub/终点白盒 | **PASS** | 入口/出口提示、占位往返、终点视野 |
-| Gate D3 占位往返 | **PASS** | HubEntry↔TerminusExit Trigger+Teleport 端到端 |
+| # | 任务 | 状态 | 核心发现 |
+|---|---|---|---|
+| 1 | 修正碰撞矩阵 | **DONE** | 3 处矛盾行修正，P3/P4 从 PASS 改为 FAIL |
+| 2 | 文档一致性 | **DONE** | 5 份文档统一为"运动学刚体，不能阻挡" |
+| 3 | 最小 WPRE + 导入请求 | **PARTIAL** | `probeminimal.wprefab` 已交付；跨成员待 B/C 回执 |
+| 4 | 完整 115m 路线 | **PASS** | 8 张传送截图视觉验证（10.2 MB） |
+| 5 | 音频探针 | **PASS** | 导入/绑定/播放全通（官方模式确认） |
+| 6 | 更新 PR | **DONE** | 已推送 |
 
-## 2. 今日最重要的发现
+## 2. 关键技术发现
 
 ### 2.1 碰撞根因（B 发现，A 独立复现）
 
-**玩家是 `NetworkActor` 运动学刚体**（`isKinematic=true`, `Rigidbody.velocity=0`, `layer=8`），
-位移由脚本写 `transform`，物理求解器不参与。**任何场景物体都不可能阻挡玩家。**
-
-A 的独立验证：
-- 玩家刚体状态确认（`A3-player-full-stack.json`）
-- 6 秒穿入测试：z=85→102.89，穿过 z=90 的立方体（`A3-kinematic-walk.json`）
-- 之前 P3 的"精确阻挡"是误判（短距离巧合）
+**玩家是 `NetworkActor` 运动学刚体**（`isKinematic=true`, `velocity=0`, `layer=8`）。
+场景物体（GLB、原生 Cube、任何 Layer）**不能阻挡玩家**。
 
 **影响**：所有依赖"物体挡路"的玩法设计不成立。Trigger + Teleport 是唯一可靠机制。
 
-### 2.2 渲染限制（B 发现）
+### 2.2 门禁机制（A 验证）
 
-`CreatePrimitive` 创建的对象只参与阴影渲染，不参与主渲染。
-GLB 模型正常渲染（A 有 6 个资产的截图证据）。
-**建议：场景视觉用 GLB，primitive 只做逻辑探针。**
+**方案**：单触发器 + `Update()` 轮询 + 位置判断区域
+- 未解锁走到门禁区 → 传送回 ✓
+- 解锁后走到门禁区 → 自由通过 ✓
 
-### 2.3 GLB 导入尺寸规则
+**关键**：必须用 `Update()` 轮询（`OnActorTriggerEnter` 只触发一次）。
 
-A 的导入路径（`resource model import → archive → prefab → scene import`）**1:1 保留**。
-B 的 `sqrt(T)` 是直接 `scene import` 裸 GLB 路径的局部经验，**不能升为全局公式**。
+### 2.3 音频（官方模式确认）
 
-## 3. 给总设计师的决策请求
+- 导入：WAV + `meta.json`（schemaVersion 4）→ `resource archive --kind audio`
+- 绑定：`{uri}` 简写，`@refFrom asset` + `@dataType Audio`
+- 播放：`ApplySoundSettings()` 在播放时调用（非 `Start()`）
 
-1. **碰撞不可用** → B 建议的 E1（触发器判定）/ E2（状态门）是否接受？
-2. **渲染限制** → 是否接受"GLB 做视觉、primitive 做逻辑"的方案？
-3. **Gate D3** → A 的技术矩阵 + 占位往返 + 接口 v0.2 是否满足要求？
+### 2.4 GLB 导入
 
-## 4. 给 B/C 的即时可用结论
+- A 路径 1:1 保留（`resource model import` 链路）
+- X 轴镜像（+X→−X）
+- 7 个坑（详见 `GLB-RECIPE.md`）
 
-1. **GLB 渲染正常**（6 个资产截图证据），请改用 GLB 做场景视觉。
-2. **碰撞对玩家无效**，请用 Trigger + Teleport 实现门禁/传送。
-3. **共享测试资产**在 `reports/day-03/A/shared-assets/`，请使用同一份。
-4. **接口契约 v0.2** 在 `WORLD-INTERFACE-CONTRACT.md`，请回填 `spawn_yaw` 数值。
+## 3. 交付物清单
+
+| 类别 | 数量 | 位置 |
+|---|---|---|
+| 文档 | 14 份 | `reports/day-03/A/*.md` |
+| 证据 | 119 个 | `reports/day-03/A/evidence/` |
+| 共享资产 | 8 个 | `reports/day-03/A/shared-assets/` |
+
+## 4. 等待外部输入
+
+1. **B 的渲染测试**（Preview vs Published GUI 对比）
+2. **C 的盲测**（路线发现测试）
+3. **WPRE 跨成员导入**（B/C 用自己账号导入 `probeminimal.wprefab`）
+4. **Tripo 资产**（设计总监提供后 A 可导入验证）
 
 ## 5. 状态
 
-- **远端** `8a205b1`，23 commits
-- **PR #12** OPEN，181+ files
+- **远端** `aa77afe`，48 commits
+- **PR #12** OPEN
 - **编辑器** 已停止
-- **所有 Day-3 A 交付物** 已推送

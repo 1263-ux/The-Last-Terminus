@@ -109,3 +109,9 @@
 - [资产导入清单与 SHA-256](tasks/006-below-the-desk-asset-reuse/ASSET-IMPORT-MANIFEST.md)
 - [A/B/C 当前验收标准](tasks/006-below-the-desk-asset-reuse/TASK-ACCEPTANCE.md)
 - [A 提示词](tasks/006-below-the-desk-asset-reuse/PROMPT-A.md) · [B 提示词](tasks/006-below-the-desk-asset-reuse/PROMPT-B.md) · [C 提示词](tasks/006-below-the-desk-asset-reuse/PROMPT-C.md)
+
+
+## 《桌面以下》源设计基线与成熟资产
+
+- [BelowTheDesk 设计基线（源 GDD/玩法/美术/垂直切片）](tasks/006-below-the-desk-asset-reuse/BELOWTHEDESK-DESIGN-BASIS.md)
+- [TASK PACK 006｜资产复用与 A/B/C 当前 Gate](tasks/006-below-the-desk-asset-reuse/README.md)

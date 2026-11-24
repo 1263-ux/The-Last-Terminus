@@ -1,0 +1,8 @@
+﻿douyin-world : ✗ Prefab 下载失败: 500 Internal Server Error
+所在位置 行:7 字符: 1
++ douyin-world scene import --instance $I --uri $w --name "A_门禁验证" --re ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (✗ Prefab 下载失败: 500 Internal Server Error:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  提示：保留同一 --request-id 恢复原回执；unknown 时核对真实场景，禁止换新请求自动重放。

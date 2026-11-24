@@ -14,6 +14,7 @@
 | 胶囊半径 | **0.16 m** | CONFIRMED | 编辑器 1.0.104，默认角色配置（Day-1 P07） |
 | 胶囊总高 | **0.90 m** | CONFIRMED | 同上 |
 | 胶囊中心 | y = **0.45 m** | CONFIRMED | 同上 |
+| **玩家渲染高度** | **0.941 m** | **CONFIRMED (B)** | **B `player_height.lua` 实测渲染包围盒（两渲染器 body+face）；foot y=77.905** |
 | 碰撞直径 | **0.32 m** | CONFIRMED | 半径 ×2 |
 | 视觉身高 | ≈ **1.7 m** | PROPOSED | 用于地标可见性判断，不用于通道判定 |
 | 相机高度 | 角色上方约 **1.01 m** | CONFIRMED | Day-1 P08 |

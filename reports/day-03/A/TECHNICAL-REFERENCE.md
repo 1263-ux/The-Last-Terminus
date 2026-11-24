@@ -38,27 +38,51 @@ resource model import → archive → prefab attach → build → result archive
 
 ---
 
-## 3. 门禁：已验证
+## 3. 门禁：已验证（节点位置状态存储）
 
-**方案**：单触发器 + `Update()` 轮询 + 位置判断
+**方案**：单触发器 + `Update()` 轮询 + **节点位置存储状态**（不用 Lua 变量）
 
 ```lua
-local activated = false
+-- 状态存储：用节点位置，不用 Lua 变量（local activated 不跨帧持久化）
+local function isUnlocked()
+  local m = CS.UnityEngine.GameObject.Find('GateStateMarker')
+  if m == nil then return false end
+  return m.transform.position.z > 0.5
+end
+
+local function setUnlocked()
+  local m = CS.UnityEngine.GameObject.Find('GateStateMarker')
+  if m ~= nil then
+    local pos = m.transform.position
+    m.transform.position = CS.UnityEngine.Vector3(pos.x, pos.y, 1)
+  end
+end
+
 function Update()
+  local actor = CS.DouyinActorService.GetLocalActor()
+  if actor == nil then return end
   local z = actor.position.z
-  if z < 90 then activated = true end
-  if z >= 93 and not activated then
+  if z < 90 then
+    if not isUnlocked() then setUnlocked() end
+    return
+  end
+  if z >= 93 and not isUnlocked() then
     actor:Teleport(返回点)
   end
 end
 ```
 
-**验证**：
+**验证（6 轮测试）**：
 - 未解锁走到门禁区 → 传送回 ✓
-- 解锁后走到门禁区 → 自由通过 ✓
+- 节点位置状态存储 → **PASS**（标记 z=1 确认）
+- `local activated` 跨帧持久化 → **FAIL**（引擎限制）
+- `OnActorTriggerEnter` 在 Teleport 时触发 → **FAIL**
 
-**关键**：必须用 `Update()`，不能用 `OnActorTriggerEnter`（只触发一次）。
-详见 `GATE-STATE-SHARING.md`。
+**关键**：
+1. 必须用 `Update()`，不能用 `OnActorTriggerEnter`（Teleport 时不触发）
+2. **必须用节点位置存储状态**，不能用 `local activated`（不跨帧持久化）
+3. 单场景单门禁（多实例互相干扰）
+4. 详见 `GATE-STATE-SHARING.md` 和 `tools/gate_ns2.js`
 
 ---
 

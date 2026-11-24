@@ -1,0 +1,8 @@
+﻿douyin-world : ✗ probe-error: UnityEngine.UnityException: Transform child out of bounds
+所在位置 行:24 字符: 1
++ douyin-world runtime lua eval --file .\clean_scene.lua --instance $I  ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (✗ probe-error: ...d out of bounds:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+

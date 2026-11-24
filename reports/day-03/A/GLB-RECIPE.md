@@ -1,7 +1,7 @@
 # GLB 导入操作食谱（B/C 可直接照做）
 
 > Owner：成员 A
-> 依据：`GLB-IMPORT-MATRIX.md` 实测结论
+> 依据：`GLB-IMPORT-MATRIX.md` 实测结论 + B 的 `SCAD-SCENE-PIPELINE.md` 管线发现
 > 引擎：造世界编辑器 1.0.104 / CLI douyin-world 1.0.104
 
 ---
@@ -9,6 +9,12 @@
 ## 一句话
 
 **用 `resource model import` 链路导入 GLB，尺寸 1:1 保留；X 轴会被镜像，非对称资产必须在导入后确认朝向。**
+
+**⚠ 关键区分（B 发现）**：
+- `scene import --asset-id <裸 GLB>` **只把 GLB 当模型资产放进场景**，不是真正的关卡
+- **真正的关卡**需要：`SCAD map → generate-map-assembly → prefab attach → build → export → asset import → scene import`
+- 单个 GLB 资产导入用下方的 `resource model import` 链路
+- 完整关卡场景用 SCAD map 管线（见 B 的 `SCAD-SCENE-PIPELINE.md`）
 
 ## 完整流程（逐步）
 

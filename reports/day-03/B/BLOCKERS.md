@@ -156,3 +156,55 @@
 
 `TASK-ACCEPTANCE` §0 明确：**Blender ACCEPTED ≠ 造世界编辑器导入 PASS**。
 同理，**数据层 PASS ≠ 运行层 PASS**。
+
+---
+
+## 10. 补充证据：导入的 GLB 不在运行时资源系统里
+
+进一步用 `Resources.LoadAll("")` 枚举运行时资源（共 **1405** 个）：
+
+```
+sample: AuthoredColor, EffectShaderRegistry, LinearColor, proxy_pet_fly_down_01, ...,
+        AvatarAnimatorController, Humanoid_Controller, Idle, Jumping, Run, Walk,
+        DouyinVolume, EnvInfor_Cloudy01, DebugUICanvas, ...
+```
+
+**全部是引擎内置**（角色动画、环境预设、UI、特效注册表）。
+
+按名字搜索 `ruler` / `bridge` / `town` / `shopfront` / `desk` / `lamp` / `harbor`：
+
+```
+hitCount = 0
+```
+
+### 结论
+
+> **导入的 kit GLB 没有进入运行时资源系统，只存在于 `scene.data` 这个离线数据里。**
+
+这是对 B-07 的进一步确认，且比"`WorldRoot` 为空"更精确：
+
+| 层 | 状态 |
+|---|---|
+| 磁盘 `scene.data` | ✅ 14 节点，尺子桥 1 根 + 6 子完整 |
+| 运行时资源系统 | ❌ 1405 个资源中 **0 个**是 kit 资产 |
+| 运行时场景 `WorldRoot` | ❌ 0 子节点 |
+
+**所以是"导入 → 资源系统"这一步没有发生，不是"资源系统 → 场景"这一步。**
+
+### 已排除的加载路径
+
+| 路径 | 结果 |
+|---|---|
+| `Resources.Load("<name>")` 按名加载 | 10 个候选名全部 null |
+| `Resources.LoadAll("")` 枚举 | 1405 个内置资源，无 kit |
+| `Addressables.LoadAssetAsync` | 该成员是表不是可调用函数，泛型签名无法从 Lua 桥调用 |
+| `AssetBundle.GetAllLoadedAssetBundles()` | 返回句柄，但未枚举出内容 |
+| `System.IO.File.Exists(scene.data)` | **`false`** —— WebGL 沙箱内无磁盘访问 |
+
+**最后一条很关键**：运行时无法读磁盘，所以它只能依赖宿主提前把资源注入资源系统——
+而这一步当前没有发生。
+
+### 对解除阻塞的含义
+
+不是"再试一个 API"能解决的，需要**宿主侧（编辑器）把导入资产注册进运行时资源系统**。
+这超出 CLI 能力，必须由 GUI 操作或编辑器侧修复。

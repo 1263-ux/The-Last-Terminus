@@ -208,3 +208,70 @@ hitCount = 0
 
 不是"再试一个 API"能解决的，需要**宿主侧（编辑器）把导入资产注册进运行时资源系统**。
 这超出 CLI 能力，必须由 GUI 操作或编辑器侧修复。
+
+---
+
+## 11. 最终定位：运行时启动的是 Hamlet 角色世界，不是关卡场景
+
+运行时日志（`runtime logs`）给出了决定性证据：
+
+```
+[GameStateControl] SetGameState: N
+[GameStateControl]: newState Hamlet.World.GameState_HamletWorldLaunch Start
+[GameSwitch] HamletWorldLaunch Start, registerGameType=Hamlet.World.HamletWorldGame
+RegisterGame Hamlet.World.HamletWorldGame
+[GameSwitch] HamletWorldGame InitGameSingleton
+[GameSwitch] HamletWorldGame InitGameSingleton End
+SwitchGameStateByEntryType
+Load AssetBundle By TT success (×7)
+[U3dActor] CreateAnimatorOverrideController Load AnimationClip Failed stand_idle / run / walk / ...
+```
+
+### 判读
+
+| 证据 | 含义 |
+|---|---|
+| `registerGameType=Hamlet.World.HamletWorldGame` | 注册的游戏类型是 **Hamlet 世界** |
+| `SwitchGameStateByEntryType` | 按**入口类型**切换状态，而非加载关卡 |
+| `Load AssetBundle ... success` ×7 | 资源包加载**成功**（加载的是角色/宠物 bundle） |
+| `[U3dActor] ... AnimationClip Failed` | 角色动画片段缺失（与我的场景无关） |
+
+日志里**没有任何**与"场景/关卡/地形加载"相关的行。
+
+### 结论
+
+> **`runtime start` 启动的是 `HamletWorldGame`——一个角色/社交世界预览，
+> 它按"入口类型"切换游戏状态，不实例化 `scene.data` 里的关卡内容。**
+
+这与前面所有观测完全吻合：
+
+| 观测 | 由本条解释 |
+|---|---|
+| `WorldRoot` 0 子节点 | HamletWorld 不填充关卡根 |
+| `Resources` 1405 项全为内置 | 只加载了引擎+角色 bundle |
+| 场景名 `HamletPreview` | 预览场景而非关卡 |
+| `System.IO` 无法读盘 | WebGL 沙箱，只能靠 bundle |
+| `scene.data` 完整但不生效 | 数据在，但没有对应加载器 |
+
+### 这不是 bug，是入口选择问题
+
+`SwitchGameStateByEntryType` 说明存在**多种入口类型**。
+当前运行的入口类型是"Hamlet 世界预览"。
+**若存在"关卡/地图"入口类型，就能加载 `scene.data`。**
+
+### 需要确认的具体问题
+
+1. 编辑器里有没有"地图/关卡"类型的项目入口？
+2. `instance start` 或 `runtime start` 是否有参数指定入口类型？
+3. GUI 里点"运行"时，是否与 CLI 的 `runtime start` 走同一入口？
+
+**这三个问题都只能由人（GUI）或编辑器方回答。**
+
+### 我这边的状态
+
+- 已穷尽 CLI 侧所有路径（`mode` foreground/offscreen、新建工程、真实导入保存、
+  `Resources`、`Addressables`、`AssetBundle`、`System.IO`）
+- 已确认数据层完全正常（14 节点、1 root + 6 children、SHA 7/7 一致）
+- **无法自主突破**
+
+标记：**BLOCKED（外部依赖，非我方可解）**

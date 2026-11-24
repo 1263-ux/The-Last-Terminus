@@ -1,0 +1,11 @@
+// Create the proximity script via SDK so headers are generated correctly,
+// then bind it to a dedicated ruler node in one transaction.
+const lua = "---@displayName \u5c3a\u5b50\u6865\u9760\u8fd1\u4ea4\u4e92\n-- \u73a9\u5bb6\u8d70\u5230\u5c3a\u5b50\u9644\u8fd1\u65f6\uff0c\u7531\u7ed1\u5b9a\u811a\u672c\u81ea\u5df1\u68c0\u6d4b\u8ddd\u79bb\u5e76\u6fc0\u6d3b\u4e00\u6b21\u3002\n-- \u4e0d\u4f9d\u8d56\u89e6\u53d1\u5668\u51e0\u4f55\uff08\u5bfc\u5165\u8d44\u4ea7\u5728\u5f53\u524d\u8fd0\u884c\u65f6\u6ca1\u6709\u5b9e\u4f53\uff09\uff0c\n-- \u4e5f\u4e0d\u4f9d\u8d56\u5916\u90e8 lua \u547d\u4ee4\u2014\u2014\u8fd9\u662f\u771f\u6b63\u7684\u73a9\u5bb6\u9a71\u52a8\u4ea4\u4e92\u3002\n---@start\n---@var TriggerZ:number=92.0\n---@name \u4ea4\u4e92\u533a Z \u5750\u6807\n---@var TriggerRadius:number=3.0\n---@name \u89e6\u53d1\u534a\u5f84\n---@end\n\nlocal activated = false\n\nlocal function playerPosition()\n  if not CS or not CS.UnityEngine then return nil end\n  local ok, go = pcall(function()\n    return CS.UnityEngine.GameObject.Find(\"Player_1\")\n  end)\n  if not ok or not go then return nil end\n  local okp, p = pcall(function() return go.transform.position end)\n  if not okp or not p then return nil end\n  return p\nend\n\nlocal function activate()\n  if activated then return end\n  activated = true\n  -- self.gameObject \u662f\u5bbf\u4e3b\u8282\u70b9\uff1b\u9690\u85cf\u5b83\u5373\"\u9759\u6b62\u7684\u5c3a\u5b50\u88ab\u642c\u8d70\"\n  if self and self.gameObject then\n    self.gameObject:SetActive(false)\n  end\nend\n\nfunction Update()\n  if activated then return end\n  local p = playerPosition()\n  if not p then return end\n  if math.abs(p.z - TriggerZ) <= TriggerRadius then\n    activate()\n  end\nend\n\n-- \u4fdd\u7559 trigger \u56de\u8c03\uff0c\u82e5\u5c06\u6765\u5bfc\u5165\u8d44\u4ea7\u8fdb\u5165\u8fd0\u884c\u65f6\u4e5f\u4f1a\u5de5\u4f5c\nfunction OnPlayerTriggerEnter(player)\n  activate()\nend\n";
+const {handle: scriptHandle, filePath} = await scene.scripts.create({path:"desk-proximity.lua", content: lua});
+const ruler = await scene.nodes.create({parent:"n1", name:"desk-ruler-rest", components:{}});
+const bound = await scene.scripts.bind({
+  nodes:[ruler.handle],
+  script:scriptHandle,
+  params:{TriggerZ:92.0, TriggerRadius:3.0}
+});
+return {scriptHandle, filePath, ruler:ruler.handle, bindings:bound};

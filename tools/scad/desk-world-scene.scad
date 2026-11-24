@@ -3,6 +3,11 @@ use <scad/lib/kit_terrain.scad>
 
 world_map_bounds=[40,48];
 world_seed=7;
+// Host converts SCAD [x,y,z] -> Unity [-x, z, -y]. Player spawns at Unity
+// (119.74, 77.91, 88.64), so the map must sit at SCAD x=-119.74, y=-88.64.
+map_origin_x=-119.74;
+map_origin_y=-88.64;
+translate([map_origin_x, map_origin_y, 0]) {
 
 world_visual_form(id="desk-surface", importance="secondary", structure_kind="landform")
 world_surface("desk", tags=["walkable"])
@@ -63,3 +68,4 @@ world_material([0.78,0.66,0.42,1], roughness=0.70)
 translate([16, 34, 0]) cylinder(h=0.25, r=1.05, $fn=24);
 translate([16, 34, 0.25]) cylinder(h=2.60, r=0.14, $fn=12);
 translate([16, 34, 2.85]) cylinder(h=0.50, r1=1.00, r2=0.55, $fn=24);
+}

@@ -1,0 +1,6 @@
+﻿{
+  "ok": true,
+  "resultType": "string",
+  "result": "removed 19: A_门禁隔离测试, A_门禁最小, A_门禁测试, A_书谷桥谜题, A_集成测试, A_终点站_路线验证, A_官方音频, A_单触发器门禁v2, A_单触发器门禁, A_TextMesh门禁, A_组件状态门禁, A_单脚本门禁, A_音频v4修复, A_音频v3, A_音频探针, A_终点站_地形级, 出生点, 地图, Env",
+  "bindingKey": "global"
+}

@@ -14,6 +14,7 @@
 | 胶囊半径 | **0.16 m** | CONFIRMED | 编辑器 1.0.104，默认角色配置（Day-1 P07） |
 | 胶囊总高 | **0.90 m** | CONFIRMED | 同上 |
 | 胶囊中心 | y = **0.45 m** | CONFIRMED | 同上 |
+| **玩家渲染高度** | **0.941 m** | **CONFIRMED (B)** | **B `player_height.lua` 实测渲染包围盒（两渲染器 body+face）；foot y=77.905** |
 | 碰撞直径 | **0.32 m** | CONFIRMED | 半径 ×2 |
 | 视觉身高 | ≈ **1.7 m** | PROPOSED | 用于地标可见性判断，不用于通道判定 |
 | 相机高度 | 角色上方约 **1.01 m** | CONFIRMED | Day-1 P08 |
@@ -27,7 +28,9 @@
 **几何判定规则（CONFIRMED 部分）：**
 - 行走通道硬下限 **0.8 m**（0.32 m 直径 + 余量）；视觉舒适建议 ≥ 1.5 m。
 - 门洞硬下限 **0.6 × 1.2 m**；视觉舒适 ≥ 1.0 × 2.0 m。
--  Trigger 竖直范围必须覆盖 **y ≈ 0.45 m**（胶囊中心层）。
+- Trigger 竖直范围必须覆盖 **y ≈ 0.45 m**（胶囊中心层）。
+- **可跨越台阶上限 0.45 m**（CONFIRMED by C，2026-11-25）：花冠台沿 0.56 m 实测挡死玩家；可走面周边不得用 ≥ 0.45 m 围边。
+- **可走面正中央不得放 ≥ 0.25 m 装饰体**（SpawnMarker 事故）；观景点护栏须低于视线或留缺口。
 
 ## 2. Entry / Exit Anchor
 
@@ -40,7 +43,7 @@
 | `role` | enum | CONFIRMED | `entry` / `exit` |
 | `position` | vec3 m | CONFIRMED 格式 | **world 坐标**，须落 `[0,255]`（C 的约束，A 的边界测试部分支持） |
 | `spawn_position` | vec3 m | CONFIRMED 格式 | 玩家实际落脚地面点 |
-| `spawn_yaw` | float deg | CONFIRMED 格式 | 面向下车后第一个地标；**B/C 尚未给数值** |
+| `spawn_yaw` | float deg | **garden CONFIRMED / desk TO-VERIFY** | 面向下车后第一个地标；**Garden 实测 = 0°(+Z)**，见 §2b；Desk 待 B 回填 |
 | `safe_zone_radius` | float m | CONFIRMED 格式 | ≥ 2.5 建议；C 的入口岛 r=6 |
 | `trigger_size` | vec3 m | CONFIRMED 默认 | A 默认 `(3,4,3)`；`center.y=0.5`（**局部坐标，不预乘祖先缩放**） |
 | `return_target` | string | CONFIRMED 格式 | `train.hub` 或另一 anchor_id |
@@ -52,6 +55,21 @@
 3. **entry / exit 体积间距 ≥ 8 m，冷却 ≥ 2 s** —— 太近会来回传送振荡。
 4. **坐标须在 [0,255]** —— C 实测越界异常；A 的边界测试看到越界后对象异常（部分支持）。
    A 提议分区：列车 (40,60,40)、书桌 (120,60,40)、花园 (120,60,120)、终点 (40,60,120)。
+
+### 2b. 实测 Anchor 回填
+
+| 世界 | anchor | position (m) | spawn_yaw | 状态 | 来源 |
+|---|---|---|---|---|---|
+| **Garden** | `garden.entry` | **(120, 70, 105)** | **0°(+Z)** | **CONFIRMED** | C `A-INTERFACE.json`，运行时实测（entry 岛可走面 y=70.05，玩家落 y=70.00） |
+| Garden | `garden.exit` / vista | (120, 76.01, 135) | — | **PARTIAL FAIL** | 台面存在但 0.56 m 台沿挡死步行入口；C 提修复提案 |
+| Garden | `garden.return` | (120, 70, 107) | — | **CONFIRMED** | 坠落复位实测：云垫→1:respawned→落该点 |
+| Garden | 安全区（坠落体积） | center (120,55,127), size (60,4,70), y 53–57 | — | CONFIRMED | C_TriggerProbe 云垫 |
+| Desk | `desk.entry` / `desk.exit` | **待 B 回填** | **待 B 回填** | TO-VERIFY | B 的 desk-proximity 绑定已保存重开通过，但 Entry/Exit 数值未给 A |
+
+**A 的集成动作（Garden B-01 阻塞）**：C 报告全局 `出生点` 仍在 (119.7,80,88.6)，落在地形顶而非入口岛；
+花园路线在地形面以下（y 66–76，地形顶 77.90–78.31），全图无地形洞，从出生点走不到入口岛。
+→ **需将全局出生点改到 (120,70,105) 或开正规入口**（GUI 操作 + 保存重开验收，待 GUI 会话）。
+→ C 另附机器可读接口 `reports/day-04/C/A-INTERFACE.json`（在 C 的 `work/c-garden-closeout-1124` 分支）。
 
 ## 3. GLB 坐标 / 尺寸 / 材质 / Collider 规则
 

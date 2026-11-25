@@ -1,0 +1,6 @@
+﻿{
+  "ok": true,
+  "resultType": "string",
+  "result": "removed 9: A_门禁最小, A_书谷桥谜题, A_终点站_路线验证, A_单触发器门禁v2, A_TextMesh门禁, A_单脚本门禁, A_音频v3, A_终点站_地形级, 地图",
+  "bindingKey": "global"
+}

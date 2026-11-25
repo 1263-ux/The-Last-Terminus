@@ -1,0 +1,53 @@
+{
+  "project": "C:\\Users\\zjx\\AppData\\Roaming\\AI World Creator\\projects\\project-fb583637-ca72-4350-8ff2-e6066aa03481",
+  "scene_data_bytes": 793068,
+  "zip_entries": [
+    {
+      "name": "HeightMap_1694159390.data",
+      "size": 264196
+    },
+    {
+      "name": "SplatMap_1694159390_0.png",
+      "size": 11183
+    },
+    {
+      "name": "SplatMap_1694159390_1.png",
+      "size": 11197
+    },
+    {
+      "name": "MatCoverTex_1694159390.png",
+      "size": 728056
+    },
+    {
+      "name": "SerializePcgData.json",
+      "size": 367738
+    }
+  ],
+  "serialize_file": "SerializePcgData.json",
+  "top_type": "dict",
+  "top_keys": [
+    "version",
+    "isOpenStreamingLoad",
+    "moveMaxSpeed",
+    "jumpMaxHeight",
+    "respawnHeightY",
+    "respawnLogicType",
+    "objectBehaviourAtRespawn",
+    "playerAnimatorData",
+    "audioData",
+    "spawnPointData",
+    "nodeTransformDatas",
+    "resourceRefs",
+    "waterNetworks",
+    "waterTerrainBaselines",
+    "runtimeScripts",
+    "envType",
+    "envSettingPath",
+    "envParamJson"
+  ],
+  "structure": {
+    "dicts": 3012,
+    "lists": 493,
+    "max_depth": 7
+  }
+}

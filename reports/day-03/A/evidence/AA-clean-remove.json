@@ -1,0 +1,8 @@
+﻿douyin-world : ✗ rootID 无效
+所在位置 行:7 字符: 1
++ douyin-world scene remove --instance $I --args "{\`"rootIDs\`":[\`"$i ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (✗ rootID 无效:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  提示：保留 --request-id "clean-remove-1" 及相同目标、参数以恢复原回执，不要换新请求自动重试。

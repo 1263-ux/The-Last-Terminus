@@ -134,3 +134,12 @@ douyin-world runtime js eval --file tools/c-garden-verify.js   # 期望 crownVer
 
 **风险**：重新导入会换掉节点 ID，必须重新核对 3 个 Lua 绑定（fall_respawn / backup_cue / tint）与断桥车道；
 `scene save` 前不要 stop 实例；全程保留备份。
+
+### 6.1 基线（改之前已跑通的只读检查，供改后对照）
+
+| 检查 | 结果 |
+|---|---|
+| `authoring prefab validate garden-whitebox` | `items: []`（无问题），revision `d5e5b82fd5ad4b221c6851a40612b6fdfd038d1ac68477519247cc3085ca43b3` |
+| `authoring resource model check model-garden-whitebox` | `modelType: 2`（Geometry），`nodeCount: 153`，源文件 `meta.json` + `static/preview-module.js` |
+
+> 改完源码后这两条必须再跑一遍：`validate` 仍应 `items: []`；`nodeCount` 预期 153 → 155（补两块地板）+ 围栏不变（只改尺寸）。

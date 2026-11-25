@@ -118,6 +118,10 @@ z=110.5  x115:m4     x116:m4   x117:m4
 
 **结论**：花冠台的四周（西 `x=116`、东 `x=124`、北 `z=139.5`）都是 0.56 m 台沿，北侧还有 0.5 m 深槽；步行进不去，跳跃又会穿过台面掉到**台下的结构缝隙**（`y≈72.5–73.9`）且**不触发云垫复位**——这是一个**可能卡死玩家**的位置，必须在交付前处理（要么把台沿降到 ≤0.45 m 并加一块引导坡道，要么在台下加复位体积）。
 
+> 以上判定已固化成可复跑脚本：`tools/c-garden-verify.js`（一条 `runtime js eval` 输出场景数/台沿高度/缺口/关键地面高度/`overall: PASS|FAIL`）。
+> 本轮实跑结果：`{"scene":{"gardenWhiteboxCount":1},"crown":{"rimNorth":76.555,"northSlot":null,"verdict":"NEEDS-JUMP"},"verdict":{"overall":"FAIL"}}`。
+> 入口修复后重跑该脚本，`crownVerdict` 变为 `PASS` 且 `overall: PASS` 才算几何层面修好。
+
 ### 4.2 观景台四方向截图（供真人判断，不是 PASS）
 
 在 `(120, 76.01, 135)`、`pitch=12°` 下拍四个方向（`evidence/day-04/C/c02-09-vista-yaw{0,90,180,270}.png`）：

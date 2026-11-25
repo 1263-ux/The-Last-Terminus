@@ -205,6 +205,27 @@ douyin-world scene import --prefab garden-whitebox --position 120,50,115 --name 
 douyin-world scene remove <旧 garden-whitebox rootID> --request-id c-crownfix-remove
 douyin-world scene save --request-id c-crownfix-save
 
+### 7.2 重建/重导入会带来什么变化（已用 `authoring prefab read` 核实）
+
+WPrefab 里实际只有 **5 条绑定**（`scripts.bindings`，36 个节点）：
+
+| 节点 | 绑定的脚本 | 说明 |
+|---|---|---|
+| n34 `C_TriggerProbe` | `d6f83b17…` | runtime 资源引导（内置） |
+| n34 `C_TriggerProbe` | **`27c2c931…`** | `fall_respawn.lua` 的**作者源版本** |
+| n67 `C_BackupCueZone` | `d6f83b17…` | 内置 |
+| n67 `C_BackupCueZone` | `3653f642…` | `backup_cue.lua`（与场景同 id） |
+| n69 `Model` | `d6f83b17…` | 内置 |
+
+对比场景里的 3 条绑定（`fall_respawn 42202be1` / `backup_cue 3653f642` / **`tint a19fb207`**）：
+
+- **`garden_layer_tint` 不在 WPrefab 里** → 重导入后**不会再有 tint 绑定**，配色回退（B-03）会随这次重建一起修好；
+- `fall_respawn` 的 id 会从 `42202be1` 变成作者源 `27c2c931`，但**脚本文本逐字相同**（只差 `---@id` / `---@sourceScriptId` 两行头），行为不变；
+- `backup_cue` id 不变（`3653f642`）。
+
+→ 重建后应只剩 **2 条业务绑定**（fall_respawn + backup_cue），且不再有 tint。
+这一点已写进应用脚本的验收步骤。
+
 # 4) 重开 + 复验
 douyin-world runtime stop; douyin-world runtime start
 douyin-world runtime js eval --file tools/c-garden-verify.js   # 期望 crownVerdict=PASS, overall=PASS

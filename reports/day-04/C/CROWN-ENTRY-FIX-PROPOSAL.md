@@ -49,11 +49,10 @@ addBox(crownZone, 'VistaTurnAcross_' + (i + 1), 2.6, 0.30, 2.0, x, 26.0 - 0.15, 
 - 优点：栏杆视觉不变，缺口明确；
 - 缺点：缺口边缘仍是圆岛悬空边，玩家从缺口进来是"贴边"，需要再加 0.1 m 的引导条。
 
-### 方案 C：不改几何，明确"需要跳跃"，并在圆岛下方加复位体积
-
-- 最小改动：新增一个 `C_CrownUnderZone` 触发体（`y 70–74`，`x 114–124`，`z 130–142`），复用 `fall_respawn.lua`，复位到入口 `(120,70,107)`；
-- 优点：不动白盒几何，先解决"卡死"；
-- 缺点：跳跃落点仍然窄，体验差；只能当兜底，不能当解决方案。
+### 方案 C（可选兜底）：圆岛下方加复位体积
+- 新增 `C_CrownUnderZone` 触发体（`y 70–74`，`x 114–124`，`z 130–142`），复用 `fall_respawn.lua`，复位到入口 `(120,70,107)`；
+- 优点：玩家掉进台下结构口袋时不用自己摸索着往西走出边缘；
+- 现状核对：**台下不是硬锁**——实测向西走出结构边缘会掉进云垫并复位（`2:respawned`），所以这一条是"体验兜底"，不是"救命补丁"。
 
 **建议：A + C 兜底**（先降围栏补缝，再加一个台下复位体积，防止任何情况下卡死）。
 
@@ -99,3 +98,39 @@ addBox(crownZone, 'VistaSlotFill', 6.5, 0.30, 1.2, -0.75, 25.85, 25.0, matWalkCr
 
 - 几何改动（围栏高度/补缝）：**总设计**批准后 C 执行并复验；
 - 台下复位体积（新增 trigger + 复用 `fall_respawn.lua`）：属于安全兜底，建议同批批准。
+
+## 6. 批准后的执行路径（已探明，命令可直接跑）
+
+**已确认的目标**：`workspaceId = workspace_ihycinrp`、`prefabId = garden-whitebox`、
+模型资源 `resourceId = model-garden-whitebox`、`sourceState = threejs`、
+源码 `assets/models/model-garden-whitebox/static/preview-module.js`、产物 `package/model.glb`。
+
+```powershell
+# 0) 备份
+Copy-Item "<project>\ai-sessions\workspace_ihycinrp\wprefabs\garden-whitebox" "<backup>\garden-whitebox-prefix" -Recurse
+
+# 1) 改源码（§2/§2.1 的行 + 两块补丁）
+#    preview-module.js 第 474-476 行围栏高度，和 §2.1 的 VistaEdgeFill / VistaSlotFill
+
+# 2) 重新准备并归档模型
+douyin-world authoring resource model check model-garden-whitebox --prefab garden-whitebox --workspace-id workspace_ihycinrp
+douyin-world authoring resource archive model-garden-whitebox --kind model --prefab garden-whitebox --workspace-id workspace_ihycinrp
+douyin-world authoring prefab attach garden-whitebox --workspace-id workspace_ihycinrp --uri <上一步返回的 uri>
+douyin-world authoring prefab validate garden-whitebox --workspace-id workspace_ihycinrp
+douyin-world authoring prefab build garden-whitebox --workspace-id workspace_ihycinrp
+douyin-world authoring result archive garden-whitebox --workspace-id workspace_ihycinrp
+
+# 3) 场景替换（旧实例的 root id 会变，先枚举再删）
+douyin-world scene import --prefab garden-whitebox --position 120,50,115 --name garden-whitebox --request-id c-crownfix-import
+#    记录返回的 rootIDs，确认新实例在 (120,50,115)
+douyin-world scene remove <旧 garden-whitebox rootID> --request-id c-crownfix-remove
+douyin-world scene save --request-id c-crownfix-save
+
+# 4) 重开 + 复验
+douyin-world runtime stop; douyin-world runtime start
+douyin-world runtime js eval --file tools/c-garden-verify.js   # 期望 crownVerdict=PASS, overall=PASS
+# 再用连续键盘输入走一遍 入口→根系→屋顶→台阶→花冠台（不跳），并重拍四方向
+```
+
+**风险**：重新导入会换掉节点 ID，必须重新核对 3 个 Lua 绑定（fall_respawn / backup_cue / tint）与断桥车道；
+`scene save` 前不要 stop 实例；全程保留备份。

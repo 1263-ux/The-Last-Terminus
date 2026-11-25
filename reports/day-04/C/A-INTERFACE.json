@@ -66,5 +66,15 @@
     "terrain renders single-sided: from below the garden reads as floating islands in sky; from above the whitebox is hidden",
     "garden_layer_tint.lua is bound to Model node -1628462626; _BaseColor shows 3 colors vs 9 native (needs GUI unbind)",
     "scene.data was not modified by this test round (runtime-only changes)"
-  ]
+  ],
+  "confirmedByA": {
+    "comment": "https://github.com/1263-ux/The-Last-Terminus/issues/23#issuecomment-7153900000 (A 13:00 report, 2026-11-25T05:44:37Z)",
+    "contractCommit": "bf95fe2 on feature/train-core",
+    "entry": "CONFIRMED (120,70,105) yaw 0(+Z)",
+    "return": "CONFIRMED (120,70,107)",
+    "exitVista": "PARTIAL FAIL (0.56m rim blocks walking; C fix proposal linked)",
+    "safeZone": "CONFIRMED cloud pad center (120,55,127) size (60,4,70)",
+    "stepLimit": "CONFIRMED walkable step <= 0.45m",
+    "blocker": "A cannot fix global spawn without GUI session; C also has no CLI node-move API -> needs a GUI operator"
+  }
 }

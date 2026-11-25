@@ -22,8 +22,9 @@
 
 ### 2.2 清洁场景路线复测（C-02，**部分 FAIL**）
 - **PASS 段**：入口岛 → 断桥 → 根系下坡 → 温室屋顶 → 34 级台阶 → 花冠前平台 `(115.09,76.01,139.14)`，全程连续输入、无坠落；
-- **FAIL 段**：花冠观景台步行入口被 **0.56 m 台沿**（三段围栏顶面 76.56）+ 北侧 0.5 m 深槽封死，连续走路进不去；
-- 证据：`walk-log.jsonl`（25 段坐标）、`c02-03-stair-top.png`、`c02-04-vista.png`、`crown-plan-section.png`。
+- **FAIL 段**：花冠**入口走廊**（源码 `VistaReturn`，world x 118.5–121.5）被 **0.7 m 空隙**（z 139.5–140.2）与 **后围栏**（z=139.5，顶 76.56）同时挡住，连续走路进不去；
+- **已给出并验证修法**：A′（后围栏开 3.4 m 缺口 + 补一块 `VistaCorridorFill`）——runtime 模拟已走通到观景台 `(120,76.01,134.97)`，补丁 `crown-fix-A-prime.patch` 已验证可 apply；
+- 证据：`walk-log.jsonl`（25 段坐标）、`c02-03-stair-top.png`、`c02-04-vista.png`、`c02-14-sim-fix-corridor-walk.png`、`crown-plan-section.png`。
 
 ### 2.3 45 s Backup Cue（C-07，PASS）
 - 新 runtime `6ff93ba8`：`C_LightProbe` **0.15 → 8.00**，`armed=true, cues=1/3, last=light+time`（真实等待 46 s）；

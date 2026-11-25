@@ -1,4 +1,4 @@
-﻿// c-garden-verify.js — C 花园白盒可玩性自检（可在任意 runtime 反复运行）
+// c-garden-verify.js — C 花园白盒可玩性自检（可在任意 runtime 反复运行）
 //
 // 用法：
 //   douyin-world runtime js eval --file tools/c-garden-verify.js --session <session> --runtime-id <id>
@@ -63,13 +63,29 @@ crown.westNotch = topAt(117, 139);
 const deckY = crown.deck ? crown.deck.y : null;
 const stripY = crown.northStrip ? crown.northStrip.y : null;
 crown.stepFromStripToDeck = (deckY !== null && stripY !== null) ? +(stripY - deckY).toFixed(2) : null;
+
+// --- crown corridor: north strip -> deck along x=120 (the intended VistaReturn lane) ---
+const corridor = [];
+for (let z = 141.5; z >= 132.99; z -= 0.25) {
+  const t = topAt(120, z);
+  corridor.push(t === null ? "MISS" : t.y.toFixed(2));
+}
+let corridorPass = true;
+let prevY = null;
+for (const c of corridor) {
+  if (c === "MISS") { corridorPass = false; continue; }
+  const y = parseFloat(c);
+  if (prevY !== null && Math.abs(y - prevY) > STEP_MAX) corridorPass = false;
+  prevY = y;
+}
+crown.corridorAtX120 = corridor;
+crown.corridorPass = corridorPass;
+
 let walkable = false;
 let verdict = "NO-DECK";
 if (deckY !== null) {
-  const rimOk = crown.rimNorth !== null && (crown.rimNorth.y - deckY) <= STEP_MAX;
-  const slotOk = crown.northSlot !== null;
-  walkable = rimOk && slotOk;
-  verdict = walkable ? "PASS" : (rimOk || slotOk ? "FAIL-PARTIAL" : "NEEDS-JUMP");
+  walkable = corridorPass;
+  verdict = walkable ? "PASS" : "BLOCKED-CORRIDOR";
 }
 crown.walkableIn = walkable;
 crown.verdict = verdict;

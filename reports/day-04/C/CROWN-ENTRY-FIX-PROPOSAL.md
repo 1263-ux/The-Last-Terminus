@@ -66,6 +66,18 @@ addBox(crownZone, 'VistaTurnAcross_' + (i + 1), 2.6, 0.30, 2.0, x, 26.0 - 0.15, 
 
 > 这两处与围栏同批改，否则"降围栏"之后玩家仍会从缺口掉下去。
 
+**可直接粘贴的补块（本地坐标，注意 X 镜像：`local.x = 120 − world.x`，`local.z = world.z − 115`，`local.y = world.y − 50`）**：
+
+```js
+// 西缘缺口：world x 116.5–117.5 / z 138.5–139.5 → local x 2.5–3.5 / z 23.5–24.5
+addBox(crownZone, 'VistaEdgeFill', 1.2, 0.30, 1.4, 3.0, 25.85, 24.0, matWalkCrown);
+
+// 北侧深槽：world z=140 / x 117.5–124 → local z 25.0 / x 2.5..-4
+addBox(crownZone, 'VistaSlotFill', 6.5, 0.30, 1.2, -0.75, 25.85, 25.0, matWalkCrown);
+```
+
+（`y=25.85 + 0.15 = 26.0`，与台面平齐；`matWalkCrown` 与观景台同材质语义。）
+
 ## 3. 影响面与风险
 
 | 项 | 说明 |

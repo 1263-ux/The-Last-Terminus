@@ -25,8 +25,10 @@
 2. **尺子交互**：锚点吸附/状态切换 → Trigger+Teleport 可实现 ✅
 3. **REST/桥体互斥**：`SetActive` 切换已验证 ✅
 4. **Trigger/Lua 门禁**：已验证（单触发器+Update()轮询）✅
-5. **桥面承载**：**不可行**（运动学玩家不走场景几何）→ 需降级方案
+5. **桥面承载**：primitive BoxCollider 阻挡已 PASS（B 的开关墙对照）；**导入 GLB MeshCollider 承载仍 NOT TESTED** → 若 GLB 承载失败再用 Trigger+Teleport 降级
 6. **Three.js 原型**：仅作参考 ✅
+
+> **2026-11-24 更正**：设计基线 §9.1"普通场景 Collider 不能可靠阻挡"的表述已被 B 的 primitive 开关墙对照修正——primitive BoxCollider 可精确阻挡玩家，但导入 GLB 的 MeshCollider 尚未验证。**不能再用"物理碰撞不参与"否定 C4**。
 
 ## 3. B 的可见性定律——关键发现
 

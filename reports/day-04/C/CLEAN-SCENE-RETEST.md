@@ -61,6 +61,16 @@ GetState()                  : 0:none（无坠落）
 → **45 s 只有一次**、**点光反馈真实发生**、**新 runtime 从 0 开始**，三条同时成立。
 证据：`evidence/day-04/C/c02-11-cue-light-fired.png`（触发后的入口岛视角）。
 
+### 2.2 阈值验证：40 s 不触发、52 s 触发一次（新 runtime `a2cbaec9`）
+
+```
+刚进区后 40 s : armed=true, cues=0/3, elapsed=40.43, last=none      ← 没有提前触发
+再过 12 s     : armed=true, cues=1/3, elapsed=7.80,  last=light+time ← 正好跨过 45 s 触发一次并重置计时
+```
+
+这条是对 Day 3 "13 s 就出现 cue=true"（多实例污染）的**反向证明**：清洁场景下计时器严格按 45 s 阈值走，
+既没有提前触发，也没有重复触发。
+
 ---
 
 ## 3. 路线实走（连续键盘输入，非传送；逐段坐标见 `walk-log.jsonl`）

@@ -1,0 +1,95 @@
+{
+  "schema": "garden-interface/v1",
+  "asset": "garden-whitebox",
+  "owner": "C",
+  "source": "runtime-measured (2026-11-25, instance awc-a386001a, runtime 5d758f64 / restart 59ded821)",
+  "units": "meters",
+  "handedness": "Unity left-handed, up = +Y, model forward = +Z",
+  "coordinateSystem": "Unity world space (same space as scene nodes)",
+  "editor": {
+    "cli": "douyin-world 1.0.105",
+    "projectRoot": "C:/Users/LENOVO/AppData/Roaming/AI World Creator/projects/project-8e9f55c1-590c-4ffa-9dc7-403b8759d19a",
+    "sceneNodes": 44,
+    "sceneRoots": ["Env", "Map", "SpawnPoint", "garden-whitebox"],
+    "sceneRootsNote": "scene node display names are Chinese: Env / 地图 / 出生点 / garden-whitebox"
+  },
+  "entry": {
+    "position": [120.0, 70.0, 105.0],
+    "note": "entry island walkable top y=70.05; player settles at y=70.00",
+    "spawnYawDegrees": 0.0,
+    "spawnForward": [0.0, -0.309, 0.951],
+    "spawnForwardNote": "+Z, pitch down ~18 deg (DouyinCameraService yaw 0 == +Z)",
+    "islandBounds": { "x": [114.0, 126.0], "z": [99.0, 111.4], "topY": 70.05 }
+  },
+  "exitVista": {
+    "position": [120.0, 76.01, 135.0],
+    "note": "crown platform surface; platform x 116.5..123.5, z 131..138 at y=76.00-76.01",
+    "reachableByWalking": false,
+    "reachableByJump": "unverified (jump from north strip lands under platform)",
+    "blocker": "0.56 m rim (m3@76.56) on x=116 / x=124 / z=139.5 plus 0.5 m slot at z=140 for x>=117.5"
+  },
+  "returnTarget": {
+    "position": [120.0, 70.0, 107.0],
+    "source": "fall_respawn.lua local (0,21,-8) via host TransformPoint",
+    "measuredBy": "cloud-pad teleport test: 0:none -> 1:respawned -> landed (120.00,70.00,107.00)"
+  },
+  "safeZone": {
+    "name": "C_TriggerProbe (cloud pad)",
+    "center": [120.0, 55.0, 127.0],
+    "size": [60.0, 4.0, 70.0],
+    "yRange": [53.0, 57.0],
+    "note": "fall volume; respawns to returnTarget"
+  },
+  "cueZone": {
+    "name": "C_BackupCueZone",
+    "center": [120.0, 71.0, 105.0],
+    "size": [14.0, 6.0, 14.0],
+    "yRange": [68.0, 74.0],
+    "behavior": "arms on enter; fires light+time cue every 45 s up to 3 cues; exits disarm"
+  },
+  "routeAnchors": {
+    "bridgeGap": { "missing": { "xRange": [114.5, 116.0], "zRange": [108.5, 110.3] }, "safeLaneX": 117.0 },
+    "descentStart": [116.48, 69.45, 113.77],
+    "descentEnd": [116.48, 67.2, 121.64],
+    "roof": [116.48, 66.5, 123.66],
+    "stairTop": [115.09, 76.01, 139.14],
+    "crownNorthStrip": [119.0, 76.01, 141.2]
+  },
+  "integrationBlockersForA": [
+    {
+      "id": "B-01",
+      "issue": "scene spawn 出生点 at (119.7, 80, 88.6) lands on terrain top (119.74, 78.38, 88.64); garden route is UNDER terrain (terrain top y 77.90-78.31, route y 66-76), no terrain holes",
+      "request": "move 出生点 to entry (120,70,105) or cut a real entrance through terrain"
+    }
+  ],
+  "notes": [
+    "terrain renders single-sided: from below the garden reads as floating islands in sky; from above the whitebox is hidden",
+    "garden_layer_tint.lua is bound to Model node -1628462626; _BaseColor shows 3 colors vs 9 native (needs GUI unbind)",
+    "scene.data was not modified by this test round (runtime-only changes)"
+  ],
+  "confirmedByA": {
+    "comment": "https://github.com/1263-ux/The-Last-Terminus/issues/23#issuecomment-7153900000 (A 13:00 report, 2026-11-25T05:44:37Z)",
+    "contractCommit": "bf95fe2 on feature/train-core",
+    "entry": "CONFIRMED (120,70,105) yaw 0(+Z)",
+    "return": "CONFIRMED (120,70,107)",
+    "exitVista": "PARTIAL FAIL (0.56m rim blocks walking; C fix proposal linked)",
+    "safeZone": "CONFIRMED cloud pad center (120,55,127) size (60,4,70)",
+    "stepLimit": "CONFIRMED walkable step <= 0.45m",
+    "blocker": "A cannot fix global spawn without GUI session; C also has no CLI node-move API -> needs a GUI operator"
+  },
+  "inSceneAnchors": {
+    "group": "Model/RouteAnchors (10 empty ANCHOR_* nodes)",
+    "warning": "3 of 10 are stale - do NOT use them for integration; use the measured values in this file",
+    "stale": [
+      "ANCHOR_STAIR_BASE (120,66.4,125) lands on roof m6@66.00 but the real stairs are at x=115 (STAIR_X=5 under X mirror)",
+      "ANCHOR_CROWN_VISTA (120,76.4,141.5) is the north strip m7@76.01, not the vista deck (deck centre z=135)",
+      "ANCHOR_VISTA_LOOKBACK (120,76.4,139.6) floats over the 0.7 m corridor gap (raycast MISS)"
+    ],
+    "ok": [
+      "ANCHOR_ENTRY (120,70.4,105) -> m0@70.00 (matches measured entry)",
+      "ANCHOR_SPAWN (120,70.4,102) -> m0@70.00",
+      "ANCHOR_BROKEN_BRIDGE (120,70.2,111.4) -> m0@70.07",
+      "ANCHOR_DESCENT_START (117.8,70.1,108.6) -> m4@70.00"
+    ]
+  }
+}

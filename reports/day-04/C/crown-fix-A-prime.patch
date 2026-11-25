@@ -1,0 +1,17 @@
+diff --git a/assets/models/model-garden-whitebox/static/preview-module.js b/assets/models/model-garden-whitebox/static/preview-module.js
+index f5b0034..1146414 100644
+--- a/assets/models/model-garden-whitebox/static/preview-module.js
++++ b/assets/models/model-garden-whitebox/static/preview-module.js
+@@ -473,7 +473,11 @@ module.exports = function (root, { THREE }) {
+   // 护栏：只围左右与【+Z】后方，朝 -Z（来路/温室方向）完全开口
+   addBox(crownZone, 'VistaRail_Left', 0.14, 0.55, 6.0, -4.0, 26.28, 21.5, matFrame);
+   addBox(crownZone, 'VistaRail_Right', 0.14, 0.55, 6.0, 4.0, 26.28, 21.5, matFrame);
+-  addBox(crownZone, 'VistaRail_Back', 8.2, 0.55, 0.14, 0, 26.28, 24.5, matFrame);
++  // C fix A' (2026-11-25): split the back rail to open a 3.4 m gap at the return corridor
++  //   (local x -1.7..1.7 = world 118.3-121.7) and fill the 0.7 m gap so the corridor connects.
++  addBox(crownZone, 'VistaRail_Back_L', 2.4, 0.55, 0.14, -2.9, 26.28, 24.5, matFrame);
++  addBox(crownZone, 'VistaRail_Back_R', 2.4, 0.55, 0.14, 2.9, 26.28, 24.5, matFrame);
++  addBox(crownZone, 'VistaCorridorFill', 3.0, 0.30, 1.2, 0, 26.0 - 0.15, 24.85, matWalkCrown);
+ 
+   // 观景标记：朝 -Z 的台缘，暗示"站在这里往回看"
+   addBox(crownZone, 'VistaMarker', 3.2, 0.06, 1.6, 0, 26.03, 17.2, matWalkCrown);

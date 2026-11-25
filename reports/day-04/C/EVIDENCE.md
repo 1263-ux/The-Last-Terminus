@@ -1,0 +1,52 @@
+# C｜Day 4 证据索引
+
+> 全部为本会话真实 runtime 截图/读数，未合成、未复用 Day 3 截图冒充。
+
+## Clean-scene 复测（Issue #23 P0-2）
+
+| 文件 | 内容 | 读数/说明 |
+|---|---|---|
+| `evidence/day-04/C/c02-01b-fresh-entry.png` | 新 runtime 首次传送进入入口岛，相机默认视角 | 深蓝入口面 + 左侧绿墙，天空（地形单面，从下看是天空） |
+| `evidence/day-04/C/c02-02-cue-fired.png` | 真实等待 52 s 后（45 s Cue 已触发） | 对应读数 `armed=true, cues=1/3, elapsed=12.80, last=light+time` |
+| `evidence/day-04/C/c02-03-stair-top.png` | 连续走完根系下坡 + 34 级台阶，到达台阶顶 `(115.09,76.01,139.14)` | 与 Day 3 `(115,76.01,139.1)` 一致 |
+| `evidence/day-04/C/c02-04-vista.png` | U 形回转后向观景台走，掉入北槽后画面 | 落在 `(119.77,72.47,136.96)` |
+| `evidence/day-04/C/c02-05-whitebox-before-tint-fix.png` | 从上方俯视白盒位置（`--object garden-whitebox --distance 70`） | 只能看到地形，白盒被埋；证明"从地表看不到花园" |
+| `evidence/day-04/C/c02-06-vista-default-view.png` | 观景台面 `(120,76.01,135)` 默认视角 | 深蓝平台 + 绿色台沿 + 天空；倒悬温室不在默认视角 |
+| `evidence/day-04/C/c02-07-after-restart-respawn.png` | restart 后云垫坠落复位落点 | `1:respawned`，落 `(120.00,70.00,107.00)` |
+| `evidence/day-04/C/c02-08-stuck-under-crown.png` | 从北条带起跳后落到花冠台**下方**缝隙 `(119,73.93,134.9)` | 卡住且不触发云垫复位 |
+| `evidence/day-04/C/c02-09-vista-yaw{0,90,180,270}.png` | 观景台四方向截图（pitch 12°，供真人判断"下一目标/来路"） | **不构成 PASS**；Look-back 需真人判定 |
+| `evidence/day-04/C/c02-10-vista-yaw{0,180}-pitch-22.png` | 观景台俯视（pitch −22°） | 看不到倒悬温室（被花冠岛倒锥遮挡） |
+| `evidence/day-04/C/c02-11-cue-light-fired.png` | 新 runtime 停留 46 s 后的入口岛 | 对应点光 `0.15 → 8.00`、`cues=1/3` |
+
+## 数据/日志
+
+| 文件 | 内容 |
+|---|---|
+| `reports/day-04/C/walk-log.jsonl` | 25 段连续行走/探针逐段坐标（JSONL：`t / seg / pos`） |
+| `reports/day-04/C/A-INTERFACE.json` | 交给 A 的机器可读接口（Entry/Exit/spawn_yaw/safe zone/return target/route anchors/阻塞） |
+| `reports/day-04/C/AFTER-ROOTS.md` | 持久清理后 44 节点 / 4 根 / 单 whitebox 清单 |
+| `reports/day-04/C/BEFORE-ROOTS.md` | 清理前清单（对照） |
+| `reports/day-04/C/after-dedup.png` / `current-view.png` | 清理后 runtime 截图 |
+| `reports/day-04/C/route-walkthrough.png` | 沿主路线 7 个实测点的连续画面（入口→断桥→根系→屋顶→台阶→台阶顶→花冠北条带），同时证明"三层面几乎同一种深蓝" |
+| `reports/day-04/C/crown-plan-section.png` | 花冠台平面 + 剖面图（供 B-02/C-03 决策） |
+| `reports/day-04/C/crown-fix-A-prime.patch` | A′ 修复补丁（已 `git apply --check` + `node --check`） |
+
+## 关键读数原文（可复跑）
+
+```
+# 45 s Cue（新 runtime）
+armed=true,cues=1/3,elapsed=12.80,last=light+time
+
+# restart 后
+GetState()    = 0:none
+GetCueState() = armed=false,cues=0/3,elapsed=-1.00,last=none
+previewGameRoot children=4 whitebox=1
+
+# restart 后坠落复位
+BEFORE 0:none → AFTER 1:respawned → 落地 (120.00,70.00,107.00)
+
+# 花冠台面（射线网格）
+台面 x 116.5–123.5, z 131–138 = 76.00–76.01
+台沿 x=116 / x=124 / z=139.5 = 76.56（0.56 m）
+北槽 z=140, x≥117.5 = MISS
+```

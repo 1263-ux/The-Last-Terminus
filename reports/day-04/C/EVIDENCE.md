@@ -15,6 +15,8 @@
 | `evidence/day-04/C/c02-07-after-restart-respawn.png` | restart 后云垫坠落复位落点 | `1:respawned`，落 `(120.00,70.00,107.00)` |
 | `evidence/day-04/C/c02-08-stuck-under-crown.png` | 从北条带起跳后落到花冠台**下方**缝隙 `(119,73.93,134.9)` | 卡住且不触发云垫复位 |
 | `evidence/day-04/C/c02-09-vista-yaw{0,90,180,270}.png` | 观景台四方向截图（pitch 12°，供真人判断"下一目标/来路"） | **不构成 PASS**；Look-back 需真人判定 |
+| `evidence/day-04/C/c02-10-vista-yaw{0,180}-pitch-22.png` | 观景台俯视（pitch −22°） | 看不到倒悬温室（被花冠岛倒锥遮挡） |
+| `evidence/day-04/C/c02-11-cue-light-fired.png` | 新 runtime 停留 46 s 后的入口岛 | 对应点光 `0.15 → 8.00`、`cues=1/3` |
 
 ## 数据/日志
 

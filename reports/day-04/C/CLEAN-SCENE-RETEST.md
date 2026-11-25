@@ -47,6 +47,20 @@
 
 证据：`evidence/day-04/C/c02-01b-fresh-entry.png`（进入时）、`c02-02-cue-fired.png`（触发后）。
 
+### 2.1 第二轮更硬的读数：点光强度实测（新 runtime `6ff93ba8`）
+
+不只读 Lua 字符串，直接读 `C_LightProbe` 的 Light 组件：
+
+```
+刚起 runtime（玩家还没进区） : intensity=0.15  （默认值）
+在入口岛停留 46 s 之后       : intensity=8.00   （脚本把点光拉到 LightIntensity=8）
+GetCueState()               : armed=true, cues=1/3, elapsed=6.35, last=light+time
+GetState()                  : 0:none（无坠落）
+```
+
+→ **45 s 只有一次**、**点光反馈真实发生**、**新 runtime 从 0 开始**，三条同时成立。
+证据：`evidence/day-04/C/c02-11-cue-light-fired.png`（触发后的入口岛视角）。
+
 ---
 
 ## 3. 路线实走（连续键盘输入，非传送；逐段坐标见 `walk-log.jsonl`）

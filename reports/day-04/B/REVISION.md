@@ -51,9 +51,10 @@
 | **脚本参数改名后旧值残留** | `INVALID_SCRIPT_PARAMS: Unknown Lua parameter /TriggerZ` | 先 `scripts.setParams` 用旧 schema 覆盖，或保留旧参数名 |
 | **`scripts.create` 前不能手写脚本文件** | `UNREGISTERED_SCRIPT` | 脚本文件必须由 `scripts.create` 登记 |
 | **`scene remove` 需要先停预览** | `scene-edit-preview-active` | 先 `runtime stop` 再删 |
-| **一个 `world_visual_form` 只吃一个 `world_material`** | 同一 form 内多次 `world_material`，整本书被刷成最后一种颜色（实测 rgba 全为 0） | 想分段上色必须拆成多个 `world_visual_form`；但拆分会触发 id 拼接问题（见下） |
-| **`world_visual_form(id=...)` 不接受动态拼接的 id** | `Visual form id is invalid`（`concat` 对字符串无效） | id 必须是字面量，不能由 module 参数拼出来 |
-| **prefab 节点数增长后 `execute` 会超限** | `Scene output byte limit exceeded`（667 节点时） | 删除/新增要按显式 handle 逐条做，不要一次查全树再批量删 |
+| **一个 `world_visual_form` 只吃一个 `world_material`** | 同 form 内重复 `world_material`，整块被刷成最后一种颜色（实测 rgba 全 0） | 分段上色必须拆成多个 `world_visual_form` |
+| **`world_visual_form(id=...)` 必须是字面量或 `str()` 结果** | `concat("book-", idx)` → `Visual form id is invalid` | 用 `str("book-", idx)`（已验证可用），不要用 `concat` |
+| **`prefab execute` 节点数约 660+ 会超限** | `Scene output byte limit exceeded` | 删除/新增按显式 handle 逐条做，脚本不要返回全树 |
+| **SCAD module 改签名后调用点会静默错位** | 参数按位置传，`cover` 落到了 `h`，报 `world_material() requires a known color` | 加参数后必须逐个改调用点 |
 
 ---
 

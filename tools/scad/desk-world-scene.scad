@@ -99,40 +99,79 @@ for (k = [0 : 7])
     ubox(-8.6, 8.60 + k * 0.94, 1.8, 0.96, paper_top - k * 0.19, 0);
 
 // ---------------------------------------------------------------- 书脊 / 书页
-// 低矮书本：封面 + 页块 + 书脊暗条，均立于纸面顶面
-module book_low(ux, uz, w, d, h, cover)
+// 一本低矮硬壳书。实测约束与对策：
+//   - 一个 world_visual_form 只接受一个 world_material，同 form 内重复
+//     world_material 会把整块刷成最后一种颜色（实测 rgba 全 0）。
+//   - 但 one form = one material 可以靠"拆 form"实现分段上色，
+//     前提是每个 form 的 id 唯一。str() 可以拼出合法 id（已验证）。
+// 所以一本书拆成三个 form，共用同一个 uplace 摆放：
+//   1) book-<i>-pages  页块 + 页边细棱（米白）
+//   2) book-<i>-spine  书脊半圆柱 + 两道压印（封面色压暗）
+//   3) book-<i>-cover  封面顶板 + 两长边下折（彩色，外扩形成包边）
+module book_low(idx, ux, uz, w, d, h, cover, spine = -1)
 {
+    // ---- 页块 + 页边线
+    world_visual_form(id=str("book-", idx, "-pages"), importance="secondary", structure_kind="assembly")
+    world_material([0.94, 0.91, 0.81, 1], roughness=0.97)
     uplace(ux, uz, paper_top) {
-        world_material(cover, roughness=0.88)
-        ubox(0, 0, w, d, h, 0);
-        world_material([0.92, 0.89, 0.79, 1], roughness=0.97)
-        ubox(0.05, 0, w - 0.14, d * 0.90, h * 0.88, h * 0.06);
-        world_material([cover[0] * 0.68, cover[1] * 0.68, cover[2] * 0.68, 1], roughness=0.80)
-        ubox(-w / 2 + 0.04, 0, 0.08, d, h * 0.98, 0);
+        ubox(0, 0, w - 0.14, d - 0.10, h * 0.84, h * 0.06);
+        world_material([0.86, 0.82, 0.71, 1], roughness=0.98)
+        for (k = [0 : 4])
+            ubox(0, 0, w - 0.128, d - 0.096, 0.014, h * 0.14 + k * h * 0.15);
+    }
+
+    // ---- 书脊（压暗的封面色）
+    world_visual_form(id=str("book-", idx, "-spine"), importance="primary", structure_kind="assembly")
+    world_material([cover[0] * 0.58, cover[1] * 0.58, cover[2] * 0.62, 1], roughness=0.72)
+    uplace(ux, uz, paper_top) {
+        // 书脊板：整本书高度，稍微凸出封面之外，形成"装订面"
+        uplace(spine * (w / 2 + 0.012), 0, 0)
+            ubox(0, 0, 0.055, d, h * 0.99, 0);
+        // 书脊上的圆角棱（一条细圆柱，读作折页边）
+        uplace(spine * (w / 2 + 0.040), 0, h * 0.985)
+            rotate([90, 0, 0]) cylinder(h=d, r=0.030, $fn=10);
+        uplace(spine * (w / 2 + 0.040), 0, h * 0.015)
+            rotate([90, 0, 0]) cylinder(h=d, r=0.030, $fn=10);
+    }
+    // 压印线单独一个 form（浅色），否则会被书脊色吃掉
+    world_visual_form(id=str("book-", idx, "-stamp"), importance="secondary", structure_kind="assembly")
+    world_material([0.97, 0.94, 0.83, 1], roughness=0.50)
+    uplace(ux, uz, paper_top)
+        uplace(spine * (w / 2 + h * 0.02), 0, 0) {
+            ubox(0, d * 0.26, 0.024, 0.055, h * 0.34, h * 0.32);
+            ubox(0, -d * 0.26, 0.024, 0.055, h * 0.34, h * 0.32);
+        }
+
+    // ---- 封面（彩色）
+    world_visual_form(id=str("book-", idx, "-cover"), importance="primary", structure_kind="assembly")
+    world_material(cover, roughness=0.86)
+    uplace(ux, uz, paper_top) {
+        ubox(0, 0, w, d, h * 0.13, h * 0.87);
+        ubox(0, 0, w, 0.045, h * 0.82, h * 0.04);
     }
 }
 
 // 左侧书谷（局部 +x 一侧）
 world_visual_form(id="book-valley-left", importance="primary", structure_kind="assembly")
-book_low(11.5, -3.0, 2.8, 6.0, 1.30, [0.42, 0.20, 0.17, 1]);
-book_low(11.7, 4.0, 2.3, 4.6, 0.88, [0.20, 0.28, 0.34, 1]);
-book_low(12.1, 11.0, 3.1, 6.4, 1.70, [0.36, 0.30, 0.20, 1]);
-book_low(11.5, 19.0, 2.5, 5.0, 1.06, [0.24, 0.22, 0.30, 1]);
-book_low(11.9, 26.5, 2.9, 5.4, 1.55, [0.30, 0.22, 0.19, 1]);
+book_low(1, 11.5, -3.0, 2.8, 6.0, 1.30, [0.42, 0.20, 0.17, 1]);
+book_low(2, 11.7, 4.0, 2.3, 4.6, 0.88, [0.20, 0.28, 0.34, 1]);
+book_low(3, 12.1, 11.0, 3.1, 6.4, 1.70, [0.36, 0.30, 0.20, 1]);
+book_low(4, 11.5, 19.0, 2.5, 5.0, 1.06, [0.24, 0.22, 0.30, 1]);
+book_low(5, 11.9, 26.5, 2.9, 5.4, 1.55, [0.30, 0.22, 0.19, 1]);
 
 // 右侧书谷（局部 -x 一侧）
 world_visual_form(id="book-valley-right", importance="primary", structure_kind="assembly")
-book_low(-11.5, -3.6, 2.5, 5.2, 1.02, [0.26, 0.31, 0.36, 1]);
-book_low(-12.0, 3.2, 3.3, 6.6, 1.86, [0.46, 0.23, 0.19, 1]);
-book_low(-11.6, 10.6, 2.2, 4.4, 0.84, [0.34, 0.28, 0.18, 1]);
-book_low(-11.9, 17.6, 2.9, 5.8, 1.42, [0.21, 0.25, 0.31, 1]);
-book_low(-11.7, 25.0, 2.6, 5.0, 1.20, [0.28, 0.26, 0.21, 1]);
+book_low(6, -11.5, -3.6, 2.5, 5.2, 1.02, [0.26, 0.31, 0.36, 1], 1);
+book_low(7, -12.0, 3.2, 3.3, 6.6, 1.86, [0.46, 0.23, 0.19, 1], 1);
+book_low(8, -11.6, 10.6, 2.2, 4.4, 0.84, [0.34, 0.28, 0.18, 1], 1);
+book_low(9, -11.9, 17.6, 2.9, 5.8, 1.42, [0.21, 0.25, 0.31, 1], 1);
+book_low(10, -11.7, 25.0, 2.6, 5.0, 1.20, [0.28, 0.26, 0.21, 1], 1);
 
 // 更远一层书：只做层次剪影，允许部分超出可见带
 world_visual_form(id="book-far-layer", importance="secondary", structure_kind="assembly")
-book_low(-16.4, 14.0, 3.8, 8.4, 2.50, [0.30, 0.19, 0.16, 1]);
-book_low(16.4, 5.0, 3.6, 7.4, 2.25, [0.19, 0.24, 0.29, 1]);
-book_low(16.8, 22.0, 3.2, 6.6, 1.95, [0.26, 0.20, 0.17, 1]);
+book_low(11, -16.4, 14.0, 3.8, 8.4, 2.50, [0.30, 0.19, 0.16, 1], 1);
+book_low(12, 16.4, 5.0, 3.6, 7.4, 2.25, [0.19, 0.24, 0.29, 1]);
+book_low(13, 16.8, 22.0, 3.2, 6.6, 1.95, [0.26, 0.20, 0.17, 1]);
 
 // ---------------------------------------------------------------- 尺子 REST（侧躺备用尺）
 // 出生点正前方偏右平放，玩家沿 +z 走 4.5 m 就会走到它旁边 —— 这是交互触发点。
@@ -173,10 +212,10 @@ ubox(5.0, -8.6, 0.10, 3.4, 0.62, paper_top);
 
 // 近侧纸面上的两排低矮书，形成"走廊 + 两个开口"，逼玩家选路而不是直线冲
 world_visual_form(id="near-corridor", importance="primary", structure_kind="assembly")
-book_low(-4.6, -1.4, 2.2, 3.0, 0.62, [0.38, 0.24, 0.20, 1]);
-book_low(-4.6, 2.4, 2.2, 3.2, 0.72, [0.23, 0.28, 0.33, 1]);
-book_low(4.8, -1.6, 2.4, 3.2, 0.68, [0.33, 0.27, 0.19, 1]);
-book_low(4.8, 2.2, 2.4, 3.0, 0.58, [0.26, 0.21, 0.29, 1]);
+book_low(14, -4.6, -1.4, 2.2, 3.0, 0.62, [0.38, 0.24, 0.20, 1], 1);
+book_low(15, -4.6, 2.4, 2.2, 3.2, 0.72, [0.23, 0.28, 0.33, 1], 1);
+book_low(16, 4.8, -1.6, 2.4, 3.2, 0.68, [0.33, 0.27, 0.19, 1]);
+book_low(17, 4.8, 2.2, 2.4, 3.0, 0.58, [0.26, 0.21, 0.29, 1]);
 
 // ---------------------------------------------------------------- 小镇到达平台
 world_visual_form(id="town-platform", importance="primary", structure_kind="landform")

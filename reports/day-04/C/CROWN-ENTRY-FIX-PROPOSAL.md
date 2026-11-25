@@ -1,4 +1,4 @@
-# 花冠观景台入口修复提案（B-02）
+﻿# 花冠观景台入口修复提案（B-02）
 
 > 状态：**PROPOSAL — 未改几何，等批准**
 > 依据：`reports/day-04/C/CLEAN-SCENE-RETEST.md` §4（台沿 0.56 m 挡人、北槽坠落到台下卡死）
@@ -134,12 +134,30 @@ A′ 把缺口做成 3.4 m 并补上 0.7 m 空隙，等价且更稳，故 B 不�
 4. 台下不再存在"卡住且不复位"的位置（C 兜底生效则 `1:respawned`）；
 5. 45 s Cue / 重启复位不受影响（重跑本报告 §2/§5 的读数）。
 
-## 5. 需要谁批准
+## 5. 已在 runtime 里模拟验证 A′（结论：走廊走得通）
+
+不重建 WPrefab 也能验证 A′：在 runtime 里用 JS **只改内存**（不保存、不影响场景文件）：
+
+1. 关掉 `__optimized_merged_material_3`（围栏所在的合并网格）的 `MeshCollider` —— 等价于"后围栏开口"；
+2. 用 `CreatePrimitive(Cube)` 造一块 `BoxCollider`，位置 `(120, 75.85, 139.85)`、缩放 `(3.0, 0.30, 1.2)`
+   —— 与 A′ 的 `VistaCorridorFill` 完全同尺寸同位（world x 118.5–121.5 / z 139.25–140.45 / 顶 76.0）；
+3. 从横移排 `(120.00, 76.01, 141.20)` 朝 −Z 连续走：
+   - `W:1200` → `(120.00, 76.01, 137.71)`
+   - `W:900`  → **`(120.00, 76.01, 134.97)`（观景台中心）**
+   - 全程 `y=76.01` 不坠落，`GetState()` 保持 `8:respawned`（没有新增复位）
+4. 验证后已恢复：`m3` collider `enabled=true`、删除模拟方块；`tools/c-garden-verify.js` 回到 `crownVerdict: NEEDS-JUMP / overall: FAIL`（未修复状态）。
+
+**结论**：A′ 的两处改动（后围栏在走廊处开口 + 补 0.7 m 空隙）足以让玩家从回转排一路走到观景台，
+不需要动左右护栏、也不需要改台面高度。证据截图：`evidence/day-04/C/c02-14-sim-fix-corridor-walk.png`。
+
+> 这是**运行时模拟**，不是已落盘的修复；真正修复仍需按 §7 重建 WPrefab 并重新导入。
+
+## 6. 需要谁批准
 
 - 几何改动（围栏高度/补缝）：**总设计**批准后 C 执行并复验；
 - 台下复位体积（新增 trigger + 复用 `fall_respawn.lua`）：属于安全兜底，建议同批批准。
 
-## 6. 批准后的执行路径（已探明，命令可直接跑）
+## 7. 批准后的执行路径（已探明，命令可直接跑）
 
 **已确认的目标**：`workspaceId = workspace_ihycinrp`、`prefabId = garden-whitebox`、
 模型资源 `resourceId = model-garden-whitebox`、`sourceState = threejs`、
@@ -149,7 +167,7 @@ A′ 把缺口做成 3.4 m 并补上 0.7 m 空隙，等价且更稳，故 B 不�
 # 0) 备份
 Copy-Item "<project>\ai-sessions\workspace_ihycinrp\wprefabs\garden-whitebox" "<backup>\garden-whitebox-prefix" -Recurse
 
-# 1) 改源码（§2/§2.1 的行 + 两块补丁）
+# 1) 改源码（§2/§2.1 的行 + 补块）
 #    preview-module.js 第 474-476 行围栏高度，和 §2.1 的 VistaEdgeFill / VistaSlotFill
 
 # 2) 重新准备并归档模型
@@ -175,7 +193,7 @@ douyin-world runtime js eval --file tools/c-garden-verify.js   # 期望 crownVer
 **风险**：重新导入会换掉节点 ID，必须重新核对 3 个 Lua 绑定（fall_respawn / backup_cue / tint）与断桥车道；
 `scene save` 前不要 stop 实例；全程保留备份。
 
-### 6.1 基线（改之前已跑通的只读检查，供改后对照）
+### 7.1 基线（改之前已跑通的只读检查，供改后对照）
 
 | 检查 | 结果 |
 |---|---|

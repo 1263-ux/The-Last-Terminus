@@ -159,6 +159,11 @@ z=110.5  x115:m4     x116:m4   x117:m4
 
 仍然建议交付前处理（见 `CROWN-ENTRY-FIX-PROPOSAL.md` 方案 A′），台下复位体作为可选兜底。
 
+**A′ 已做运行时模拟验证（`CROWN-ENTRY-FIX-PROPOSAL.md §5`）**：
+内存里关掉 `m3`（围栏合并网格）的 `MeshCollider` + 在 `(120,75.85,139.85)` 放一块 `3.0×0.30×1.2` 的 `BoxCollider` 后，
+从 `(120.00,76.01,141.20)` 连续朝 −Z 走，**一路到 `(120.00,76.01,134.97)`（观景台中心）**，全程 `y=76.01`、无坠落、无新增复位。
+模拟后已恢复（collider 打开、方块删除），`c-garden-verify.js` 回到 `NEEDS-JUMP / FAIL`。截图：`c02-14-sim-fix-corridor-walk.png`。
+
 > 以上判定已固化成可复跑脚本：`tools/c-garden-verify.js`（一条 `runtime js eval` 输出场景数/台沿高度/缺口/关键地面高度/`overall: PASS|FAIL`）。
 > 本轮实跑结果：`{"scene":{"gardenWhiteboxCount":1},"crown":{"rimNorth":76.555,"northSlot":null,"verdict":"NEEDS-JUMP"},"verdict":{"overall":"FAIL"}}`。
 > 入口修复后重跑该脚本，`crownVerdict` 变为 `PASS` 且 `overall: PASS` 才算几何层面修好。

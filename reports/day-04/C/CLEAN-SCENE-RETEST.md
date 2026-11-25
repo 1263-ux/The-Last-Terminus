@@ -71,6 +71,17 @@ GetState()                  : 0:none（无坠落）
 这条是对 Day 3 "13 s 就出现 cue=true"（多实例污染）的**反向证明**：清洁场景下计时器严格按 45 s 阈值走，
 既没有提前触发，也没有重复触发。
 
+**状态机全覆盖（同一 runtime 继续测）**：
+
+| 步骤 | 读数 | 判定 |
+|---|---|---|
+| 离开区域（Teleport 到 `z=300`） | `armed=false, cues=1/3, elapsed=-1.00` | ✅ 出了区域就解除武装、计时清空 |
+| 重新进入入口岛 | `armed=true, cues=1/3, elapsed=1.29` | ✅ 重新武装、计时从 0 开始 |
+| 再等 46 s | `armed=true, cues=2/3, elapsed=6.75, last=light+time` | ✅ 又只触发一次 |
+| 达到上限 | `armed=false, cues=3/3`（另一轮实测） | ✅ 不再触发 |
+
+→ `backup_cue.lua` 的 **enter→timer→fire→exit→re-enter** 全流程在清洁场景下行为正确。
+
 ---
 
 ## 3. 路线实走（连续键盘输入，非传送；逐段坐标见 `walk-log.jsonl`）

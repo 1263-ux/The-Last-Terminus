@@ -1,4 +1,4 @@
-// c-garden-verify.js — C 花园白盒可玩性自检（可在任意 runtime 反复运行）
+﻿// c-garden-verify.js — C 花园白盒可玩性自检（可在任意 runtime 反复运行）
 //
 // 用法：
 //   douyin-world runtime js eval --file tools/c-garden-verify.js --session <session> --runtime-id <id>
@@ -25,6 +25,7 @@ function topAt(x, z, fromY) {
     const h = hits.get_Item(k);
     const n = h.collider.name;
     if (n.indexOf("C_") === 0) continue;
+    if (n.indexOf("Player") >= 0) continue; // 跳过玩家自身碰撞体
     if (best === null || h.point.y > best) { best = h.point.y; bestName = n; }
   }
   return best === null ? null : { y: best, name: bestName.replace("__optimized_merged_material_", "m") };
@@ -104,3 +105,4 @@ out.verdict = {
   overall: sceneOk && walkable ? "PASS" : "FAIL"
 };
 return JSON.stringify(out);
+

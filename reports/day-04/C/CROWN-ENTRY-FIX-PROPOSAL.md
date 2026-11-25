@@ -1,4 +1,4 @@
-﻿# 花冠观景台入口修复提案（B-02）
+# 花冠观景台入口修复提案（B-02）
 
 > 状态：**PROPOSAL — 未改几何，等批准**
 > 依据：`reports/day-04/C/CLEAN-SCENE-RETEST.md` §4（台沿 0.56 m 挡人、北槽坠落到台下卡死）
@@ -159,6 +159,14 @@ A′ 把缺口做成 3.4 m 并补上 0.7 m 空隙，等价且更稳，故 B 不�
 
 ## 7. 批准后的执行路径（已探明，命令可直接跑）
 
+**已备好补丁**：`reports/day-04/C/crown-fix-A-prime.patch`（unified diff，把 `VistaRail_Back` 一行拆成五行）。
+已验证：`git apply --check` 通过、打完补丁后 `node --check` 通过（语法合法）。
+
+```powershell
+# 1) 打补丁（工作区根 = wprefabs/garden-whitebox）
+git apply reports/day-04/C/crown-fix-A-prime.patch
+```
+
 **已确认的目标**：`workspaceId = workspace_ihycinrp`、`prefabId = garden-whitebox`、
 模型资源 `resourceId = model-garden-whitebox`、`sourceState = threejs`、
 源码 `assets/models/model-garden-whitebox/static/preview-module.js`、产物 `package/model.glb`。
@@ -167,8 +175,7 @@ A′ 把缺口做成 3.4 m 并补上 0.7 m 空隙，等价且更稳，故 B 不�
 # 0) 备份
 Copy-Item "<project>\ai-sessions\workspace_ihycinrp\wprefabs\garden-whitebox" "<backup>\garden-whitebox-prefix" -Recurse
 
-# 1) 改源码（§2/§2.1 的行 + 补块）
-#    preview-module.js 第 474-476 行围栏高度，和 §2.1 的 VistaEdgeFill / VistaSlotFill
+# 1) 改源码（A′：打上面的补丁；不要再手工加 VistaEdgeFill / VistaSlotFill）
 
 # 2) 重新准备并归档模型
 douyin-world authoring resource model check model-garden-whitebox --prefab garden-whitebox --workspace-id workspace_ihycinrp

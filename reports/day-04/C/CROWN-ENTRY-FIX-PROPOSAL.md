@@ -159,11 +159,25 @@ A′ 把缺口做成 3.4 m 并补上 0.7 m 空隙，等价且更稳，故 B 不�
 
 ## 7. 批准后的执行路径（已探明，命令可直接跑）
 
-**已备好补丁**：`reports/day-04/C/crown-fix-A-prime.patch`（unified diff，把 `VistaRail_Back` 一行拆成五行）。
-已验证：`git apply --check` 通过、打完补丁后 `node --check` 通过（语法合法）。
+**一键脚本**：`tools/c-crown-fix-apply.ps1`（默认 **dry-run**，只打印步骤并做只读的 `git apply --check`；加 `-Execute` 才真正执行）
 
 ```powershell
-# 1) 打补丁（工作区根 = wprefabs/garden-whitebox）
+# 先看它准备做什么（不改变任何东西）
+powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\c-crown-fix-apply.ps1
+
+# 批准后真正执行（archive 会返回 uri，再带 -Uri 跑一次做 attach）
+powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\c-crown-fix-apply.ps1 -Execute
+powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\c-crown-fix-apply.ps1 -Execute -Uri <archive返回的uri>
+```
+
+脚本包含：备份 → `git apply --check` → 打补丁 → `resource model check`（nodeCount 153→155）→ `archive` → `attach/build/validate/result archive`
+→ `runtime stop` → `scene import`/`scene remove`/`scene save` → `runtime start` → `c-garden-verify.js` → 连续实走指针。任一步失败即停。
+
+**补丁**：`reports/day-04/C/crown-fix-A-prime.patch`（把 `VistaRail_Back` 一行拆成五行 + 新增 `VistaCorridorFill`）。
+已验证：`git apply --check` 通过、打完补丁后 `node --check` 通过、运行时模拟走通（§5）。
+
+```powershell
+# 手工等价操作（工作区根 = wprefabs/garden-whitebox）
 git apply reports/day-04/C/crown-fix-A-prime.patch
 ```
 

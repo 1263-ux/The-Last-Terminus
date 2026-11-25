@@ -27,6 +27,9 @@
 | `reports/day-04/C/AFTER-ROOTS.md` | 持久清理后 44 节点 / 4 根 / 单 whitebox 清单 |
 | `reports/day-04/C/BEFORE-ROOTS.md` | 清理前清单（对照） |
 | `reports/day-04/C/after-dedup.png` / `current-view.png` | 清理后 runtime 截图 |
+| `reports/day-04/C/route-walkthrough.png` | 沿主路线 7 个实测点的连续画面（入口→断桥→根系→屋顶→台阶→台阶顶→花冠北条带），同时证明"三层面几乎同一种深蓝" |
+| `reports/day-04/C/crown-plan-section.png` | 花冠台平面 + 剖面图（供 B-02/C-03 决策） |
+| `reports/day-04/C/crown-fix-A-prime.patch` | A′ 修复补丁（已 `git apply --check` + `node --check`） |
 
 ## 关键读数原文（可复跑）
 

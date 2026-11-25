@@ -19,3 +19,7 @@
 {"pos":"115.09,76.00,140.83","t":"13:26:38","seg":"c02-walk-15-uturn-north"}
 {"pos":"119.77,76.01,140.83","t":"13:26:41","seg":"c02-walk-16-uturn-lateral"}
 {"pos":"119.77,72.47,136.96","t":"13:26:48","seg":"c02-walk-17-fell-into-north-slot-y72.47"}
+{"pos":"116.60,76.00,139.73","t":"14:52:10","seg":"c02-probe-lip-blocks-from-north-strip"}
+{"pos":"116.60,74.82,138.13","t":"14:54:02","seg":"c02-probe-jump-over-lip-lands-lower-ledge"}
+{"pos":"119.00,73.93,134.90","t":"14:55:40","seg":"c02-probe-jump-lands-under-crown-stuck"}
+{"pos":"121.83,72.47,134.23","t":"14:56:12","seg":"c02-probe-under-crown-cannot-escape"}

@@ -64,7 +64,9 @@
 | Garden | `garden.exit` / vista | (120, 76.01, 135) | — | **PARTIAL FAIL** | 台面存在但 0.56 m 台沿挡死步行入口；C 提修复提案 |
 | Garden | `garden.return` | (120, 70, 107) | — | **CONFIRMED** | 坠落复位实测：云垫→1:respawned→落该点 |
 | Garden | 安全区（坠落体积） | center (120,55,127), size (60,4,70), y 53–57 | — | CONFIRMED | C_TriggerProbe 云垫 |
-| Desk | `desk.entry` / `desk.exit` | **待 B 回填** | **待 B 回填** | TO-VERIFY | B 的 desk-proximity 绑定已保存重开通过，但 Entry/Exit 数值未给 A |
+| Desk | `desk.entry` | **(119.74, 79.41, 88.64)** | 待 B 回填 | **CONFIRMED (B 实测)** | B `RUNTIME-ENTRY-DIAGNOSIS.md`：出生 z=88.64 y=79.41，桥 active=false |
+| Desk | `desk.exit` / town arrival | **(≈119.74, 79.41, 120.07)** | 待 B 回填 | **CONFIRMED (B 实测)** | B：前进到 z=120.07 到小镇平台，y 全程 79.41，6 扇窗反馈 |
+| Desk | `desk.gate` | (119.74, 79.41, 96.33) | — | CONFIRMED | B：z=96.33 玩家主动触发桥 REST→RAMP；关桥则掉入断口 |
 
 **A 的集成动作（Garden B-01 阻塞）**：C 报告全局 `出生点` 仍在 (119.7,80,88.6)，落在地形顶而非入口岛；
 花园路线在地形面以下（y 66–76，地形顶 77.90–78.31），全图无地形洞，从出生点走不到入口岛。
@@ -108,3 +110,18 @@
 - 新增 Collider 三层结论（triggerData PASS / physicsColliderData FAIL）；
 - WPRE 状态精确到 REPRODUCED-LOCAL（同机同账号）；
 - 所有字段加 CONFIRMED / PROPOSED / TO-VERIFY 标记。
+
+
+---
+
+## 四世界连接当前状态（11/26 裁定后，诚实标注）
+
+| 段 | 状态 | 依据 |
+|---|---|---|
+| `desk.entry/exit` | CONFIRMED（B 实测坐标） | 上表 |
+| `garden.entry/return` | CONFIRMED（C 实测坐标） | §2b |
+| `garden.exit/vista` | PARTIAL FAIL | 0.56m 台沿挡步行；C 的 A′ 补丁待批 |
+| `hub.*` / `terminus.*` | **TO-VERIFY** | A 工程 BornPoint 仍在 (119.74,80,88.64)；无 GUI 验收 |
+| Hub→Desk→Garden→Terminus 物理连接 | **NOT TESTED** | 坐标已部分回填，但"坐标写进契约"≠"连接跑通"；需 GUI + Trigger 实测 |
+
+> 裁定明确：优先修 Hub 主出生点 + 可触发连接；无缝加载非硬目标，稳定过场/传送可交付。

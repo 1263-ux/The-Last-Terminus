@@ -6,15 +6,17 @@
 
 ---
 
-## 核心事实
+## 核心事实（⚠ 2026-11-24 已更正）
 
-**玩家是 `NetworkActor` 运动学刚体**（`isKinematic=true`, `velocity=0`, `layer=8`）。
-位移由脚本直接写 `transform`，物理求解器不参与。
-**任何场景物体（GLB、原生 Cube、任何 Layer）都不能阻挡玩家。**
+> **旧结论"任何场景物体都不能阻挡玩家"已被推翻，不能再用它支撑任何否决。**
 
-**证据**：
-- B 的 9 次对照实验（`feature/desk-world`）
-- A 的独立复现（`A3-player-full-stack.json` + `A3-kinematic-walk.json`）
+**最新事实**：
+- 玩家是 `NetworkActor`，`isKinematic=true`, `velocity=0`, `layer=8`，位移由脚本写 `transform`。
+- 但 **primitive BoxCollider 可精确阻挡玩家**（B 的开关墙对照：启用 z 卡 107.53 三次不动；禁用前进 5.89m；理论面 96.231 / 实测 96.230）。
+- **根因**：控制器**无 step-up**（0.20m 矮台穿过、1.20m 平台挡住），不是"物理碰撞完全不参与"。
+- **导入 GLB 的 MeshCollider 阻挡玩家**：**NOT TESTED**。
+
+**对 C4 裁定的影响**：原 §3.2 否决依据失效，需总设计师重新裁定；A 不自行翻案。
 
 ## 对各世界的影响
 

@@ -1,0 +1,285 @@
+{
+  "total_nodes": 253,
+  "first_node": {
+    "id": -145304910,
+    "basic": {
+      "nodeName": "地图",
+      "pos": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rot": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "tag": "Map",
+      "parentId": 0,
+      "isActive": true,
+      "layer": 0,
+      "isGameMod": false,
+      "isStatic": false
+    },
+    "editor": {
+      "assetData": null,
+      "editorOnlyData": {
+        "isLock": false,
+        "isGroupRoot": false,
+        "editorData": ""
+      }
+    },
+    "physics": {
+      "physicsColliderData": null,
+      "triggerData": []
+    }
+  },
+  "keyword_hits": [
+    {
+      "index": 5,
+      "node": {
+        "id": 1465652140,
+        "basic": {
+          "nodeName": "地表物体",
+          "pos": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rot": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "scale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "tag": "Spawner",
+          "parentId": -145304910,
+          "isActive": true,
+          "layer": 0,
+          "isGameMod": false,
+          "isStatic": false
+        },
+        "editor": {
+          "assetData": null,
+          "editorOnlyData": {
+            "isLock": false,
+            "isGroupRoot": false,
+            "editorData": ""
+          }
+        },
+        "physics": {
+          "physicsColliderData": null,
+          "triggerData": []
+        }
+      }
+    },
+    {
+      "index": 6,
+      "node": {
+        "id": -2004294249,
+        "basic": {
+          "nodeName": "出生点",
+          "pos": {
+            "x": 119.741669,
+            "y": 80.0,
+            "z": 88.64061
+          },
+          "rot": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "scale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "tag": "BornPoint",
+          "parentId": 0,
+          "isActive": true,
+          "layer": 0,
+          "isGameMod": false,
+          "isStatic": false
+        },
+        "editor": {
+          "assetData": null,
+          "editorOnlyData": {
+            "isLock": false,
+            "isGroupRoot": false,
+            "editorData": ""
+          }
+        },
+        "physics": {
+          "physicsColliderData": null,
+          "triggerData": []
+        }
+      }
+    },
+    {
+      "index": 7,
+      "node": {
+        "id": 1329898711,
+        "basic": {
+          "nodeName": "A_终点站_地形级",
+          "pos": {
+            "x": 119.74,
+            "y": 78.0,
+            "z": 88.0
+          },
+          "rot": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "scale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "tag": "Untagged",
+          "parentId": 0,
+          "isActive": true,
+          "layer": 0,
+          "isGameMod": false,
+          "isStatic": false
+        },
+        "editor": {
+          "assetData": null,
+          "editorOnlyData": {
+            "isLock": false,
+            "isGroupRoot": true,
+            "editorData": "{\"nodeKind\":\"combination\"}"
+          }
+        },
+        "physics": {
+          "physicsColliderData": {
+            "enableCollision": true,
+            "dynamicFriction": 0.6,
+            "staticFriction": 0.6,
+            "bounciness": 0.0,
+            "enableRigidBody": false,
+            "mass": 1.0,
+            "drag": 0.0,
+            "angularDrag": 0.0,
+            "useGravity": true,
+            "isKinematic": false,
+            "hasCenterOfMass": false,
+            "centerOfMass": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          "triggerData": []
+        },
+        "resource": {
+          "aigcModelData": {
+            "uri": null,
+            "meshRefId": 0,
+            "isShowTex": true,
+            "opType": 4
+          },
+          "localPrefabData": null,
+          "glbSliceData": {
+            "sourceUri": "hamlet-ugc/aigc_editor/dev/unity/MS4wLjABAAAAT-dxmKuJfdBmaX8lF9VQRK69y50b_Bt8UDItyaCa7ksIgqmkyh4GhwYvyDdrrr8L/570lvra4hncw15zi.glb",
+            "sourceMeshRefId": 0,
+            "slicePath": [],
+            "debugSlicePath": "",
+            "isShowTex": true,
+            "opType": 4
+          }
+        }
+      }
+    },
+    {
+      "index": 130,
+      "node": {
+        "id": 1074709569,
+        "basic": {
+          "nodeName": "A_终点站_路线验证",
+          "pos": {
+            "x": 119.74,
+            "y": 78.0,
+            "z": 88.0
+          },
+          "rot": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "scale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "tag": "Untagged",
+          "parentId": 0,
+          "isActive": true,
+          "layer": 0,
+          "isGameMod": false,
+          "isStatic": false
+        },
+        "editor": {
+          "assetData": null,
+          "editorOnlyData": {
+            "isLock": false,
+            "isGroupRoot": true,
+            "editorData": "{\"nodeKind\":\"combination\"}"
+          }
+        },
+        "physics": {
+          "physicsColliderData": {
+            "enableCollision": true,
+            "dynamicFriction": 0.6,
+            "staticFriction": 0.6,
+            "bounciness": 0.0,
+            "enableRigidBody": false,
+            "mass": 1.0,
+            "drag": 0.0,
+            "angularDrag": 0.0,
+            "useGravity": true,
+            "isKinematic": false,
+            "hasCenterOfMass": false,
+            "centerOfMass": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          "triggerData": []
+        },
+        "resource": {
+          "aigcModelData": {
+            "uri": null,
+            "meshRefId": 0,
+            "isShowTex": true,
+            "opType": 4
+          },
+          "localPrefabData": null,
+          "glbSliceData": {
+            "sourceUri": "hamlet-ugc/aigc_editor/dev/unity/MS4wLjABAAAAT-dxmKuJfdBmaX8lF9VQRK69y50b_Bt8UDItyaCa7ksIgqmkyh4GhwYvyDdrrr8L/570lvra4hncw15zi.glb",
+            "sourceMeshRefId": 0,
+            "slicePath": [],
+            "debugSlicePath": "",
+            "isShowTex": true,
+            "opType": 4
+          }
+        }
+      }
+    }
+  ]
+}

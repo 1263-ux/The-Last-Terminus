@@ -1,0 +1,24 @@
+{
+  "scene_data_bytes": 793068,
+  "serialize_json_bytes": 400601,
+  "version": 2,
+  "isOpenStreamingLoad": true,
+  "moveMaxSpeed": 4.0,
+  "jumpMaxHeight": 1.0,
+  "respawnHeightY": -50.0,
+  "nodeTransformDatas_count": 253,
+  "resourceRefs_count": 8,
+  "runtimeScripts_keys": 34,
+  "waterNetworks_count": 0,
+  "waterTerrainBaselines_count": 0,
+  "spawnPointData_count": 1,
+  "audioData_keys": 4,
+  "playerAnimatorData_type": "NoneType",
+  "spawnPointData_sample": [
+    {
+      "id": -2004294249
+    }
+  ],
+  "node_name_samples": [],
+  "component_types": {}
+}
